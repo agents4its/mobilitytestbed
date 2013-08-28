@@ -1,0 +1,20 @@
+## java specific
+*.class
+target/**
+target/**/*
+target/
+bin/**
+bin/**/*
+bin/
+
+## Mercurial specific
+.hg/**
+.hg/**/*
+.hg/
+.hgignore
+
+## Maven
+pom.xml
+
+## Other
+/mobilitytestbed/data/
