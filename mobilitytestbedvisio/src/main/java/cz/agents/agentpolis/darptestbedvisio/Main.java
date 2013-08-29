@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.h2.engine.Constants;
 
 import com.google.inject.Injector;
 
@@ -50,13 +51,15 @@ public class Main {
 	 */
 	public static void main(String[] args) throws ConfigReaderException, IOException {
 
+		
+		
 		// select the benchmark directory
 		File experiment = null;
 		if (args.length > 0) {
 			experiment = new File(args[0]);
 		} else {
-			// experiment = new File("experiments/dublin_5_drivers");
-			experiment = new File("experiments/sanfrancisco_536_drivers");
+			 experiment = new File("experiments/dublin_5_drivers");
+//			experiment = new File("experiments/sanfrancisco_536_drivers");
 		}
 
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
