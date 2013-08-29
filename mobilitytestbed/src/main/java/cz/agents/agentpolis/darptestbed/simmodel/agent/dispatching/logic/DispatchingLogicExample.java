@@ -68,7 +68,7 @@ public class DispatchingLogicExample extends DispatchingLogic {
 			}
 			
 			// skip those taxis, which don't meet some of the passenger's special requirements (wheel chair support, child seat, etc.)
-			if (taxiVehicle.getVehicleEquipments().containsAll(request.getAdditionalRequirements())) {
+			if (!taxiVehicle.getVehicleEquipments().containsAll(request.getAdditionalRequirements())) {
 				continue;
 			}
 			
