@@ -3,6 +3,8 @@ Flexible Mobility Services Testbed
 
 **MobilityTestbed** is an interaction-rich simulation model designed to test and **evaluate** various **DARP algorithms** (Dial-A-Ride Problem) or other, central or decentralized, coordination or resource-allocation mechanisms within on-demand transportation systems.
 
+<img src="https://raw.github.com/agents4its/mobilitytestbed/screenshots/screenshot1.jpg" style="float: right; width: 250px;" />
+
 It allows users to:
 * easily plug in **their own algorithms**, 
 * run them in different realistic **benchmark scenarios**, 
