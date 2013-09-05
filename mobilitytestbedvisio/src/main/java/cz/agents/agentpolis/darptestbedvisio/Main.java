@@ -51,16 +51,17 @@ public class Main {
 	 */
 	public static void main(String[] args) throws ConfigReaderException, IOException {
 
-		
-		
 		// select the benchmark directory
 		File experiment = null;
 		if (args.length > 0) {
 			experiment = new File(args[0]);
 		} else {
-			 experiment = new File("experiments/dublin_5_drivers");
-//			experiment = new File("experiments/sanfrancisco_536_drivers");
+			experiment = new File("experiments/dublin_5_drivers");
+			//experiment = new File("experiments/sanfrancisco_536_drivers");
 		}
+		
+		// select centralized vs. decentralized coordination algorithms
+		boolean centralized = false;
 
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
 		int resultFolderId = 0;
@@ -76,8 +77,7 @@ public class Main {
 		args = new String[0];
 
 		// visualization settings
-		final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed",
-				"public");
+		final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed", "public");
 		String visualizationName = darpResultFileName;
 		int visInterval = 2 * 60 * 1000;
 		File resultFolder = new File(experiment, "results" + File.separator + resultFolderId);
@@ -144,7 +144,7 @@ public class Main {
 			GlobalParams.setEarliestDepartureShift(45); // 45
 			GlobalParams.setTimeWinRelSize(3); // 3
 
-			GlobalParams.setCentralized(true); // use centralized coordination?
+			GlobalParams.setCentralized(centralized); // use centralized coordination?
 
 			// applies only for centralized == true
 			GlobalParams.setCentralAlgType(100); // Parameter here can be any
