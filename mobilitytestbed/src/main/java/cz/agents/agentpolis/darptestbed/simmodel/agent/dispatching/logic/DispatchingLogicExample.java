@@ -53,7 +53,8 @@ public class DispatchingLogicExample extends DispatchingLogic {
 		if (taxiModel.getTaxiDriversFree().size() == 0) {
 			// if there are no free drivers, dispatcher needs to reject the request
 			this.sendRequestReject(request.getPassengerId(),request);
-			LOGGER.debug("	Reply:   REJECT [no free taxis]");			
+			LOGGER.debug("	Reply:   REJECT [no free taxis]");
+			return;
 		}
 
 		// loop over all free taxi drivers

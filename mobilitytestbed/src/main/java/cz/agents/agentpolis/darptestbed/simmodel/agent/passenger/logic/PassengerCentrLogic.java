@@ -55,10 +55,10 @@ public class PassengerCentrLogic extends PassengerLogic<RequestConsumerMessagePr
 		sender.sendMessage(taxiModel.getDispatching().getId(), new ProposalAccept(proposal));
 	}
 
-	// Not needed. In centralized case, taxi drivers don't reject passenger's requests.
 	@Override
 	public void processRejection(RequestReject rejection) {
-		logger.logRequestRejected(passengerId);
+		// log the request failure for statistical purposes
+		logger.logRequestRejected(passengerId); 
 	}
 
 }

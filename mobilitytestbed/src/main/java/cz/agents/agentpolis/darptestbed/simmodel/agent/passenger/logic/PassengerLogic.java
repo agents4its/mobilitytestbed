@@ -310,7 +310,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	public abstract void processProposal(Proposal proposal);
 	
 	/**
-	 * Process a rejection, that's been just received from a taxi driver.
+	 * Process a rejection, that's been just received from a taxi driver or dispatcher.
 	 * 
 	 * @param rejection
 	 *            the new proposal

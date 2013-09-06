@@ -49,8 +49,9 @@ public class PassengerDecentrLogicExample extends PassengerDecentrLogic {
 	public void sendRequest(Request request) {
 		
 		// if too many drivers rejected us, don't even try
-		if (driversThatRejectedMe.size() > 10) {
+		if (driversThatRejectedMe.size() >= 3) {
 			LOGGER.debug(request.getPassengerId()+"giving up after 10 rejections.");
+			logger.logRequestRejected(passengerId);
 			return;
 		}
 		
@@ -85,7 +86,6 @@ public class PassengerDecentrLogicExample extends PassengerDecentrLogic {
 	// if our request is rejected, send it to someone else
 	@Override
 	public void processRejection(RequestReject r) {
-		logger.logRequestRejected(passengerId);
 		// remember that this driver rejected us
 		if (!driversThatRejectedMe.contains(r.rejectReceivedFrom)) driversThatRejectedMe.add(r.rejectReceivedFrom);
 		// and send the request again (now to someone else)

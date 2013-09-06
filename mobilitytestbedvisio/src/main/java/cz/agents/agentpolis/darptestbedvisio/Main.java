@@ -36,9 +36,7 @@ import eu.superhub.wp4.model.simodel.environment.model.delaymodel.factory.Infini
 import eu.superhub.wp4.simulator.initializator.vehiclemodel.init.VehicleDataModelModulFactory;
 
 /**
- * The main class of DARP Testbed.
- * 
- * @author Lukas Canda
+ * The main class of Mobility Testbed.
  */
 public class Main {
 
@@ -61,7 +59,7 @@ public class Main {
 		}
 		
 		// select centralized vs. decentralized coordination algorithms
-		boolean centralized = false;
+		boolean centralized = true;
 
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
 		int resultFolderId = 0;
