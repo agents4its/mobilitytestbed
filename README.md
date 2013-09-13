@@ -13,9 +13,9 @@ It allows users to:
 * and **compare** their **performance** with the alternatives.
 
 Links to follow:
-* [Project hosting](https://github.com/agents4its/mobilitytestbed) on GitHub
-* [Wiki](https://github.com/agents4its/mobilitytestbed/wiki/_pages) with all the necessary instructions
+* [Mobility Testbed Wiki](http://github.com/agents4its/mobilitytestbed/wiki) with all the necessary instructions
 * [Tutorial (DARP / centralized algorithm)](http://goo.gl/0Swwrc) 
 * [Tutorial (Decentralized algorithm)](http://goo.gl/RSVadu)
-* [Benchmarks](https://github.com/agents4its/mobilitytestbed/wiki/Benchmarks) download the benchmark scenarios here
-* [AgentPolis Platform](http://agentpolis.com/) on top of which the testbed is built
+* [Benchmarks](http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks) download the benchmark scenarios here
+* [AgentPolis Platform](http://agentpolis.org/) on top of which the testbed is built
+* [Publications](http://github.com/agents4its/mobilitytestbed/wiki/Publications) related to the testbed
