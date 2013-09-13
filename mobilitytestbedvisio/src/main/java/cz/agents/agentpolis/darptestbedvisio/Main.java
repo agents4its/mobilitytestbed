@@ -5,12 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.h2.engine.Constants;
-
 import com.google.inject.Injector;
-
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalazerProcessorInit;
@@ -39,7 +35,18 @@ import eu.superhub.wp4.simulator.initializator.vehiclemodel.init.VehicleDataMode
  * The main class of Mobility Testbed.
  */
 public class Main {
+	
+	//====================== SETTINGS START =======================
 
+	// choose if we should use centralized (DARP) or decentralized coordination algorithms
+	static boolean CENTRALIZED = true;
+
+	// specify the path to the directory containing the benchmark scenario (these can be 
+	// downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
+	static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
+
+	//======================= SETTINGS END ========================
+	
 	private static final Logger LOGGER = Logger.getLogger(Main.class);
 
 	/**
@@ -54,13 +61,10 @@ public class Main {
 		if (args.length > 0) {
 			experiment = new File(args[0]);
 		} else {
-			experiment = new File("experiments/dublin_5_drivers");
-			//experiment = new File("experiments/sanfrancisco_536_drivers");
+			experiment = new File(BENCHMARK_DIR);
 		}
 		
-		// select centralized vs. decentralized coordination algorithms
-		boolean centralized = true;
-
+		
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
 		int resultFolderId = 0;
 
@@ -142,7 +146,7 @@ public class Main {
 			GlobalParams.setEarliestDepartureShift(45); // 45
 			GlobalParams.setTimeWinRelSize(3); // 3
 
-			GlobalParams.setCentralized(centralized); // use centralized coordination?
+			GlobalParams.setCentralized(CENTRALIZED); // use centralized coordination?
 
 			// applies only for centralized == true
 			GlobalParams.setCentralAlgType(100); // Parameter here can be any
