@@ -50,7 +50,7 @@ public class PassengerDecentrLogicExample extends PassengerDecentrLogic {
 		
 		// if too many drivers rejected us, don't even try
 		if (driversThatRejectedMe.size() >= 3) {
-			LOGGER.debug(request.getPassengerId()+"giving up after 10 rejections.");
+			LOGGER.debug(request.getPassengerId()+"giving up after 3 rejections.");
 			logger.logRequestRejected(passengerId);
 			return;
 		}
