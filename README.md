@@ -19,3 +19,7 @@ Links to follow:
 * [Benchmarks](http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks) download the benchmark scenarios here
 * [AgentPolis Platform](http://agentpolis.org/) on top of which the testbed is built
 * [Publications](http://github.com/agents4its/mobilitytestbed/wiki/Publications) related to the testbed
+
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/5456c0d15d48f5f2e414a43d0fabd236 "githalytics.com")](http://githalytics.com/agents4its/mobilitytestbed)
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/afd305488fbe7992875c17b2295c7e9a "githalytics.com")](http://githalytics.com/agents4its/mobilitytestbed)
