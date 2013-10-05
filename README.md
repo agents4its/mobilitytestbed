@@ -22,4 +22,4 @@ Links to follow:
 
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/5456c0d15d48f5f2e414a43d0fabd236 "githalytics.com")](http://githalytics.com/agents4its/mobilitytestbed)
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/afd305488fbe7992875c17b2295c7e9a "githalytics.com")](http://githalytics.com/agents4its/mobilitytestbed)
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/7a60325d9c1f80a0d1ce46e584ac6482 "githalytics.com")](http://githalytics.com/agents4its/mobilitytestbed)
