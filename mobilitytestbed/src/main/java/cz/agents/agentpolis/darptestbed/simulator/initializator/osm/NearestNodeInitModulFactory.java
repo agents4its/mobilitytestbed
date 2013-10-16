@@ -18,7 +18,7 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwor
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.elemets.highway.HighwayNetwork;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.elemets.highway.HighwayNode;
 import cz.agents.agentpolis.simulator.creator.initializator.InitModulFactory;
-import eu.superhub.wp4.simulator.initializator.osm.init.WGS84Convertor;
+import cz.agents.agentpolis.utils.spatialrefsys.WGS84Convertor;
 
 public class NearestNodeInitModulFactory implements InitModulFactory {
 
@@ -33,7 +33,7 @@ public class NearestNodeInitModulFactory implements InitModulFactory {
 	public AbstractModule injectModule(Injector injector) {
 
 		Collection<HighwayNode> allNetworkNodes = injector.getInstance(HighwayNetwork.class).getNetwork().getAllNodes();
-		WGS84Convertor wgs84Convertor = WGS84Convertor.createConvertorFromWGS84ToEPSG(epsg);
+		WGS84Convertor wgs84Convertor = WGS84Convertor.createConvertorFromWGS84ToSpatialRefSys(epsg);
 
 		Map<Long, Coordinate> projectedNodeCoordinats = Maps.newHashMap();
 

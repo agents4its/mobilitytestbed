@@ -3,7 +3,7 @@ package cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passeng
 import static com.google.common.base.Preconditions.checkNotNull;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.receiver.PassengerReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.MessageVisitor;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
 /**
  * A proposal made by a driver, how he can transfer the passenger from point A

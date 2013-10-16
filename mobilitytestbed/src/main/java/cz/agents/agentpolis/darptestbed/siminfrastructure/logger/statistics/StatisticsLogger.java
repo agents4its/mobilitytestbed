@@ -26,12 +26,11 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.data.RequestSta
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TimeWindow;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
-import cz.agents.agentpolis.siminfrastructure.logger.LoggerProtocol;
 import cz.agents.agentpolis.simmodel.environment.model.AgentPositionModel;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.AllNetworkNodes;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.elemets.Node;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
-import cz.agents.agentpolis.simmodel.environment.model.sensor.PositionSensor;
+import cz.agents.agentpolis.simmodel.environment.model.sensor.PositionUpdated;
 import cz.agents.alite.common.event.EventProcessor;
 
 /**
@@ -42,7 +41,7 @@ import cz.agents.alite.common.event.EventProcessor;
  */
 @Singleton
 @Deprecated
-public class StatisticsLogger implements PositionSensor {
+public class StatisticsLogger implements PositionUpdated {
 
 	private static final Logger LOGGER = Logger.getLogger(StatisticsLogger.class);
 	/**
@@ -79,7 +78,7 @@ public class StatisticsLogger implements PositionSensor {
 	protected static StatisticsLogger instance = null;
 
 	@Inject
-	public StatisticsLogger(LoggerProtocol eventProtocol, EventProcessor eventProcessor, TestbedModel serviceModel,
+	public StatisticsLogger(EventProcessor eventProcessor, TestbedModel serviceModel,
 			AgentPositionModel agentPositionModel, AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes,
 			TestbedModel taxiModel, Utils utils, VehicleMoveLogger vehicleMoveLogger) {
 

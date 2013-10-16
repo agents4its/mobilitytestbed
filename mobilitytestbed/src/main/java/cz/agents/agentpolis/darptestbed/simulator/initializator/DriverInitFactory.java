@@ -28,7 +28,7 @@ import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedVehicleStorage;
 import cz.agents.agentpolis.simmodel.agent.Agent;
-import cz.agents.agentpolis.simmodel.agent.activity.movement.VehicleDrivingActivity;
+import cz.agents.agentpolis.simmodel.agent.activity.movement.DriveVehicleActivity;
 import cz.agents.agentpolis.simmodel.entity.vehicle.VehicleType;
 import cz.agents.agentpolis.simmodel.environment.model.AgentPositionModel;
 import cz.agents.agentpolis.simmodel.environment.model.VehiclePositionModel;
@@ -102,7 +102,7 @@ public class DriverInitFactory implements AgentInitFactory {
 						.addEntityMaxVelocity(vehicle.getId(), velocityOfVehicle);
 
 				String agentId = "TaxiDriver" + cntDrivers;
-				VehicleDrivingActivity drivingActivity = injector.getInstance(VehicleDrivingActivity.class);
+				DriveVehicleActivity drivingActivity = injector.getInstance(DriveVehicleActivity.class);
 
 				Agent driver = null;
 				if (centralized) {

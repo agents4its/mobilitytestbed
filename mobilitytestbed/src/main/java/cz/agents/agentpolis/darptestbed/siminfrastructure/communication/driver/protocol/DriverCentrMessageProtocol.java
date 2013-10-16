@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.receiver.DriverCentrReceiverVisitor;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.AMessageProtocol;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.AMessageProtocol;
 import cz.agents.alite.common.event.EventProcessor;
 
 @Singleton

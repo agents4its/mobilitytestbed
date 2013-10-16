@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Set;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.receiver.RequestConsumerReceiverVisitor;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.MessageVisitor;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
 /**
  * A request for a taxi to drive from point A to B.

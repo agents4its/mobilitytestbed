@@ -1,7 +1,7 @@
 package cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.message;
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.receiver.DriverReceiverVisitor;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.MessageVisitor;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
 public class PassengerSaysTaxiIsTooLateMessage implements MessageVisitor<DriverReceiverVisitor> {
 

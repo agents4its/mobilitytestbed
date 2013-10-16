@@ -17,7 +17,7 @@ import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
 import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
 import cz.agents.agentpolis.siminfrastructure.planner.TripPlannerException;
-import cz.agents.agentpolis.simmodel.agent.activity.movement.VehicleDrivingActivity;
+import cz.agents.agentpolis.simmodel.agent.activity.movement.DriveVehicleActivity;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.AllNetworkNodes;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
@@ -37,7 +37,7 @@ public abstract class DriverDecentrLogic extends DriverLogic<PassengerMessagePro
 
 	public DriverDecentrLogic(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel,
 			AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
-			VehicleDrivingActivity drivingActivity) {
+			DriveVehicleActivity drivingActivity) {
 
 		super(agentId, sender, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
 	}

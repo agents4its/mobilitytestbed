@@ -9,7 +9,7 @@ import java.util.Map;
 
 import com.google.common.collect.Lists;
 
-import eu.superhub.wp4.analyser.processor.data.AvgCounter;
+import eu.superhub.wp4.simulator.analyser.processor.util.AvgCounter;
 
 public class AvgMaxProcessor {
 

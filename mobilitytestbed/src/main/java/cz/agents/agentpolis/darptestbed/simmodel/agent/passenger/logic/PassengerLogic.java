@@ -21,7 +21,7 @@ import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TimeWindow;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerProfile;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.AMessageProtocol;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.AMessageProtocol;
 import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
 import cz.agents.agentpolis.simmodel.agent.activity.callback.TimeActivityCallback;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
@@ -72,6 +72,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	 * taxi yet.
 	 */
 	private Set<String> passengerAdditionalRequirements;
+
 	/**
 	 * @return the passenger's current position node
 	 */
@@ -129,7 +130,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 					+ utils.toHoursAndMinutes(timeWin.getLatestArrival()) + ")";
 		}
 
-		//LOGGER.debug(printReq);
+		// LOGGER.debug(printReq);
 	}
 
 	/**
@@ -151,7 +152,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 			} else {
 				processVehicleArrivedNoTimeWindows(driverId, vehicleId);
 			}
-			//LOGGER.debug("ON BOARD: "+taxiModel.getNumOfPassenOnBoard(vehicleId));
+			// LOGGER.debug("ON BOARD: "+taxiModel.getNumOfPassenOnBoard(vehicleId));
 		}
 	}
 
@@ -176,7 +177,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	 */
 	private void processVehicleArrivedNoTimeWindows(String driverId, String vehicleId) {
 
-		//LOGGER.info(passengerId + " got in at " + getCurrentTimeStr());
+		// LOGGER.info(passengerId + " got in at " + getCurrentTimeStr());
 		passengerActivity.useArrivedVehicle(passengerId, vehicleId, currentRequestConfirmed.getToNode(), this);
 		sendPassengerGotInVehicle(driverId, vehicleId);
 	}
@@ -247,7 +248,8 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	}
 
 	/**
-	 * The request communication has ended and a taxi will pick me up. Now I wait.
+	 * The request communication has ended and a taxi will pick me up. Now I
+	 * wait.
 	 * 
 	 * @param driverId
 	 *            the driver who'll pick me up
@@ -268,8 +270,8 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	 */
 	@Override
 	public void tripFinished(long targetNode) {
-		
-		//LOGGER.debug("TRIP FINISHED ["+utils.getCurrentTime()+", "+currentDriverId+", "+passengerId+"] at "+targetNode);
+
+		// LOGGER.debug("TRIP FINISHED ["+utils.getCurrentTime()+", "+currentDriverId+", "+passengerId+"] at "+targetNode);
 
 		// print out
 		String printReq = passengerId + " has finished his trip at " + getCurrentTimeStr();
@@ -283,7 +285,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 				printReq += " (on time)";
 			}
 		}
-		//LOGGER.debug(printReq);
+		// LOGGER.debug(printReq);
 
 		// null temporary fields
 		currentVehicleId = null;
@@ -308,9 +310,10 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 	 *            the new proposal
 	 */
 	public abstract void processProposal(Proposal proposal);
-	
+
 	/**
-	 * Process a rejection, that's been just received from a taxi driver or dispatcher.
+	 * Process a rejection, that's been just received from a taxi driver or
+	 * dispatcher.
 	 * 
 	 * @param rejection
 	 *            the new proposal

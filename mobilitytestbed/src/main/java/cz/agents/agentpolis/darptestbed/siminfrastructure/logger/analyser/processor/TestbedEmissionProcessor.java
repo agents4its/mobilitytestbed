@@ -7,10 +7,10 @@ import java.util.Map;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedProcessor;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.Graph;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.GraphType;
-import eu.superhub.wp4.analyser.processor.AEmissionProcessor;
-import eu.superhub.wp4.model.simodel.environment.model.vehiclemodel.VehicleDataModel;
+import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleDataModel;
+import eu.superhub.wp4.simulator.analyser.processor.EmissionProcessor;
 
-public class TestbedEmissionProcessor extends AEmissionProcessor implements TestbedProcessor {
+public class TestbedEmissionProcessor extends EmissionProcessor implements TestbedProcessor {
 
 	public TestbedEmissionProcessor(Map<GraphType, Graph> transportNetworksByGraphType, long measureTimePeriodInms,
 			VehicleDataModel vehicleDataModel) {

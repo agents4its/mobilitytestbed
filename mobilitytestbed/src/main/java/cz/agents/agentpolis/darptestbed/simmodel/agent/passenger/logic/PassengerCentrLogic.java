@@ -58,7 +58,7 @@ public class PassengerCentrLogic extends PassengerLogic<RequestConsumerMessagePr
 	@Override
 	public void processRejection(RequestReject rejection) {
 		// log the request failure for statistical purposes
-		logger.logRequestRejected(passengerId); 
+		logger.logRequestRejected(passengerId);
 	}
 
 }

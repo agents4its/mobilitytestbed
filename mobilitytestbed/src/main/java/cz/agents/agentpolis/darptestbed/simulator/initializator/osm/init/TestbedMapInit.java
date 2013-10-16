@@ -21,9 +21,11 @@ import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.selector.impl.RoadwayGraphOsmBinder;
 import cz.agents.agentpolis.siminfrastructure.planner.path.ShortestPathPlanner.PlannerEdge;
 import cz.agents.agentpolis.simmodel.environment.model.SpeedInfluenceModels;
 import cz.agents.agentpolis.simmodel.environment.model.SpeedLimitModel;
+import cz.agents.agentpolis.simmodel.environment.model.citymodel.spatialrefsys.SRID;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.EGraphType;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.Graph;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.GraphBuilder;
@@ -38,18 +40,15 @@ import cz.agents.agentpolis.simulator.creator.initializator.MapInitFactory;
 import cz.agents.agentpolis.simulator.creator.initializator.impl.MapData;
 import cz.agents.agentpolis.simulator.importer.osm.OsmDataGetter;
 import cz.agents.agentpolis.simulator.importer.osm.OsmImporter;
-import cz.agents.agentpolis.simulator.importer.osm.tasks.impl.StreetGraphImportTask;
-import cz.agents.agentpolis.utils.generator.IdIterGenerator;
+import cz.agents.agentpolis.simulator.importer.osm.simplification.EdgeFactory;
+import cz.agents.agentpolis.simulator.importer.osm.simplification.GraphEdgeSimplificationToolImpl;
+import cz.agents.agentpolis.simulator.importer.osm.simplification.GraphSimplificationBuilder;
+import cz.agents.agentpolis.simulator.importer.osm.simplification.dto.SimplifiedGraph;
+import cz.agents.agentpolis.simulator.importer.osm.speedlimit.SpeedLimitCollector;
+import cz.agents.agentpolis.simulator.importer.osm.speedlimit.waytype.DefaultSpeedLimitRoadTypeProvider;
+import cz.agents.agentpolis.simulator.importer.osm.task.transportnetwork.HighwayGraphImportTask;
+import cz.agents.agentpolis.simulator.importer.osm.util.OSMBoundsUtil;
 import cz.agents.agentpolis.utils.key.Key;
-import eu.superhub.wp4.simulator.initializator.osm.importselector.HighwaySpeedLimitImportSelector;
-import eu.superhub.wp4.simulator.initializator.osm.importselector.parking.OSMDateUtil;
-import eu.superhub.wp4.simulator.initializator.osm.init.EPSG;
-import eu.superhub.wp4.simulator.initializator.osm.optimalization.EdgeFactory;
-import eu.superhub.wp4.simulator.initializator.osm.optimalization.GraphEdgeSimplificationToolImpl;
-import eu.superhub.wp4.simulator.initializator.osm.optimalization.GraphSimplificationBuilder;
-import eu.superhub.wp4.simulator.initializator.osm.optimalization.dto.SimplifiedGraph;
-import eu.superhub.wp4.simulator.initializator.osm.selector.task.SpeedLimitImportTask;
-import eu.superhub.wp5.plannerdataimporter.graphimporter.binder.RoadwayGraphOsmBinder;
 
 public class TestbedMapInit extends AbstractModule implements MapInitFactory, InitModulFactory {
 
@@ -66,18 +65,39 @@ public class TestbedMapInit extends AbstractModule implements MapInitFactory, In
 	public MapData initMap(File mapFile, Injector injector) {
 
 		OsmDataGetter osmDataGetter = OsmDataGetter.createOsmDataGetter(mapFile);
-		Bounds bounds = OSMDateUtil.computeBoundOfSimulationWorld(osmDataGetter);
+		Bounds bounds = OSMBoundsUtil.computeBoundsOfSimulationWorld(osmDataGetter);
 
-		IdIterGenerator idIterGenerator = new IdIterGenerator();
 		OsmImporter importer = new OsmImporter(osmDataGetter);
 
-		Graph highWay = importer.executeTaskForWay(new StreetGraphImportTask(idIterGenerator),
+		SpeedLimitCollector speedLimitCollector = new SpeedLimitCollector<HighwayNode, HighwayEdge>(EGraphType.HIGHWAY,
+				50, new DefaultSpeedLimitRoadTypeProvider());
+
+		Graph highWay = importer.executeTaskForWay(new HighwayGraphImportTask(speedLimitCollector),
 				RoadwayGraphOsmBinder.getSelector());
 		highWay = connectivity(highWay);
 
-		Map<GraphFromToNodeKey, Double> highwayLimits = importer.executeTaskForWay(
-				new SpeedLimitImportTask<HighwayEdge>(EGraphType.HIGHWAY, 50, highWay.getAllEdges()),
-				HighwaySpeedLimitImportSelector.getSelector());
+		// --
+		// Map<GraphFromToNodeKey, Double> highwayLimits =
+		// importer.executeTaskForWay(
+		// new SpeedLimitImportTask<HighwayEdge>(EGraphType.HIGHWAY, 50,
+		// highWay.getAllEdges()),
+		// HighwaySpeedLimitImportSelector.getSelector());
+
+		Map<GraphFromToNodeKey, Double> highwayLimits = speedLimitCollector.getSpeedLimistForSpecificSegment();
+
+		// System.out.println("Check" + highWay.getAllEdges().size() + " ** "
+		// + speedLimistForSpecificSegment.keySet().size() + " -- " +
+		// highwayLimits.keySet().size());
+
+		// for (GraphFromToNodeKey toNodeKey :
+		// speedLimistForSpecificSegment.keySet()) {
+		//
+		// if (highwayLimits.containsKey(toNodeKey) == false) {
+		// System.out.println("Problem" + toNodeKey.toString());
+		// }
+		// }
+
+		// -----
 
 		GraphEdgeSimplificationToolImpl<HighwayNode, HighwayEdge> tGS = new GraphEdgeSimplificationToolImpl<HighwayNode, HighwayEdge>(
 				new GraphSimplificationBuilder<HighwayNode, HighwayEdge>(new HighwayEdgeFactory()),
@@ -92,6 +112,9 @@ public class TestbedMapInit extends AbstractModule implements MapInitFactory, In
 		graphByType.put(EGraphType.PEDESTRIAN, (new GraphBuilder()).createGraph());
 
 		Map<Long, Node> allGraphNodes = createAllGraphNodes(graphByType);
+
+		// System.out.println("Check" +
+		// graphByType.get(EGraphType.HIGHWAY).getAllEdges().size());
 
 		initSpeedLimits(
 				makeConsistentWithSimplifiedGraph(highwayLimits, EGraphType.HIGHWAY,
@@ -122,6 +145,7 @@ public class TestbedMapInit extends AbstractModule implements MapInitFactory, In
 	// }
 
 	private void initSpeedLimits(Map<GraphFromToNodeKey, Double> highWayLimits, Injector injector) {
+		// System.out.println("Check" + highWayLimits.size());
 		Map<GraphFromToNodeKey, Double> speedLimistForSpecificSegment = new HashMap<GraphFromToNodeKey, Double>();
 		speedLimistForSpecificSegment.putAll(highWayLimits);
 		SpeedInfluenceModels speedInfluenceModels = injector.getInstance(SpeedInfluenceModels.class);
@@ -260,8 +284,8 @@ public class TestbedMapInit extends AbstractModule implements MapInitFactory, In
 
 	@Singleton
 	@Provides
-	public EPSG provideEPSG() {
-		return new EPSG(epsg);
+	public SRID provideEPSG() {
+		return new SRID(epsg);
 	}
 
 }

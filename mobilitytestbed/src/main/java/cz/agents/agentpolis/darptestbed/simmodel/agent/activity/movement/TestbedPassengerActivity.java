@@ -7,8 +7,8 @@ import com.google.inject.Inject;
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.PassengerActivityLogger;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
-import cz.agents.agentpolis.simmodel.environment.model.action.UseVehicleWithNotifyAction;
-import cz.agents.agentpolis.simmodel.environment.model.action.callback.PassengerVehiclePlanCallback;
+import cz.agents.agentpolis.simmodel.environment.model.action.PassengerAction;
+import cz.agents.agentpolis.simmodel.environment.model.action.callback.VehicleArrivedCallback;
 import cz.agents.agentpolis.simmodel.environment.model.linkedentitymodel.sensor.LinkedEntitySensor;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
@@ -24,7 +24,7 @@ public class TestbedPassengerActivity implements LinkedEntitySensor {
 	/**
 	 * This action enables us to get in the vehicle
 	 */
-	protected final UseVehicleWithNotifyAction useVehicleAction;
+	protected final PassengerAction useVehicleAction;
 	/**
 	 * A query to find the current position of an agent
 	 */
@@ -65,7 +65,7 @@ public class TestbedPassengerActivity implements LinkedEntitySensor {
 	protected TestbedPassengerActivityCallback passengerActivityCallback;
 
 	@Inject
-	public TestbedPassengerActivity(UseVehicleWithNotifyAction useVehicleAction, AgentPositionQuery positionQuery,
+	public TestbedPassengerActivity(PassengerAction useVehicleAction, AgentPositionQuery positionQuery,
 			TestbedModel taxiModel, Utils utils, PassengerActivityLogger logger) {
 
 		this.useVehicleAction = useVehicleAction;
@@ -151,7 +151,7 @@ public class TestbedPassengerActivity implements LinkedEntitySensor {
 	 * 
 	 * @author Zbynek Moler
 	 */
-	private static class EmptyPassengerVehiclePlanCallback implements PassengerVehiclePlanCallback {
+	private static class EmptyPassengerVehiclePlanCallback implements VehicleArrivedCallback {
 
 		@Override
 		public void notifyPassengerAboutVehiclePlan(long fromNodeId, long toNodeId, String vehicleId) {

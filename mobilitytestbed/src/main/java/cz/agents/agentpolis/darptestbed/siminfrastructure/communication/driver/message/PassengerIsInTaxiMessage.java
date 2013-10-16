@@ -2,7 +2,7 @@ package cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.receiver.DriverReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.MessageVisitor;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
 public class PassengerIsInTaxiMessage implements MessageVisitor<DriverReceiverVisitor> {
 

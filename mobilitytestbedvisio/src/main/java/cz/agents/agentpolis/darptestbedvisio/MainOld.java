@@ -3,9 +3,6 @@ package cz.agents.agentpolis.darptestbedvisio;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -15,11 +12,6 @@ import com.google.inject.Injector;
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalazerProcessorInit;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EPassengerLogItemKey;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EPassengerLogItemType;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.ERequestLogItemKey;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.ERequestLogItemType;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EVehicleLogItemType;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.statistics.StatisticsLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.init.TestbedPlannerModulFactory;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
@@ -29,10 +21,8 @@ import cz.agents.agentpolis.darptestbed.simulator.initializator.DriverForBenchma
 import cz.agents.agentpolis.darptestbed.simulator.initializator.PassengerForBenchmarkInitFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NearestNodeInitModulFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.init.TestbedMapInit;
-import cz.agents.agentpolis.logger.LogItemKey;
-import cz.agents.agentpolis.logger.LogItemType;
-import cz.agents.agentpolis.siminfrastructure.logger.key.EPassengerPositionLogItemKey;
 import cz.agents.agentpolis.simulator.creator.SimulationCreator;
+import cz.agents.agentpolis.simulator.vehiclemodel.init.VehicleDataModelModulFactory;
 import cz.agents.agentpolis.tools.geovisio.database.connection.DatabaseConnectionSettings;
 import cz.agents.agentpolis.tools.geovisio.layer.BoundingBox;
 import cz.agents.agentpolis.tools.geovisio.spy.AgentPolisDataReaderFactory;
@@ -40,12 +30,10 @@ import cz.agents.agentpolis.tools.geovisio.spy.SpyAgentInitFactory;
 import cz.agents.agentpolis.tools.geovisio.spy.agentpolis.AgentPolisDataReader;
 import cz.agents.agentpolis.tools.geovisio.spy.darptestbed.DarpTestbedDataReader;
 import cz.agents.agentpolis.tools.geovisio.spy.darptestbed.LogHandler;
-import cz.agents.agentpolis.tools.geovisio.visualisation.VisualisationSettings;
 import cz.agents.agentpolis.utils.config.ConfigReader;
 import cz.agents.agentpolis.utils.config.ConfigReaderException;
 import cz.agents.dbtokmlexporter.darptestbed.DarpTestbedKmlVisualisator;
-import eu.superhub.wp4.model.simodel.environment.model.delaymodel.factory.InfinityDelayingSegmentCapacityDeterminer;
-import eu.superhub.wp4.simulator.initializator.vehiclemodel.init.VehicleDataModelModulFactory;
+import eu.superhub.wp4.initializator.simulator.delaymodel.InfinityDelayingSegmentCapacityDeterminer;
 
 /**
  * The main class of DARP Testbed.
@@ -57,9 +45,9 @@ public class MainOld {
 	private static final Logger LOGGER = Logger.getLogger(MainOld.class);
 
 	private final static BoundingBox DUBLIN_BOUNDING_BOX = new BoundingBox(-6.439877418513285, 53.26100248399494,
-	        -6.061446946007517, 53.40390930491094, 4326);
+			-6.061446946007517, 53.40390930491094, 4326);
 	private final static BoundingBox SAN_FRANCISCO_BOUNDING_BOX = new BoundingBox(-122.63928717885337,
-	        37.69060923316812, -122.2283977678971, 37.94719910401152, 4326);
+			37.69060923316812, -122.2283977678971, 37.94719910401152, 4326);
 
 	/**
 	 * @param args
@@ -83,30 +71,30 @@ public class MainOld {
 		long startTime = System.currentTimeMillis();
 
 		// visualization settings
-//		final BoundingBox boundingBox = SAN_FRANCISCO_BOUNDING_BOX;
+		// final BoundingBox boundingBox = SAN_FRANCISCO_BOUNDING_BOX;
 		final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed",
-		        "public");
+				"public");
 
 		// final VisualisationSettings visualisationSettings = new
 		// VisualisationSettings("", 0, "testbed", "jeto",
 		// "jedno", "", "", "");
 
 		String visualizationName = "testbed_san_francisco_" + resultFolderId + "_r" + numOfPassenger + "_d"
-		        + numOfDriver + "_DU" + uni(driverPopulationPath.indexOf("uni")) + "_PU"
-		        + uni(passengerPopulationPath.indexOf("uni"));
+				+ numOfDriver + "_DU" + uni(driverPopulationPath.indexOf("uni")) + "_PU"
+				+ uni(passengerPopulationPath.indexOf("uni"));
 		int visInterval = 2 * 60 * 1000;
 		String resultFolder = "results/" + resultFolderId;
 		// visualization settings end
 
 		TestbedLogAnalyser testbedLogAnalyser = new TestbedLogAnalyser(new File(experiment, "results/" + resultFolderId
-		        + "/result_" + visualizationName + ".txt"));
-		List<Object> subscribe = new ArrayList<Object>();
-		subscribe.add(testbedLogAnalyser);
-		final LogHandler logHandler = new LogHandler();
-		subscribe.add(logHandler);
+				+ "/result_" + visualizationName + ".txt"));
 
-		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(subscribe,
-		        new InfinityDelayingSegmentCapacityDeterminer()), experiment, resultFolderId);
+		final LogHandler logHandler = new LogHandler();
+
+		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(
+				new InfinityDelayingSegmentCapacityDeterminer()), experiment, resultFolderId);
+		creator.addLogger(testbedLogAnalyser);
+		creator.addLogger(logHandler);
 
 		String vehicledatamodelPath = scenario.getStringValueFromConfig("vehicledatamodelPath");
 		final int epsg = scenario.getIntegerValueFromConfig("epsg");
@@ -196,8 +184,6 @@ public class MainOld {
 
 		LOGGER.info("seed = " + GlobalParams.getRandomSeed());
 
-		creator.replaceMapInitFactory(new TestbedMapInit(epsg));
-
 		creator.addInitModulFactory(new NearestNodeInitModulFactory(epsg));
 		creator.addInitModulFactory(new TestbedPlannerModulFactory());
 
@@ -213,52 +199,35 @@ public class MainOld {
 		creator.addEntityStyleVis(TestbedEntityType.TAXI_DRIVER, Color.BLUE, 9);
 		creator.addEntityStyleVis(TestbedEntityType.PASSENGER, Color.GREEN, 8);
 
-		// set up logger to CSV file (list all logged events and
-		// keys)
-		List<LogItemType> allowEvents = new ArrayList<LogItemType>();
-		allowEvents.addAll(Arrays.asList(EVehicleLogItemType.values()));
-		allowEvents.addAll(Arrays.asList(EPassengerLogItemType.values()));
-		allowEvents.addAll(Arrays.asList(ERequestLogItemType.values()));
-
-		List<LogItemKey> keysToData = new ArrayList<LogItemKey>();
-		keysToData.add(EPassengerPositionLogItemKey.PLACE);
-		keysToData.add(EPassengerLogItemKey.VEHICLE);
-		keysToData.add(ERequestLogItemKey.FROM_NODE);
-		keysToData.add(ERequestLogItemKey.TO_NODE);
-		keysToData.add(ERequestLogItemKey.TIME_WIN_OPEN);
-		keysToData.add(ERequestLogItemKey.TIME_WIN_CLOSE);
-
-		creator.addAllowEventsAndKeysForCSV(allowEvents, keysToData);
-
 		// visualization init
 		creator.addAgentInit(new SpyAgentInitFactory(visInterval, visualizationName, new AgentPolisDataReaderFactory() {
 
 			public AgentPolisDataReader createAgentPolisReader(Injector injector, String visName, int interval)
-			        throws ReflectiveOperationException, InterruptedException {
+					throws ReflectiveOperationException, InterruptedException {
 				return new DarpTestbedDataReader(settings, injector, visName, interval, 4326, logHandler
-				        .getRequestStorage());
+						.getRequestStorage());
 			}
 		}, creator));
 
 		// start it up
-		creator.create();
+		creator.startSimulation(new TestbedMapInit(epsg));
 
 		// after finishing the simulation, report statistics
 		String path = experiment.getPath() + File.separator + "results" + File.separator + resultFolderId
-		        + File.separator;
+				+ File.separator;
 		StatisticsLogger.getInstance().writeReport(
-		        new File(path + "result" + GlobalParams.getNumberOfPassengers() + ".csv"), new File(path + "taxi.csv"));
+				new File(path + "result" + GlobalParams.getNumberOfPassengers() + ".csv"), new File(path + "taxi.csv"));
 
 		// analazerProcessorInit.getReportBuilder().builtSimulationReport();
 
-//		testbedLogAnalyser.processResult();
+		// testbedLogAnalyser.processResult();
 
 		FileUtils.writeStringToFile(new File(path + "sim_time.txt"),
-		        String.valueOf(System.currentTimeMillis() - startTime));
+				String.valueOf(System.currentTimeMillis() - startTime));
 
 		// export visualization to kml
 		DarpTestbedKmlVisualisator kmlVisualisator = new DarpTestbedKmlVisualisator(settings, visInterval,
-		        visualizationName, resultFolder + "/visualizations");
+				visualizationName, resultFolder + "/visualizations");
 		kmlVisualisator.visualize();
 
 	}

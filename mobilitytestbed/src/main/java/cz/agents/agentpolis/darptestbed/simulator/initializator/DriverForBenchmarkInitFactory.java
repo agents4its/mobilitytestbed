@@ -34,7 +34,7 @@ import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedVehicleStorage;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NodeExtendedFunction;
 import cz.agents.agentpolis.simmodel.agent.Agent;
-import cz.agents.agentpolis.simmodel.agent.activity.movement.VehicleDrivingActivity;
+import cz.agents.agentpolis.simmodel.agent.activity.movement.DriveVehicleActivity;
 import cz.agents.agentpolis.simmodel.entity.vehicle.VehicleType;
 import cz.agents.agentpolis.simmodel.environment.model.AgentPositionModel;
 import cz.agents.agentpolis.simmodel.environment.model.VehiclePositionModel;
@@ -43,11 +43,11 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwor
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.EGraphType;
 import cz.agents.agentpolis.simmodel.environment.model.entityvelocitymodel.EntityVelocityModel;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
+import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleDataModel;
+import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleTemplate;
+import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleTemplateId;
 import cz.agents.agentpolis.simulator.creator.initializator.AgentInitFactory;
 import cz.agents.agentpolis.utils.convertor.VelocityConvertor;
-import eu.superhub.wp4.model.simodel.environment.model.vehiclemodel.VehicleDataModel;
-import eu.superhub.wp4.model.simodel.environment.model.vehiclemodel.VehicleTemplate;
-import eu.superhub.wp4.model.simodel.environment.model.vehiclemodel.VehicleTemplateId;
 
 public class DriverForBenchmarkInitFactory implements AgentInitFactory {
 
@@ -119,7 +119,7 @@ public class DriverForBenchmarkInitFactory implements AgentInitFactory {
 			injector.getInstance(EntityVelocityModel.class).addEntityMaxVelocity(vehicle.getId(), velocityOfVehicle);
 
 			String agentId = driver.driverId;
-			VehicleDrivingActivity drivingActivity = injector.getInstance(VehicleDrivingActivity.class);
+			DriveVehicleActivity drivingActivity = injector.getInstance(DriveVehicleActivity.class);
 
 			Agent driverAgent = null;
 

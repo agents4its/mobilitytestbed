@@ -6,7 +6,8 @@ import net.sf.javaml.core.kdtree.KDTree;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
-import eu.superhub.wp4.simulator.initializator.osm.init.WGS84Convertor;
+import cz.agents.agentpolis.utils.spatialrefsys.WGS84Convertor;
+
 
 public class NodeExtendedFunction {
 

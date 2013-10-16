@@ -10,11 +10,11 @@ import cz.agents.agentpolis.darptestbed.simmodel.agent.data.FlexiblePlan;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
 import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.AMessageProtocol;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.AMessageProtocol;
 import cz.agents.agentpolis.siminfrastructure.planner.TripPlannerException;
 import cz.agents.agentpolis.siminfrastructure.planner.trip.Trip;
-import cz.agents.agentpolis.simmodel.agent.activity.movement.VehicleDrivingActivity;
-import cz.agents.agentpolis.simmodel.agent.activity.movement.callback.DrivingActivityCallback;
+import cz.agents.agentpolis.simmodel.agent.activity.movement.DriveVehicleActivity;
+import cz.agents.agentpolis.simmodel.agent.activity.movement.callback.DrivingFinishedActivityCallback;
 import cz.agents.agentpolis.simmodel.entity.vehicle.Vehicle;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.AllNetworkNodes;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
@@ -28,7 +28,7 @@ import eu.superhub.wp4.model.simmodel.agent.activity.parking.DrivingAndParkingAc
  * @author Lukas Canda
  */
 public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> extends AgentLogic<TMessageProtocol>
-		implements DrivingActivityCallback {
+		implements DrivingFinishedActivityCallback {
 
 	private static final Logger LOGGER = Logger.getLogger(DriverLogic.class);
 
@@ -41,7 +41,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 	/**
 	 * Using this activity I can drive a vehicle
 	 */
-	private final VehicleDrivingActivity drivingActivity;
+	private final DriveVehicleActivity drivingActivity;
 	/**
 	 * My trips to be gone on
 	 */
@@ -63,7 +63,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 
 	public DriverLogic(String agentId, TMessageProtocol sender, TestbedModel serviceModel,
 			AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
-			VehicleDrivingActivity drivingActivity) {
+			DriveVehicleActivity drivingActivity) {
 
 		super(sender, serviceModel, positionQuery, utils);
 		this.driverId = agentId;
@@ -129,7 +129,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 	/**
 	 * @return the driver's vehicle drivingActivity
 	 */
-	protected VehicleDrivingActivity getDrivingActivity() {
+	protected DriveVehicleActivity getDrivingActivity() {
 		return this.drivingActivity;
 	}
 

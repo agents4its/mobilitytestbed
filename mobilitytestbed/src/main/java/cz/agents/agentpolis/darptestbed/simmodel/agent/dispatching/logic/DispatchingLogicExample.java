@@ -22,7 +22,6 @@ import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
 import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedVehicleStorage;
-import cz.agents.agentpolis.siminfrastructure.planner.TripPlannerException;
 import cz.agents.agentpolis.siminfrastructure.planner.trip.Trip;
 import cz.agents.agentpolis.siminfrastructure.planner.trip.Trips;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.AllNetworkNodes;
@@ -45,65 +44,75 @@ public class DispatchingLogicExample extends DispatchingLogic {
 	public void processNewRequest(Request request) {
 
 		// print out the request for debugging purposes
-		LOGGER.debug("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture()) + "] from "
-				+ request.getPassengerId() + ", latest departure: "
+		LOGGER.debug("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture())
+				+ "] from " + request.getPassengerId() + ", latest departure: "
 				+ utils.toHoursAndMinutes(request.getTimeWindow().getLatestDeparture()));
 
 		// check if there are any free taxi drivers
 		if (taxiModel.getTaxiDriversFree().size() == 0) {
-			// if there are no free drivers, dispatcher needs to reject the request
-			this.sendRequestReject(request.getPassengerId(),request);
+			// if there are no free drivers, dispatcher needs to reject the
+			// request
+			this.sendRequestReject(request.getPassengerId(), request);
 			LOGGER.debug("	Reply:   REJECT [no free taxis]");
 			return;
 		}
 
 		// loop over all free taxi drivers
 		for (String taxiDriverId : taxiModel.getTaxiDriversFree()) {
-			
+
 			// get the object representation of this driver's vehicle
 			TestbedVehicle taxiVehicle = vehicleStorage.getEntityById(taxiModel.getVehicleId(taxiDriverId));
-			
+
 			// skip those taxi drivers, who have currently full capacity
 			if (taxiModel.getNumOfPassenOnBoard(taxiModel.getVehicleId(taxiDriverId)) >= taxiVehicle.getCapacity()) {
 				continue;
 			}
-			
-			// skip those taxis, which don't meet some of the passenger's special requirements (wheel chair support, child seat, etc.)
+
+			// skip those taxis, which don't meet some of the passenger's
+			// special requirements (wheel chair support, child seat, etc.)
 			if (!taxiVehicle.getVehicleEquipments().containsAll(request.getAdditionalRequirements())) {
 				continue;
 			}
-			
+
 			// compute the driving time between the passenger and the driver
 			double timeToPassenger = utils.computeDrivingTime(taxiDriverId, request.getPassengerId());
-			
+
 			// compute when this driver could pick up the passenger
 			long pickUpTime = utils.getCurrentTime() + (long) timeToPassenger;
 
-			// if this driver is able to pick up the passenger within his departure time window ...
+			// if this driver is able to pick up the passenger within his
+			// departure time window ...
 			if (pickUpTime <= request.getTimeWindow().getLatestDeparture()) {
 
-				// plan the trips (paths) 
-				// (1) from driver to passenger's departure node and 
+				// plan the trips (paths)
+				// (1) from driver to passenger's departure node and
 				// (2) from origin to arrival node
-				Trip toPassenger = utils.planTrip(taxiVehicle.getId(), positionQuery.getCurrentPositionByNodeId(taxiDriverId), request.getFromNode()); 
+				Trip toPassenger = utils.planTrip(taxiVehicle.getId(),
+						positionQuery.getCurrentPositionByNodeId(taxiDriverId), request.getFromNode());
 				Trip toDestination = utils.planTrip(taxiVehicle.getId(), request.getFromNode(), request.getToNode());
 
 				// concatenate those two trips into a drivePath for the driver
 				Trips drivePath = new Trips();
-				if (toPassenger != null && toPassenger.numOfCurrentTripItems() > 0) drivePath.addTrip(toPassenger);
-				if (toDestination != null && toDestination.numOfCurrentTripItems() > 0) drivePath.addTrip(toDestination);
+				if (toPassenger != null && toPassenger.numOfCurrentTripItems() > 0)
+					drivePath.addTrip(toPassenger);
+				if (toDestination != null && toDestination.numOfCurrentTripItems() > 0)
+					drivePath.addTrip(toDestination);
 
-				// if we didn't successfully find and concatenate two required trips, skip this driver
-				if (drivePath.numTrips() != 2) continue;
+				// if we didn't successfully find and concatenate two required
+				// trips, skip this driver
+				if (drivePath.numTrips() != 2)
+					continue;
 
-				// create a pickup map for this path (tells driver where he should pick up which passengers)
+				// create a pickup map for this path (tells driver where he
+				// should pick up which passengers)
 				Map<Long, Set<String>> pickUpMap = Maps.newHashMap();
 				pickUpMap.put(request.getFromNode(), new HashSet<String>(Arrays.asList(request.getPassengerId())));
 
 				// send the driver on this path
 				TripPlan tripPlan = new TripPlan(drivePath, pickUpMap);
-				
-				// confirm the request and tell the passenger which car will pick him/her up
+
+				// confirm the request and tell the passenger which car will
+				// pick him/her up
 				sendMessageDispatcherSendsOutTaxi(taxiDriverId, tripPlan);
 				sendMessageDispatcherAcceptsRequest(request, new TripInfo(taxiDriverId, taxiVehicle.getId()));
 
@@ -111,10 +120,11 @@ public class DispatchingLogicExample extends DispatchingLogic {
 				taxiModel.setTaxiBusy(taxiVehicle.getId());
 
 				// print some debug information
-				LOGGER.debug("	Reply:   ACCEPT [sending " + taxiVehicle.getId()+"]");
+				LOGGER.debug("	Reply:   ACCEPT [sending " + taxiVehicle.getId() + "]");
 				LOGGER.debug("	Trips:\n" + tripPlan.getTrips().toString());
 
-				// once we've sent the driver out, we can finish the execution of this function 
+				// once we've sent the driver out, we can finish the execution
+				// of this function
 				return;
 
 			}

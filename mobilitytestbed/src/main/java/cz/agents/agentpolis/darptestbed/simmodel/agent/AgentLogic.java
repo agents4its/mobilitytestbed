@@ -2,7 +2,7 @@ package cz.agents.agentpolis.darptestbed.simmodel.agent;
 
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
-import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol2.AMessageProtocol;
+import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.AMessageProtocol;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
 /**

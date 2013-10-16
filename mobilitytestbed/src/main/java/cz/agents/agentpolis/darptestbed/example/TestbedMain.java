@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -14,11 +11,6 @@ import org.apache.log4j.Logger;
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalazerProcessorInit;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EPassengerLogItemKey;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EPassengerLogItemType;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.ERequestLogItemKey;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.ERequestLogItemType;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.key.EVehicleLogItemType;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.init.TestbedPlannerModulFactory;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.TestbedEnvironmentFactory;
@@ -27,14 +19,11 @@ import cz.agents.agentpolis.darptestbed.simulator.initializator.DriverForBenchma
 import cz.agents.agentpolis.darptestbed.simulator.initializator.PassengerForBenchmarkInitFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NearestNodeInitModulFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.init.TestbedMapInit;
-import cz.agents.agentpolis.logger.LogItemKey;
-import cz.agents.agentpolis.logger.LogItemType;
-import cz.agents.agentpolis.siminfrastructure.logger.key.EPassengerPositionLogItemKey;
 import cz.agents.agentpolis.simulator.creator.SimulationCreator;
+import cz.agents.agentpolis.simulator.vehiclemodel.init.VehicleDataModelModulFactory;
 import cz.agents.agentpolis.utils.config.ConfigReader;
 import cz.agents.agentpolis.utils.config.ConfigReaderException;
-import eu.superhub.wp4.model.simodel.environment.model.delaymodel.factory.InfinityDelayingSegmentCapacityDeterminer;
-import eu.superhub.wp4.simulator.initializator.vehiclemodel.init.VehicleDataModelModulFactory;
+import eu.superhub.wp4.initializator.simulator.delaymodel.InfinityDelayingSegmentCapacityDeterminer;
 
 public class TestbedMain {
 
@@ -57,11 +46,10 @@ public class TestbedMain {
 
 		TestbedLogAnalyser testbedLogAnalyser = new TestbedLogAnalyser(
 				new File(experiment, "results/0/sim_results.txt"));
-		List<Object> subscribe = new ArrayList<Object>();
-		subscribe.add(testbedLogAnalyser);
 
-		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(subscribe,
+		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(
 				new InfinityDelayingSegmentCapacityDeterminer()), experiment, 0);
+		creator.addLogger(testbedLogAnalyser);
 
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
 
@@ -153,8 +141,6 @@ public class TestbedMain {
 
 		LOGGER.info("seed = " + GlobalParams.getRandomSeed());
 
-		creator.replaceMapInitFactory(new TestbedMapInit(epsg));
-
 		creator.addInitModulFactory(new NearestNodeInitModulFactory(epsg));
 		creator.addInitModulFactory(new TestbedPlannerModulFactory());
 
@@ -170,24 +156,8 @@ public class TestbedMain {
 		creator.addEntityStyleVis(TestbedEntityType.TAXI_DRIVER, Color.BLUE, 9);
 		creator.addEntityStyleVis(TestbedEntityType.PASSENGER, Color.GREEN, 8);
 
-		// set up logger to CSV file (list all logged events and keys)
-		List<LogItemType> allowEvents = new ArrayList<LogItemType>();
-		allowEvents.addAll(Arrays.asList(EVehicleLogItemType.values()));
-		allowEvents.addAll(Arrays.asList(EPassengerLogItemType.values()));
-		allowEvents.addAll(Arrays.asList(ERequestLogItemType.values()));
-
-		List<LogItemKey> keysToData = new ArrayList<LogItemKey>();
-		keysToData.add(EPassengerPositionLogItemKey.PLACE);
-		keysToData.add(EPassengerLogItemKey.VEHICLE);
-		keysToData.add(ERequestLogItemKey.FROM_NODE);
-		keysToData.add(ERequestLogItemKey.TO_NODE);
-		keysToData.add(ERequestLogItemKey.TIME_WIN_OPEN);
-		keysToData.add(ERequestLogItemKey.TIME_WIN_CLOSE);
-
-		creator.addAllowEventsAndKeysForCSV(allowEvents, keysToData);
-
 		// start it up
-		creator.create();
+		creator.startSimulation(new TestbedMapInit(epsg));
 
 		// after finishing the simulation, report statistics
 		String path = experiment.getPath() + File.separator + "results" + File.separator + "0" + File.separator;

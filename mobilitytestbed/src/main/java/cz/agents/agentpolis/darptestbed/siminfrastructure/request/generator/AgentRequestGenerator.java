@@ -22,7 +22,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.supp
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.PasssengerGenerator.RequestTimeInfo;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.VehicleGenerator;
 import cz.agents.agentpolis.simulator.importer.osm.OsmDataGetter;
-import eu.superhub.wp4.simulator.initializator.osm.importselector.parking.OSMDateUtil;
+import cz.agents.agentpolis.simulator.importer.osm.util.OSMBoundsUtil;
 
 public class AgentRequestGenerator {
 
@@ -104,7 +104,7 @@ public class AgentRequestGenerator {
 
 	private GPSPositionGenerator createGPSPositionGenerator(File osmMap) {
 		OsmDataGetter osmDataGetter = OsmDataGetter.createOsmDataGetter(osmMap);
-		Bounds bounds = OSMDateUtil.computeBoundOfSimulationWorld(osmDataGetter);
+		Bounds bounds = OSMBoundsUtil.computeBoundsOfSimulationWorld(osmDataGetter);
 
 		double maxLon = bounds.getMax().lon();
 		double minLon = bounds.getMin().lon();

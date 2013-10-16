@@ -1,11 +1,13 @@
 package cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item;
 
+import cz.agents.agentpolis.siminfrastructure.logger.LogItem;
+
 /**
  * 
  * @author Marek Cuchy
  * 
  */
-public class RequestConfirmedLogItem {
+public class RequestConfirmedLogItem implements LogItem {
 
 	public final long simulationTime;
 	public final String passengerId;

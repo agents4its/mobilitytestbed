@@ -3,13 +3,18 @@ package cz.agents.agentpolis.darptestbedvisio;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
+
+import com.google.common.collect.Sets;
 import com.google.inject.Injector;
+
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalazerProcessorInit;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetInVehicleLogItem;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetOffVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.init.TestbedPlannerModulFactory;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.TestbedEnvironmentFactory;
@@ -18,7 +23,9 @@ import cz.agents.agentpolis.darptestbed.simulator.initializator.DriverForBenchma
 import cz.agents.agentpolis.darptestbed.simulator.initializator.PassengerForBenchmarkInitFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NearestNodeInitModulFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.init.TestbedMapInit;
+import cz.agents.agentpolis.siminfrastructure.logger.LogItem;
 import cz.agents.agentpolis.simulator.creator.SimulationCreator;
+import cz.agents.agentpolis.simulator.vehiclemodel.init.VehicleDataModelModulFactory;
 import cz.agents.agentpolis.tools.geovisio.database.connection.DatabaseConnectionSettings;
 import cz.agents.agentpolis.tools.geovisio.spy.AgentPolisDataReaderFactory;
 import cz.agents.agentpolis.tools.geovisio.spy.SpyAgentInitFactory;
@@ -28,25 +35,27 @@ import cz.agents.agentpolis.tools.geovisio.spy.darptestbed.LogHandler;
 import cz.agents.agentpolis.utils.config.ConfigReader;
 import cz.agents.agentpolis.utils.config.ConfigReaderException;
 import cz.agents.dbtokmlexporter.darptestbed.DarpTestbedKmlVisualisator;
-import eu.superhub.wp4.model.simodel.environment.model.delaymodel.factory.InfinityDelayingSegmentCapacityDeterminer;
-import eu.superhub.wp4.simulator.initializator.vehiclemodel.init.VehicleDataModelModulFactory;
+import eu.superhub.wp4.initializator.simulator.delaymodel.InfinityDelayingSegmentCapacityDeterminer;
 
 /**
  * The main class of Mobility Testbed.
  */
 public class Main {
-	
-	//====================== SETTINGS START =======================
 
-	// choose if we should use centralized (DARP) or decentralized coordination algorithms
+	// ====================== SETTINGS START =======================
+
+	// choose if we should use centralized (DARP) or decentralized coordination
+	// algorithms
 	static boolean CENTRALIZED = true;
 
-	// specify the path to the directory containing the benchmark scenario (these can be 
-	// downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
-	static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
+	// specify the path to the directory containing the benchmark scenario
+	// (these can be
+	// downloaded from
+	// http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
+	static String BENCHMARK_DIR = "experiments/dublin_5_drivers"; // "experiments/sanfrancisco_536_drivers"
 
-	//======================= SETTINGS END ========================
-	
+	// ======================= SETTINGS END ========================
+
 	private static final Logger LOGGER = Logger.getLogger(Main.class);
 
 	/**
@@ -63,8 +72,7 @@ public class Main {
 		} else {
 			experiment = new File(BENCHMARK_DIR);
 		}
-		
-		
+
 		ConfigReader scenario = ConfigReader.initConfigReader(new File(experiment, "config/scenario.groovy").toURL());
 		int resultFolderId = 0;
 
@@ -79,7 +87,8 @@ public class Main {
 		args = new String[0];
 
 		// visualization settings
-		final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed", "public");
+		final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed",
+				"public");
 		String visualizationName = darpResultFileName;
 		int visInterval = 2 * 60 * 1000;
 		File resultFolder = new File(experiment, "results" + File.separator + resultFolderId);
@@ -87,18 +96,25 @@ public class Main {
 
 		TestbedLogAnalyser testbedLogAnalyser = new TestbedLogAnalyser(new File(resultFolder, "result_"
 				+ darpResultFileName + ".txt"), System.currentTimeMillis());
-		List<Object> subscribe = new ArrayList<Object>();
-		subscribe.add(testbedLogAnalyser);
-		final LogHandler logHandler = new LogHandler();
-		subscribe.add(logHandler);
 
-		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(subscribe,
+		final LogHandler logHandler = new LogHandler();
+
+		SimulationCreator creator = new SimulationCreator(new TestbedEnvironmentFactory(
 				new InfinityDelayingSegmentCapacityDeterminer()), experiment, resultFolderId);
+
+		creator.addLogger(testbedLogAnalyser);
+		creator.addLogger(logHandler);
 
 		creator.addInitModulFactory(new VehicleDataModelModulFactory(new File(vehicledatamodelPath)));
 
 		TestbedAnalazerProcessorInit processorInit = new TestbedAnalazerProcessorInit(testbedLogAnalyser);
 		creator.addInitFactory(processorInit);
+
+		Set<Class<? extends LogItem>> logItems = Sets.newHashSet();
+		logItems.add(PassengerGetInVehicleLogItem.class);
+		logItems.add(PassengerGetOffVehicleLogItem.class);
+
+		creator.addAllowEventForEventViewer(logItems);
 
 		args = new String[0];
 		// generate a random seed for the whole application
@@ -146,7 +162,8 @@ public class Main {
 			GlobalParams.setEarliestDepartureShift(45); // 45
 			GlobalParams.setTimeWinRelSize(3); // 3
 
-			GlobalParams.setCentralized(CENTRALIZED); // use centralized coordination?
+			GlobalParams.setCentralized(CENTRALIZED); // use centralized
+														// coordination?
 
 			// applies only for centralized == true
 			GlobalParams.setCentralAlgType(100); // Parameter here can be any
@@ -177,8 +194,6 @@ public class Main {
 
 		LOGGER.info("Seed = " + GlobalParams.getRandomSeed());
 
-		creator.replaceMapInitFactory(new TestbedMapInit(epsg));
-
 		creator.addInitModulFactory(new NearestNodeInitModulFactory(epsg));
 		creator.addInitModulFactory(new TestbedPlannerModulFactory());
 
@@ -194,6 +209,12 @@ public class Main {
 		creator.addEntityStyleVis(TestbedEntityType.TAXI_DRIVER, Color.BLUE, 9);
 		creator.addEntityStyleVis(TestbedEntityType.PASSENGER, Color.GREEN, 8);
 
+		// creator.addInitFactory(new
+		// ExogenousSpeedLimitSegmentInfluenceFactory(new
+		// File("d04_stations_2008_05_22.txt"),
+		// new File("d04_text_station_5min_2008_05_22.txt"),
+		// Duration.standardMinutes(5).getMillis()));
+
 		// visualization init
 		creator.addAgentInit(new SpyAgentInitFactory(visInterval, visualizationName, new AgentPolisDataReaderFactory() {
 
@@ -205,7 +226,7 @@ public class Main {
 		}, creator));
 
 		// start it up
-		creator.create();
+		creator.startSimulation(new TestbedMapInit(epsg));
 
 		// after finishing the simulation, report statistics
 		testbedLogAnalyser.processResult();

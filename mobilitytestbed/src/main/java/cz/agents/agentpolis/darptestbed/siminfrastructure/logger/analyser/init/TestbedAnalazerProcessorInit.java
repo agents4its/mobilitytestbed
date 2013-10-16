@@ -11,8 +11,8 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.proces
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.Graph;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.GraphType;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.TransportNetworks;
+import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleDataModel;
 import cz.agents.agentpolis.simulator.creator.initializator.InitFactory;
-import eu.superhub.wp4.model.simodel.environment.model.vehiclemodel.VehicleDataModel;
 
 public class TestbedAnalazerProcessorInit implements InitFactory {
 

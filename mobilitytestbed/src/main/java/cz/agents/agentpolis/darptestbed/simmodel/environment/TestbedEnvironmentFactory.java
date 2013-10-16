@@ -1,6 +1,5 @@
 package cz.agents.agentpolis.darptestbed.simmodel.environment;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Injector;
@@ -21,13 +20,11 @@ import cz.agents.alite.simulation.Simulation;
  */
 public class TestbedEnvironmentFactory implements EnvironmentFactory {
 
-	private final List<Object> subscribeLoggers;
 	private final DelayingSegmentCapacityDeterminer delayingSegmentCapacityDeterminer;
 
-	public TestbedEnvironmentFactory(List<Object> subscribeLoggers,
-			DelayingSegmentCapacityDeterminer delayingSegmentCapacityDeterminer) {
+	public TestbedEnvironmentFactory(DelayingSegmentCapacityDeterminer delayingSegmentCapacityDeterminer) {
 		super();
-		this.subscribeLoggers = subscribeLoggers;
+
 		this.delayingSegmentCapacityDeterminer = delayingSegmentCapacityDeterminer;
 	}
 
@@ -36,7 +33,7 @@ public class TestbedEnvironmentFactory implements EnvironmentFactory {
 			Map<GraphType, Graph> graphByGraphType, Map<Long, Node> nodesFromAllGraphs) {
 
 		injector = injector.createChildInjector(new AgentPolisEnvironmentModule(simulation, GlobalParams.getRandom(),
-				graphByGraphType, nodesFromAllGraphs, subscribeLoggers, delayingSegmentCapacityDeterminer));
+				graphByGraphType, nodesFromAllGraphs, delayingSegmentCapacityDeterminer));
 
 		return injector.createChildInjector(new TestbedEnvironmentModul(simulation));
 	}

@@ -26,12 +26,12 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.AlgRealTim
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetInVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetOffVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerRequestLogItem;
-import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.EndDrivingLogItem;
-import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.MovementArrivalLogItem;
-import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.StartDrivingLogItem;
-import cz.agents.agentpolis.utils.InitAndGetterUtil;
-import eu.superhub.wp4.analyser.processor.data.AvgCounter;
-import eu.superhub.wp4.analyser.structure.VehiclePath;
+import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.EndDrivingLogItem;
+import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.MovementArrivalLogItem;
+import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.StartDrivingLogItem;
+import cz.agents.agentpolis.util.InitAndGetterUtil;
+import eu.superhub.wp4.simulator.analyser.processor.util.AvgCounter;
+import eu.superhub.wp4.simulator.analyser.structure.VehiclePath;
 
 public class TestbedLogAnalyser {
 

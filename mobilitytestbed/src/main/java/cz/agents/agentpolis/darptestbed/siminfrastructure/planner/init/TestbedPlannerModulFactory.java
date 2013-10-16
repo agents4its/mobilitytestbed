@@ -11,12 +11,12 @@ import com.google.inject.Provides;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedAStartPlanner;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NodeExtendedFunction;
+import cz.agents.agentpolis.siminfrastructure.planner.utils.PlannerEdge;
+import cz.agents.agentpolis.siminfrastructure.planner.utils.PlannerGraphCreator;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.AllNetworkNodes;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.EGraphType;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.TransportNetworks;
 import cz.agents.agentpolis.simulator.creator.initializator.InitModulFactory;
-import eu.superhub.wp4.model.citizen.activityscheduler.planner.utils.PlannerEdge;
-import eu.superhub.wp4.model.citizen.activityscheduler.planner.utils.PlannerGraphCreator;
 
 public class TestbedPlannerModulFactory implements InitModulFactory {
 

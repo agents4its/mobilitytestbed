@@ -21,9 +21,9 @@ import cz.agents.agentpolis.siminfrastructure.planner.path.AStarShortestPath.Heu
 import cz.agents.agentpolis.siminfrastructure.planner.trip.TripItem;
 import cz.agents.agentpolis.siminfrastructure.planner.trip.Trips;
 import cz.agents.agentpolis.siminfrastructure.planner.trip.VehicleTrip;
+import cz.agents.agentpolis.siminfrastructure.planner.utils.PlannerEdge;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.GraphType;
 import cz.agents.agentpolis.utils.key.Key;
-import eu.superhub.wp4.model.citizen.activityscheduler.planner.utils.PlannerEdge;
 
 public class TestbedAStartPlanner implements TestbedPlanner, Heuristic<Long> {
 
