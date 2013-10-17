@@ -260,6 +260,15 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 			return false;
 		}
 	}
+
+	/**
+	 * Moves this taxi from list of free taxis into the list
+	 * "busy". And also does the same with its driver.
+	 */
+	protected void setBusy() {
+		taxiModel.setTaxiBusy(this.getVehicle().getId());
+	}
+	
 	/**
 	 * @return true, if the driver is currently NOT busy for any reason (not on a trip or communicating with passenger)
 	 */
@@ -267,6 +276,14 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 		return !isBusy();
 	}
 	
+	/**
+	 * Moves this taxi from list of busy taxis into the list
+	 * "free". And also does the same with its driver.
+	 */
+	protected void setFree() {
+		taxiModel.setTaxiFree(this.getVehicle().getId());
+	}
+
 	/**
 	 * @return true, if everybody who was supposed to, has gotten in
 	 */

@@ -50,7 +50,7 @@ public class DriverDecentrLogicExample extends DriverDecentrLogic {
 		}
 
 		// if we already have a passenger on board, reject this request
-		if (taxiModel.getNumOfPassenOnBoard(this.getVehicle().getId()) > 0) {
+		if (this.getCurrentPassengersOnBoard() > 0) {
 			sendRequestRejectionToPassenger(request);
 			return;
 		}
@@ -85,8 +85,7 @@ public class DriverDecentrLogicExample extends DriverDecentrLogic {
 			this.sendProposalToPassenger(new Proposal(request, this.getDriverId(), this.getVehicle().getId()));
 			
 			// while we're waiting for the reply, flag ourselves as "busy", so we won't accept new requests
-			taxiModel.setTaxiBusy(this.getVehicle().getId());
-			
+			this.setBusy();
 		} else {
 			// otherwise, if we can't possibly satisfy this request within specified time windows, send a rejection
 			sendRequestRejectionToPassenger(request);
@@ -117,7 +116,7 @@ public class DriverDecentrLogicExample extends DriverDecentrLogic {
 				// send a rejection
 				sendRequestRejectionToPassenger(request);
 				// flag ourselves as "free" again
-				taxiModel.setTaxiFree(this.getVehicle().getId());
+				this.setFree();
 				
 				return;
 		}

@@ -44,15 +44,12 @@ public class Main {
 
 	// ====================== SETTINGS START =======================
 
-	// choose if we should use centralized (DARP) or decentralized coordination
-	// algorithms
+	// choose if we should use centralized (DARP) or decentralized coordination algorithms
 	static boolean CENTRALIZED = true;
 
 	// specify the path to the directory containing the benchmark scenario
-	// (these can be
-	// downloaded from
-	// http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
-	static String BENCHMARK_DIR = "experiments/dublin_5_drivers"; // "experiments/sanfrancisco_536_drivers"
+	// (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
+	static String BENCHMARK_DIR = "experiments/hague_20_drivers"; 
 
 	// ======================= SETTINGS END ========================
 
