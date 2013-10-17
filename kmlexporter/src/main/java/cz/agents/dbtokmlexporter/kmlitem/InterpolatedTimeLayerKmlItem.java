@@ -40,13 +40,12 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 
 	private ProjectionTransformer transformer;
 	private String iconName;
-	private Color color;
+	private String color;
 
 	private Map<String, Record> recordMap = new HashMap<String, Record>();
 
-	public InterpolatedTimeLayerKmlItem(ProjectionTransformer transformer, long duration, String iconName, Color color) {
+	public InterpolatedTimeLayerKmlItem(long duration, String iconName, String color) {
 		super();
-		this.transformer = transformer;
 		this.iconName = iconName;
 		this.color = color;
 	}
@@ -96,7 +95,6 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 			
 		};
 		
-//		kml.
 		kml.marshal(os);
 		os.close();
 		
@@ -107,9 +105,8 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 		Folder folder = new Folder();
 		String styleId = "style_" + iconName;
 
-		folder.createAndAddStyle().withId(styleId).createAndSetIconStyle().withScale(0.75).withHeading((double) 0)
-		 .withColor(KmlUtils.colorToKmlColor(color))
-				.createAndSetIcon().withHref("http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png");
+		folder.createAndAddStyle().withId(styleId).createAndSetIconStyle().withScale(0.75).withHeading((double) 0).withColor( color /* KmlUtils.colorToKmlColor(color) */)
+				.createAndSetIcon().withHref(iconName /* "http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png" */);
 
 		for (Record record : recordMap.values()) {
 			// System.out.println(record);
@@ -132,7 +129,7 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 
 		}
 		
-		logger.info("Skipped: " + skipCounter+"/" +totalCounter);
+		//logger.info("Skipped: " + skipCounter+"/" +totalCounter);
 		skipCounter =0;
 		totalCounter = 0;
 		return folder;
@@ -141,10 +138,15 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 	public void addTimePoint(String id, com.vividsolutions.jts.geom.Point point, long time) throws TransformException {
 		com.vividsolutions.jts.geom.Coordinate coordinate = transformer.transform(point.getCoordinate());
 		Coord kmlCoordinate = new Coord(coordinate.x, coordinate.y);
-
 		addToRecordMap(id, kmlCoordinate, time);
 	}
 
+	public void addTimeCoordinate(String id, com.vividsolutions.jts.geom.Coordinate coordinate, long time) throws TransformException {
+		Coord kmlCoordinate = new Coord(coordinate.x, coordinate.y);
+		addToRecordMap(id, kmlCoordinate, time);
+	}
+
+	
 	private void addToRecordMap(String id, Coord kmlCoordinate, long time) {
 		Record record = recordMap.get(id);
 		if (record == null) {
@@ -173,7 +175,6 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 				if(lastTwoEquals){
 					coordinates.set(lastIndex, coord);
 					times.set(lastIndex, time);
-//					System.out.println(skipCounter +"/"+totalCounter + " skipped: "+time +" = " + coords);
 					skipCounter++;
 				}else{
 					lastTwoEquals=true;

@@ -31,7 +31,7 @@ public class PassengerTaxiDriverPairKmlItemBuilder extends KmlItemBuilder {
 
 	private static final Logger logger = Logger.getLogger(PassengerTaxiDriverPairKmlItemBuilder.class);
 
-	private final StyleFactory styleFactory = new LineStyleFactory(Color.CYAN, 2);
+	private final StyleFactory styleFactory = new LineStyleFactory(Color.CYAN, 1);
 	private final GeometryFactory geometryFactory = new LineGeometryFactory();
 	private final DescriptionFactory descriptionFactory;
 

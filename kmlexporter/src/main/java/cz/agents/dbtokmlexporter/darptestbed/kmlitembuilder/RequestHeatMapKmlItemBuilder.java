@@ -33,13 +33,13 @@ public class RequestHeatMapKmlItemBuilder extends KmlItemBuilder {
 
 	public static RequestHeatMapKmlItemBuilder createSuccessRequestHeatMapKmlItemBuilder(DatabaseConnection connection,
 	        String schemaName, long interval) {
-		return new RequestHeatMapKmlItemBuilder(connection, schemaName, interval, "success_heatmap.kmz",
+		return new RequestHeatMapKmlItemBuilder(connection, schemaName, interval, "heatmap_successes.kmz",
 		        "OUT_OF_VEHICLE");
 	}
 
 	public static RequestHeatMapKmlItemBuilder createFailRequestHeatMapKmlItemBuilder(DatabaseConnection connection,
 	        String schemaName, long interval) {
-		return new RequestHeatMapKmlItemBuilder(connection, schemaName, interval, "fail_heatmap.kmz",
+		return new RequestHeatMapKmlItemBuilder(connection, schemaName, interval, "heatmap_failures.kmz",
 		        "OUT_OF_VEHICLE_WITH_DELAYED_ARRIVAL", "REJECTED");
 	}
 

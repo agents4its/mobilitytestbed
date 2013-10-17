@@ -9,21 +9,21 @@ import java.util.List;
 import cz.agents.agentpolis.tools.geovisio.database.connection.DatabaseConnection;
 import cz.agents.dbtokmlexporter.factory.geometry.LineGeometryFactory;
 import cz.agents.dbtokmlexporter.factory.style.LineStyleFactory;
-import cz.agents.dbtokmlexporter.kmlitem.builder.NonInterpolatedTimeKmlItemBuilder;
+import cz.agents.dbtokmlexporter.kmlitem.builder.TimeKmlItemBuilder;
 
 /**
  * 
  * @author Marek Cuchy
  * 
  */
-public class TaxiPassengerPairKmlItemBuilder extends NonInterpolatedTimeKmlItemBuilder {
+public class TaxiPassengerPairKmlItemBuilder extends TimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "taxi_to_passenger_pair";
 
 	public TaxiPassengerPairKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color pairColor) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, "", new LineStyleFactory(pairColor, 2),
-				new LineGeometryFactory());
+				new LineGeometryFactory(), true);
 	}
 
 	public TaxiPassengerPairKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,

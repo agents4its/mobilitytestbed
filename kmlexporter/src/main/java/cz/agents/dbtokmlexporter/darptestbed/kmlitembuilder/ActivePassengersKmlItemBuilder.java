@@ -17,7 +17,7 @@ import cz.agents.dbtokmlexporter.factory.style.IconStyleFactory;
 import cz.agents.dbtokmlexporter.factory.style.StyleFactory;
 import cz.agents.dbtokmlexporter.kmlitem.NonInterpolatedTimeKmlItem;
 import cz.agents.dbtokmlexporter.kmlitem.builder.KmlItemBuilder;
-import cz.agents.dbtokmlexporter.kmlitem.builder.NonInterpolatedTimeKmlItemBuilder;
+import cz.agents.dbtokmlexporter.kmlitem.builder.TimeKmlItemBuilder;
 import cz.agents.resultsvisio.kml.KmlItem;
 
 /**
@@ -25,7 +25,7 @@ import cz.agents.resultsvisio.kml.KmlItem;
  * @author Marek Cuchy
  * 
  */
-public class ActivePassengersKmlItemBuilder extends NonInterpolatedTimeKmlItemBuilder {
+public class ActivePassengersKmlItemBuilder extends TimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "passengers";
 	private static final String WHERE_CLAUSE = " WHERE from_time BETWEEN request_departure_min AND request_arrival_max ";
@@ -35,7 +35,7 @@ public class ActivePassengersKmlItemBuilder extends NonInterpolatedTimeKmlItemBu
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color passengerColor) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_NAME,
-				passengerColor, 0.75), new PointGeometryFactory());
+				passengerColor, 0.75), new PointGeometryFactory(), true);
 	}
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			Color passengerColor) {

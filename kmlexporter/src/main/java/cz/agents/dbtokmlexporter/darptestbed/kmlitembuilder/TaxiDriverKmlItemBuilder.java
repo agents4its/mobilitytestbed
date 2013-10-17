@@ -9,23 +9,23 @@ import java.util.List;
 import cz.agents.agentpolis.tools.geovisio.database.connection.DatabaseConnection;
 import cz.agents.dbtokmlexporter.factory.geometry.PointGeometryFactory;
 import cz.agents.dbtokmlexporter.factory.style.IconStyleFactory;
-import cz.agents.dbtokmlexporter.kmlitem.builder.NonInterpolatedTimeKmlItemBuilder;
+import cz.agents.dbtokmlexporter.kmlitem.builder.TimeKmlItemBuilder;
 
 /**
  * 
  * @author Marek Cuchy
  * 
  */
-public class TaxiDriverKmlItemBuilder extends NonInterpolatedTimeKmlItemBuilder {
+public class TaxiDriverKmlItemBuilder extends TimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "taxi_drivers";
-
 	private static final String ICON_NAME = "cabs";
+	private static final boolean INTERPOLATE = true;
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
 			Color driverColor) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory(ICON_NAME, driverColor,
-				0.75), new PointGeometryFactory());
+				0.75), new PointGeometryFactory(), INTERPOLATE);
 	}
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, Color driverColor) {

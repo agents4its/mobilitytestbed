@@ -58,11 +58,10 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		// "select * from jmk_full_200k_population_model.tram_drivers where id=24081";
 
 		ResultSet result = conn.executeQueryWithFetchSize(sql, 10000);
-		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
+		//ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(duration, driverType, color.toString());
 		int counter = 0;
 		while (result.next()) {
 			if (counter++ % 100000 == 0) {
@@ -89,11 +88,10 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		// "select * from jmk_full_200k_population_model.tram_drivers where id=24081";
 
 		ResultSet result = conn.executeQueryWithFetchSize(sql, 10000);
-		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
+		//ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(duration, driverType, color.toString());
 		int counter = 0;
 		while (result.next()) {
 			if (counter++ % 100000 == 0) {
@@ -120,11 +118,10 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		// "select * from jmk_full_200k_population_model.tram_drivers where id=24081";
 
 		ResultSet result = conn.executeQueryWithFetchSize(sql, 10000);
-		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
+		//ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(duration, driverType, color.toString());
 		while (result.next()) {
 			String id = result.getString("agentid");
 			PostgisGeometry geom = (PostgisGeometry) result.getObject("geom");

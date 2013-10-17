@@ -17,14 +17,14 @@ import cz.agents.dbtokmlexporter.factory.geometry.GeometryFactory;
 import cz.agents.dbtokmlexporter.factory.geometry.PointGeometryFactory;
 import cz.agents.dbtokmlexporter.factory.style.IconStyleFactory;
 import cz.agents.dbtokmlexporter.factory.style.StyleFactory;
-import cz.agents.dbtokmlexporter.kmlitem.builder.NonInterpolatedTimeKmlItemBuilder;
+import cz.agents.dbtokmlexporter.kmlitem.builder.TimeKmlItemBuilder;
 
 /**
  * 
  * @author Marek Cuchy
  * 
  */
-public class AgentKmlItemBuilder extends NonInterpolatedTimeKmlItemBuilder {
+public class AgentKmlItemBuilder extends TimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "agents";
 	private static final String WHERE_CLAUSE = " ";
@@ -36,7 +36,7 @@ public class AgentKmlItemBuilder extends NonInterpolatedTimeKmlItemBuilder {
 	public AgentKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
 	        Color agentColor, ProjectionTransformer transformer) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_NAME,
-		        agentColor, 0.75), new PointGeometryFactory());
+		        agentColor, 0.75), new PointGeometryFactory(), true);
 		this.transformer= transformer;
 	}
 
