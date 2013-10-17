@@ -26,6 +26,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.AlgRealTim
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetInVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetOffVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerRequestLogItem;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.RequestRejectedLogItem;
 import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.EndDrivingLogItem;
 import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.MovementArrivalLogItem;
 import cz.agents.agentpolis.siminfrastructure.logger.agent.activity.logitem.StartDrivingLogItem;
@@ -47,7 +48,11 @@ public class TestbedLogAnalyser {
 	private final AvgMaxProcessor passengerWaitTime = new AvgMaxProcessor();
 	private final AvgMaxProcessor passengerTravelTime = new AvgMaxProcessor();
 	private final Multiset<VehicleHourKey> productivity = HashMultiset.create();
+	private final Map<String, PassengerRequestLogItem> passengerRequestLogItems = new HashMap<>();
 	private long algRealTime = 0;
+	private int succesRequests = 0;
+	private int failedRequests = 0;	
+	
 
 	public TestbedLogAnalyser(File result) {
 		this(result, System.currentTimeMillis());
@@ -65,6 +70,7 @@ public class TestbedLogAnalyser {
 				passengerRequest.timeWindow.getEarliestDeparture());
 		passengerTravelTime.addStartLogItem(passengerRequest.passengerId,
 				passengerRequest.timeWindow.getEarliestDeparture());
+		passengerRequestLogItems.put(passengerRequest.passengerId, passengerRequest);		
 	}
 
 	@Subscribe
@@ -79,6 +85,13 @@ public class TestbedLogAnalyser {
 	public void processPassengerGetOffVehicle(PassengerGetOffVehicleLogItem passengerGetOffVehicle) {
 		passengerOnBoardTime.addEndLogItem(passengerGetOffVehicle.passengerId, passengerGetOffVehicle.simulationTime);
 		passengerTravelTime.addEndLogItem(passengerGetOffVehicle.passengerId, passengerGetOffVehicle.simulationTime);
+		PassengerRequestLogItem passengerRequestLogItem = passengerRequestLogItems
+				.get(passengerGetOffVehicle.passengerId);
+		if (passengerRequestLogItem.timeWindow.getLatestArrival() < passengerGetOffVehicle.simulationTime) {
+			failedRequests++;
+		} else {
+			succesRequests++;
+		}
 	}
 
 	@Subscribe
@@ -88,6 +101,11 @@ public class TestbedLogAnalyser {
 		VehiclePath vehiclePath = new VehiclePath(startDrivingLogItem.vehicleId, startDrivingLogItem.simulationTime);
 		vehiclePaths.put(startDrivingLogItem.driverId, vehiclePath);
 
+	}
+
+	@Subscribe
+	public void processRequestRejected(RequestRejectedLogItem requestRejected) {
+		failedRequests++;
 	}
 
 	@Subscribe
@@ -132,6 +150,8 @@ public class TestbedLogAnalyser {
 		StringBuilder resultOutput = new StringBuilder();
 		resultOutput.append(System.lineSeparator());
 		appendWithNewLine(resultOutput, "------ Simulation result -----------");
+		appendWithNewLine(resultOutput, "Successful requests :%s", succesRequests);
+		appendWithNewLine(resultOutput, "Failed requests :%s", failedRequests);		
 		appendWithNewLine(resultOutput, "Average passenger travel time (on-board) is :%s",
 				parseTime(passengerTravelTime.getAvg()));
 		appendWithNewLine(resultOutput, "Max passenger travel time (on-board) is :%s",
@@ -272,4 +292,5 @@ public class TestbedLogAnalyser {
 		}
 
 	}
+
 }
