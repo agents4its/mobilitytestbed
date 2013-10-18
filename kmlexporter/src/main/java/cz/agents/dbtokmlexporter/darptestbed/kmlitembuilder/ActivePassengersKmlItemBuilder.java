@@ -30,11 +30,11 @@ public class ActivePassengersKmlItemBuilder extends TimeKmlItemBuilder {
 	private static final String TABLE_NAME = "passengers";
 	private static final String WHERE_CLAUSE = " WHERE from_time BETWEEN request_departure_min AND request_arrival_max ";
 
-	private static final String ICON_NAME = "man";
+	private static final String ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/man.png";
 
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color passengerColor) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_NAME,
+		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_URL,
 				passengerColor, 0.75), new PointGeometryFactory(), true);
 	}
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,

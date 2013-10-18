@@ -54,7 +54,7 @@ public class DarpTestbedKmlVisualisator {
 			List<KmlItemBuilder> itemBuilders = new ArrayList<>();
 			itemBuilders.add(new RequestNumbersScreenOverlayKmlItemBuilder(conn, schemaName, interval));
 			itemBuilders.add(new ActivePassengersKmlItemBuilder(conn, schemaName, interval, Color.CYAN));
-			itemBuilders.add(new TaxiDriverKmlItemBuilder(conn, schemaName, interval, Color.YELLOW));
+			itemBuilders.add(new TaxiDriverKmlItemBuilder(conn, schemaName, interval, Color.WHITE));
 			itemBuilders.add(new PassengerTaxiDriverPairKmlItemBuilder(conn, schemaName, interval));
 			
 			itemBuilders.add(RequestNotificationKmlItemBuilder.createSuccessNotificationKmlItemBuilder(conn,

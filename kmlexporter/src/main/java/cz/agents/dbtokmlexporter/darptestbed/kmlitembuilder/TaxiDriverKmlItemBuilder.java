@@ -19,12 +19,12 @@ import cz.agents.dbtokmlexporter.kmlitem.builder.TimeKmlItemBuilder;
 public class TaxiDriverKmlItemBuilder extends TimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "taxi_drivers";
-	private static final String ICON_NAME = "cabs";
+	private static final String ICON_URL = "http://earth.google.com/images/kml-icons/track-directional/track-0.png";
 	private static final boolean INTERPOLATE = true;
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
 			Color driverColor) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory(ICON_NAME, driverColor,
+		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory(ICON_URL, driverColor,
 				0.75), new PointGeometryFactory(), INTERPOLATE);
 	}
 

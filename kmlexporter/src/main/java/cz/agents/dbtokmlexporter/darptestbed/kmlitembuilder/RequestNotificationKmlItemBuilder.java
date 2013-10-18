@@ -31,7 +31,7 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 
 	private static final Logger logger = Logger.getLogger(RequestNotificationKmlItemBuilder.class);
 
-	private static final String ICON_NAME = "shaded_dot";
+	private static final String ICON_URL = "http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png";
 
 	private final long notificationDuration;
 	private final String[] notifiedRequestStatuses;
@@ -65,7 +65,7 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 		List<String> additionalColumnNames = getAdditionalColumnNames();
 
 		DescriptionFactory descriptionFactory = new TableColumnsDescriptionFactory(additionalColumnNames);
-		StyleFactory styleFactory = new IconStyleFactory(ICON_NAME, notificationColor, 1.0);
+		StyleFactory styleFactory = new IconStyleFactory(ICON_URL, notificationColor, 1.0);
 
 		NotificationKmlItem kmlItem = new NotificationKmlItem(styleFactory, new PointGeometryFactory(),
 		        notificationDuration);

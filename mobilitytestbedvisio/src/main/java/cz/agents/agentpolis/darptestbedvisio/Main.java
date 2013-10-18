@@ -206,12 +206,6 @@ public class Main {
 		creator.addEntityStyleVis(TestbedEntityType.TAXI_DRIVER, Color.BLUE, 9);
 		creator.addEntityStyleVis(TestbedEntityType.PASSENGER, Color.GREEN, 8);
 
-		// creator.addInitFactory(new
-		// ExogenousSpeedLimitSegmentInfluenceFactory(new
-		// File("d04_stations_2008_05_22.txt"),
-		// new File("d04_text_station_5min_2008_05_22.txt"),
-		// Duration.standardMinutes(5).getMillis()));
-
 		// visualization init
 		creator.addAgentInit(new SpyAgentInitFactory(visInterval, visualizationName, new AgentPolisDataReaderFactory() {
 

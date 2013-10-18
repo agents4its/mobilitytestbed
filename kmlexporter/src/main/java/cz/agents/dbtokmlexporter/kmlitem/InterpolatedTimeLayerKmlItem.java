@@ -24,6 +24,7 @@ import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
+import de.micromata.opengis.kml.v_2_2_0.gx.Angles;
 import de.micromata.opengis.kml.v_2_2_0.gx.Coord;
 import de.micromata.opengis.kml.v_2_2_0.gx.Track;
 import de.micromata.opengis.kml.v_2_2_0.gx.custom.TrackPoint;
@@ -54,7 +55,6 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 		Kml kml = new Kml();
 		kml.createAndSetDocument().addToFeature(initFeatureForKml(null));
 		
-		
 		OutputStream os = new OutputStream() {
 			int i=0;
 			
@@ -70,11 +70,11 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 			public void write(byte b[], int off, int len) throws IOException {
 				i++;
 				String s = new String(b,off,len);
-				s=s.replaceAll("<gx:angles></gx:angles>\n", "");
+				//s=s.replaceAll("<gx:angles></gx:angles>\n", "");
 				fos.write(s.getBytes());
-//				System.out.println("write(byte b[], int off, int len) "+ i++ +" = "+ b.length);
-//				System.out.println(new String(b,off,len));
-//		        writeBytes(b, off, len);
+				//System.out.println("write(byte b[], int off, int len) "+ i++ +" = "+ b.length);
+				//System.out.println(new String(b,off,len));
+				//writeBytes(b, off, len);
 		    }
 
 			@Override
@@ -109,11 +109,10 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 				.createAndSetIcon().withHref(iconName /* "http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png" */);
 
 		for (Record record : recordMap.values()) {
-			// System.out.println(record);
 			Placemark p = new Placemark();
-			 p.setId(record.id);
-//			 p.setName(record.id);
-			 p.setDescription(record.id);
+			p.setId(record.id);
+			//p.setName(record.id);
+			p.setDescription("ID: "+record.id);
 			p.withStyleUrl("#" + styleId);
 
 			Track track = new Track();
@@ -124,7 +123,6 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 			}
 
 			p.setGeometry(track);
-
 			folder.addToFeature(p);
 
 		}
