@@ -14,21 +14,22 @@ public class TestbedEnergyConsumptionProcessor extends EnergyConsumptionProcesso
 
 	public TestbedEnergyConsumptionProcessor(Map<GraphType, Graph> transportNetworksByGraphType,
 			long measureTimePeriodInms, VehicleDataModel vehicleDataModel) {
-		super(transportNetworksByGraphType, measureTimePeriodInms, vehicleDataModel);
+		super(transportNetworksByGraphType, vehicleDataModel);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String provideResult() {
 
-		checkState(consumeFuel.size() == 1 || consumeFuel.size() == 0, "It containsfuel data for more then 1 period");
+		checkState(consumedFuel.size() == 1 || consumedFuel.size() == 0, "It contains fuel data for more then 1 " +
+                "period");
 
 		Double fuel = 0.0;
-		if (consumeFuel.size() == 1) {
-			fuel = consumeFuel.values().iterator().next();
+		if (consumedFuel.size() == 1) {
+			fuel = consumedFuel.values().iterator().next();
 		}
 
-		return String.format("Total values of fuel [Liter] :%s", fuel);
+		return String.format("Total values of fuel [Liter] : %s", fuel);
 
 	}
 }

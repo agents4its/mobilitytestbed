@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import cz.agents.agentpolis.simulator.creator.initializator.InitModuleFactory;
 import org.apache.log4j.Logger;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.StrongConnectivityInspector;
@@ -35,7 +36,6 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwor
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.elemets.highway.HighwayEdge;
 import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwork.elemets.highway.HighwayNode;
 import cz.agents.agentpolis.simmodel.environment.model.key.GraphFromToNodeKey;
-import cz.agents.agentpolis.simulator.creator.initializator.InitModulFactory;
 import cz.agents.agentpolis.simulator.creator.initializator.MapInitFactory;
 import cz.agents.agentpolis.simulator.creator.initializator.impl.MapData;
 import cz.agents.agentpolis.simulator.importer.osm.OsmDataGetter;
@@ -50,7 +50,7 @@ import cz.agents.agentpolis.simulator.importer.osm.task.transportnetwork.Highway
 import cz.agents.agentpolis.simulator.importer.osm.util.OSMBoundsUtil;
 import cz.agents.agentpolis.utils.key.Key;
 
-public class TestbedMapInit extends AbstractModule implements MapInitFactory, InitModulFactory {
+public class TestbedMapInit extends AbstractModule implements MapInitFactory, InitModuleFactory {
 
 	private static final Logger LOGGER = Logger.getLogger(TestbedMapInit.class);
 

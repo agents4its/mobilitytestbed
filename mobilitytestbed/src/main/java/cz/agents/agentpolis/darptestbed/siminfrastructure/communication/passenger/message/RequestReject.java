@@ -2,7 +2,6 @@ package cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passeng
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.receiver.PassengerReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
 import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
 public class RequestReject implements MessageVisitor<PassengerReceiverVisitor> {

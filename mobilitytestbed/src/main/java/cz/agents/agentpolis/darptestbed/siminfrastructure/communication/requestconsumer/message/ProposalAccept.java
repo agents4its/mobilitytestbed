@@ -19,4 +19,10 @@ public class ProposalAccept implements MessageVisitor<RequestConsumerReceiverVis
 
 	}
 
+    @Override
+    public String toString() {
+        return "ProposalAccept{" +
+                "proposal=" + proposal +
+                '}';
+    }
 }

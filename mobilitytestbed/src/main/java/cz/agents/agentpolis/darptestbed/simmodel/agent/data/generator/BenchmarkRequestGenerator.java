@@ -9,8 +9,13 @@ import cz.agents.agentpolis.siminfrastructure.time.TimeProvider;
 import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
 import cz.agents.agentpolis.simmodel.agent.activity.callback.TimeActivityCallback;
 import cz.agents.agentpolis.simmodel.environment.model.action.AgentPositionAction;
+import org.apache.log4j.Logger;
 
 public class BenchmarkRequestGenerator implements RequestGenerator {
+
+    private static final Logger LOGGER = Logger.getLogger(BenchmarkRequestGenerator.class);
+
+//    private static int allRequestsCounter = 0;
 
 	private final AgentPositionAction agentPositionAction;
 	private final LinkedList<RequestBuilder> requests;
@@ -25,6 +30,8 @@ public class BenchmarkRequestGenerator implements RequestGenerator {
 		this.requests = requests;
 		this.timeProvider = timeProvider;
 		this.timeSpendingActivity = timeSpendingActivity;
+//        allRequestsCounter += requests.size();
+//        LOGGER.debug("Received requests count: " + allRequestsCounter);
 	}
 
 	@Override

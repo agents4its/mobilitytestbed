@@ -20,14 +20,12 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestc
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.activity.movement.TestbedPassengerActivity;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.RandomRequestGenerator;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.exception.WrongSettingsException;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerAgentFactory;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerDecentrAgent;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerDecentralizedAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerProfile;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentrLogicExample;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.timer.Timer;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
@@ -52,9 +50,13 @@ public class PassengerInitFactory implements AgentInitFactory {
 
 	private static final Logger logger = Logger.getLogger(TaxiPassengerInit.class);
 
-	public PassengerInitFactory() {
-		super();
-	}
+    private final LogicConstructor logicConstructor;
+
+    public PassengerInitFactory(LogicConstructor logicConstructor) {
+        super();
+        this.logicConstructor = logicConstructor;
+    }
+
 
 	/**
 	 * It is implementations method from IAgentInit.
@@ -136,33 +138,26 @@ public class PassengerInitFactory implements AgentInitFactory {
 
 				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
 
-				PassengerCentrLogic logic = new PassengerCentrLogic(agentId, sender, driverMessageProtocol, taxiModel,
-						positionQuery, utils, profile, passengerActivity, timeActivity, logger);
+				PassengerCentralizedLogic logic =
+                        logicConstructor.constructCentralizedPassengerLogic(
+                                agentId, sender, driverMessageProtocol, taxiModel,
+						    positionQuery, utils, profile, passengerActivity, timeActivity, logger);
 				passenger = factory.createCentrAgent(agentId, logic, startLife, Sets.<String> newHashSet(), injector,
 						requestGenerator);
 
 			} else {
-				PassengerDecentrLogic logic = null;
 				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
 				// decentralized algorithms
-				switch (GlobalParams.getDecentrAlgType()) {
-				//case 1:
-				//	break;
-				//case 2:
-				//	break;
-				//case 3:
-				//	break;
-				default:
-					logic = new PassengerDecentrLogicExample(agentId, sender, driverMessageProtocol, taxiModel,
-							positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-					//throw new WrongSettingsException("The parameter \"Decentr alg type\" has a wrong value assigned");
-				}
+                PassengerDecentralizedLogic logic =
+                        logicConstructor.constructDecentralizedPassengerLogic(
+                                agentId, sender, driverMessageProtocol, taxiModel,
+                        positionQuery, utils, profile, passengerActivity, timeActivity, logger);
 
-				PassengerDecentrAgent passengerDecentrAgent = factory.createDecentrAgent(agentId, logic, startLife,
+				PassengerDecentralizedAgent passengerDecentralizedAgent = factory.createDecentrAgent(agentId, logic, startLife,
 						Sets.<String> newHashSet(), injector, requestGenerator);
-				passTimer.addCallback(passengerDecentrAgent);
+				passTimer.addCallback(passengerDecentralizedAgent);
 
-				passenger = passengerDecentrAgent;
+				passenger = passengerDecentralizedAgent;
 			}
 
 			long initialLocation = new Long((Long) possibleNodes.get(random.nextInt(randomBound)));

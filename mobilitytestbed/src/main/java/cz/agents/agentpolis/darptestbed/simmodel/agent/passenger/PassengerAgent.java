@@ -7,7 +7,7 @@ import org.joda.time.Duration;
 
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.global.Utils;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.MessageDriverArrived;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.DriverArrivedMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.OrderConfirmation;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
@@ -99,13 +99,14 @@ public abstract class PassengerAgent<TPassengerLogic extends PassengerLogic> ext
 	@Override
 	public void visit(OrderConfirmation taxiSendConfirmationToPassengerMessage) {
 		logic.acceptTripInfo(taxiSendConfirmationToPassengerMessage.confirmation, passengerRequirements);
-		//LOGGER.debug(getId() + ":" + taxiSendConfirmationToPassengerMessage.getClass().getSimpleName());
+		LOGGER.debug(getId() + ":" + taxiSendConfirmationToPassengerMessage.getClass().getSimpleName() + " " +
+            taxiSendConfirmationToPassengerMessage);
 	}
 
 	@Override
-	public void visit(MessageDriverArrived messageDriverArrived) {
-		logic.processVehicleArrived(messageDriverArrived.driverId, messageDriverArrived.confirmation.getVehicleId());
-		//LOGGER.debug(getId() + ":" + messageDriverArrived.getClass().getSimpleName());
+	public void visit(DriverArrivedMessage driverArrivedMessage) {
+		logic.processVehicleArrived(driverArrivedMessage.driverId, driverArrivedMessage.confirmation.getVehicleId());
+		LOGGER.debug(getId() + ":" + driverArrivedMessage.getClass().getSimpleName());
 
 	}
 
@@ -117,7 +118,7 @@ public abstract class PassengerAgent<TPassengerLogic extends PassengerLogic> ext
 
 	@Override
 	public void visit(Proposal proposal) {
-		//LOGGER.debug(getId() + ":" + proposal.getClass().getSimpleName());
+		LOGGER.debug(getId() + ":" + proposal.getClass().getSimpleName());
 		logic.processProposal(proposal);
 	}
 

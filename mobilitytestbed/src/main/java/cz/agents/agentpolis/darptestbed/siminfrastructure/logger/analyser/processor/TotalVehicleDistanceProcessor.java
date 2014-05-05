@@ -29,7 +29,7 @@ public class TotalVehicleDistanceProcessor extends AVehiclePathProcessor<FromToI
 	protected void process(FromToInPeriod fromToInPeriod, VehicleAtomicPath vehicleAtomicPath, VehiclePath vehiclePath,
 			Edge edge) {
 
-		vehicleDistanceInMeter += edge.getLenght();
+		vehicleDistanceInMeter += edge.getLength();
 	}
 
 	public double getVehicleDistanceInMeter() {
@@ -53,7 +53,7 @@ public class TotalVehicleDistanceProcessor extends AVehiclePathProcessor<FromToI
 
 	@Override
 	public String provideResult() {
-		return String.format("Total vehicle distance driven (in kilometers):%s", vehicleDistanceInMeter / 1000);
+		return String.format("Total vehicle distance driven (in kilometers): %s", vehicleDistanceInMeter / 1000);
 	}
 
 }

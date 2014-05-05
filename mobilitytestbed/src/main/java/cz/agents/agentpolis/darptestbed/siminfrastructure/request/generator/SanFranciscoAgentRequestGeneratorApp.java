@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.PasssengerGeneratorJustRequirements;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.PassengerGeneratorJustRequirements;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.RandomVehicleCapacityGenerator;
 
 public class SanFranciscoAgentRequestGeneratorApp {
@@ -20,7 +20,7 @@ public class SanFranciscoAgentRequestGeneratorApp {
 
 		Random random = new Random(0);
 		SanFranciscoAgentRequestGenerator sanFranciscoAgentRequestGenerator = new SanFranciscoAgentRequestGenerator(
-				new RandomVehicleCapacityGenerator(5, random), new PasssengerGeneratorJustRequirements(),
+				new RandomVehicleCapacityGenerator(5, random), new PassengerGeneratorJustRequirements(),
 				new ObjectMapper(), Duration.standardMinutes(30));
 
 		sanFranciscoAgentRequestGenerator.generatePopulation(new File("sf-drivers-population.json"), new File(

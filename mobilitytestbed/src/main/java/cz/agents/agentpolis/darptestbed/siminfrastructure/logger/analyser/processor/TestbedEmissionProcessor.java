@@ -29,23 +29,23 @@ public class TestbedEmissionProcessor extends EmissionProcessor implements Testb
 		}
 
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("Total values of CO2 [gram]:");
+		stringBuilder.append("Total values of CO2 [gram]: ");
 		stringBuilder.append(emissionData.producedCO2InGram);
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Total values of CO [gram]:");
+		stringBuilder.append("Total values of CO [gram]: ");
 		stringBuilder.append(emissionData.producedCOInGram);
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Total values of NOx [gram]:");
+		stringBuilder.append("Total values of NOx [gram]: ");
 		stringBuilder.append(emissionData.producedNOxInGram);
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Total values of PM10 [gram]:");
+		stringBuilder.append("Total values of PM10 [gram]: ");
 		stringBuilder.append(emissionData.producedPM10InGram);
 		stringBuilder.append(System.lineSeparator());
 
-		stringBuilder.append("Total values of SOx [gram]:");
+		stringBuilder.append("Total values of SOx [gram]: ");
 		stringBuilder.append(emissionData.producedSOxInGram);
 
 		return stringBuilder.toString();

@@ -1,33 +1,17 @@
 package cz.agents.agentpolis.darptestbed.simulator.initializator;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
 import com.google.inject.Injector;
-
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.global.Utils;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatching.protocol.DispatchingMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.VehicleMoveLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.Driver;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.GPS;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DecentDriverAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DriverAgentFactory;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverCentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverDecentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverDecentrLogicExample;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.exception.WrongSettingsException;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DriverDecentralizedAgent;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverCentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverDecentralizedLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.timer.Timer;
 import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
@@ -48,165 +32,157 @@ import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleTempl
 import cz.agents.agentpolis.simmodel.environment.model.vehiclemodel.VehicleTemplateId;
 import cz.agents.agentpolis.simulator.creator.initializator.AgentInitFactory;
 import cz.agents.agentpolis.utils.convertor.VelocityConvertor;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class DriverForBenchmarkInitFactory implements AgentInitFactory {
 
-	private static final Logger LOGGER = Logger.getLogger(DriverForBenchmarkInitFactory.class);
-	private final File serializedDriverPopulation;
-	private final int driverLimit;
+    private static final Logger LOGGER = Logger.getLogger(DriverForBenchmarkInitFactory.class);
+    private final File serializedDriverPopulation;
+    private final int driverLimit;
+    private final LogicConstructor logicConstructor;
 
-	public DriverForBenchmarkInitFactory(File serializedDriverPopulation, int driverLimit) {
-		super();
-		this.serializedDriverPopulation = serializedDriverPopulation;
-		this.driverLimit = driverLimit;
+    public DriverForBenchmarkInitFactory(File serializedDriverPopulation, int driverLimit,
+            LogicConstructor logicConstructor) {
+        super();
+        this.serializedDriverPopulation = serializedDriverPopulation;
+        this.driverLimit = driverLimit;
+        this.logicConstructor = logicConstructor;
+    }
 
-	}
+    public DriverForBenchmarkInitFactory(File serializedDriverPopulation,
+                                         LogicConstructor logicConstructor) {
+        super();
+        this.serializedDriverPopulation = serializedDriverPopulation;
+        this.driverLimit = Integer.MAX_VALUE;
+        this.logicConstructor = logicConstructor;
+    }
 
-	public DriverForBenchmarkInitFactory(File serializedDriverPopulation) {
-		super();
-		this.serializedDriverPopulation = serializedDriverPopulation;
-		this.driverLimit = Integer.MAX_VALUE;
+    @Override
+    public List<Agent> initAllAgentLifeCycles(Injector injector) {
 
-	}
+        Timer taxiDriversTimer = injector.getInstance(TestbedModel.class).getTaxiDriversTimer();
 
-	@Override
-	public List<Agent> initAllAgentLifeCycles(Injector injector) {
+        boolean centralized = GlobalParams.isCentralized();
 
-		Timer taxiDriversTimer = injector.getInstance(TestbedModel.class).getTaxiDriversTimer();
+        // get ready for creating a logic (I couldn't figure out any better
+        // place to hide this code)
+        TestbedModel taxiModel = injector.getInstance(TestbedModel.class);
+        AgentPositionQuery positionQuery = injector.getInstance(AgentPositionQuery.class);
+        AllNetworkNodes allNetworkNodes = injector.getInstance(AllNetworkNodes.class);
+        Utils utils = injector.getInstance(Utils.class);
+        NodeExtendedFunction nearestNodeFinder = injector.getInstance(NodeExtendedFunction.class);
+        VehicleDataModel vehicleDataModel = injector.getInstance(VehicleDataModel.class);
+        Random random = injector.getInstance(Random.class);
 
-		boolean centralized = GlobalParams.isCentralized();
+        Map<Integer, Integer> seatsDistribution = new HashMap<Integer, Integer>();
+        seatsDistribution.put(5, GlobalParams.getNumberOfFiveSeatVehicles());
+        seatsDistribution.put(6, GlobalParams.getNumberOfSixSeatVehicles());
+        seatsDistribution.put(7, GlobalParams.getNumberOfSevenSeatVehicles());
 
-		// get ready for creating a logic (I couldn't figure out any better
-		// place to hide this code)
-		TestbedModel taxiModel = injector.getInstance(TestbedModel.class);
-		AgentPositionQuery positionQuery = injector.getInstance(AgentPositionQuery.class);
-		AllNetworkNodes allNetworkNodes = injector.getInstance(AllNetworkNodes.class);
-		Utils utils = injector.getInstance(Utils.class);
-		NodeExtendedFunction nearestNodeFinder = injector.getInstance(NodeExtendedFunction.class);
-		VehicleDataModel vehicleDataModel = injector.getInstance(VehicleDataModel.class);
-		Random random = injector.getInstance(Random.class);
+        List<Agent> agents = new ArrayList<Agent>();
+        DriverAgentFactory factory = new DriverAgentFactory();
 
-		Map<Integer, Integer> seatsDistribution = new HashMap<Integer, Integer>();
-		seatsDistribution.put(5, GlobalParams.getNumberOfFiveSeatVehicles());
-		seatsDistribution.put(6, GlobalParams.getNumberOfSixSeatVehicles());
-		seatsDistribution.put(7, GlobalParams.getNumberOfSevenSeatVehicles());
+        double velocityOfVehicle = VelocityConvertor.kmph2mps(GlobalParams.getVelocityInKmph());
 
-		List<Agent> agents = new ArrayList<Agent>();
-		DriverAgentFactory factory = new DriverAgentFactory();
+        int counter = 0;
+        List<Driver> drivers = loadSerializedPassengerPopulation(serializedDriverPopulation);
+        Collections.shuffle(drivers, injector.getInstance(Random.class));
+        for (Driver driver : drivers) {
 
-		double velocityOfVehicle = VelocityConvertor.kmph2mps(GlobalParams.getVelocityInKmph());
+            if (counter++ > driverLimit) {
+                break;
+            }
 
-		int counter = 0;
-		List<Driver> drivers = loadSerializedPassengerPopulation(serializedDriverPopulation);
-		Collections.shuffle(drivers, injector.getInstance(Random.class));
-		for (Driver driver : drivers) {
+            TestbedVehicle vehicle = new TestbedVehicle("Taxi_owned_by_" + driver.driverId, VehicleType.CAR, 5.0,
+                    driver.vehicleCapacity, EGraphType.HIGHWAY, driver.vehicleEquipments);
 
-			if (counter++ > driverLimit) {
-				break;
-			}
+            VehicleTemplate vehicleTemplate = selectVehicleTemplate(vehicleDataModel, VehicleType.CAR, random);
+            vehicleDataModel.assineVehilceTemplate(vehicle.getId(), vehicleTemplate.vehicleTemplateId);
 
-			TestbedVehicle vehicle = new TestbedVehicle("Taxi_owned_by_" + driver.driverId, VehicleType.CAR, 5.0,
-					driver.vehicleCapacity, EGraphType.HIGHWAY, driver.vehicleEquipments);
+            long initialLocation = findNearestNode(driver.driverInitPosition, nearestNodeFinder);
 
-			VehicleTemplate vehicleTemplate = selectVehicleTemplate(vehicleDataModel, VehicleType.CAR, random);
-			vehicleDataModel.assineVehilceTemplate(vehicle.getId(), vehicleTemplate.vehicleTemplateId);
+            injector.getInstance(VehicleStorage.class).addEntity(vehicle);
+            injector.getInstance(TestbedVehicleStorage.class).addEntity(vehicle);
+            injector.getInstance(VehiclePositionModel.class).setNewEntityPosition(vehicle.getId(), initialLocation);
+            injector.getInstance(EntityVelocityModel.class).addEntityMaxVelocity(vehicle.getId(), velocityOfVehicle);
 
-			long initialLocation = findNearestNode(driver.driverInitPosition, nearestNodeFinder);
+            String agentId = driver.driverId;
+            DriveVehicleActivity drivingActivity = injector.getInstance(DriveVehicleActivity.class);
 
-			injector.getInstance(VehicleStorage.class).addEntity(vehicle);
-			injector.getInstance(TestbedVehicleStorage.class).addEntity(vehicle);
-			injector.getInstance(VehiclePositionModel.class).setNewEntityPosition(vehicle.getId(), initialLocation);
-			injector.getInstance(EntityVelocityModel.class).addEntityMaxVelocity(vehicle.getId(), velocityOfVehicle);
+            Agent driverAgent = null;
 
-			String agentId = driver.driverId;
-			DriveVehicleActivity drivingActivity = injector.getInstance(DriveVehicleActivity.class);
+            if (centralized) {
+                // centralized algorithms
+                PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
+                DispatchingMessageProtocol dispatchingMessageProtocol =
+                        injector.getInstance(DispatchingMessageProtocol.class);
 
-			Agent driverAgent = null;
+                DriverCentralizedLogic logic =
+                        logicConstructor.constructCentralizedDriverLogic(agentId, sender, taxiModel,
+                            positionQuery, allNetworkNodes, utils,
+                            vehicle, drivingActivity, dispatchingMessageProtocol);
 
-			if (centralized) {
-				// centralized algorithms
-				DriverCentrLogic logic = null;
-				PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
+                driverAgent = factory.createCentrDriverAgent(agentId, logic, injector);
 
-				switch (GlobalParams.getCentralAlgType()) {
-				//case 1:
-				//	break;
-				//case 2:
-				//	break;
-				//case 3:
-				//	break;
-				default:
-					// by default, load the DriverCentrLogic class for drivers
-					logic = new DriverCentrLogic(agentId, sender, taxiModel, positionQuery, allNetworkNodes, utils,
-							vehicle, drivingActivity);
-					break;
-				}
+            } else {
+                // decentralized algorithms
+                PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
+                DriverDecentralizedLogic logic =
+                        logicConstructor.constructDecentralizedDriverLogic(agentId, sender,
+                                taxiModel, positionQuery, allNetworkNodes, utils,
+                                vehicle, drivingActivity);
 
-				driverAgent = factory.createCentrDriverAgent(agentId, logic, injector);
+                DriverDecentralizedAgent driverDecentralizedAgent = factory.createDecentDriverAgent(agentId, logic, injector);
+                taxiDriversTimer.addCallback(driverDecentralizedAgent);
 
-			} else {
-				// decentralized algorithms
-				DriverDecentrLogic logic = null;
-				PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
-				switch (GlobalParams.getDecentrAlgType()) {
-				//case 1:
-				//	break;
-				//case 2:
-				//	break;
-				//case 3:
-				//	break;
-				default:
-					// by default, load the DriverDecentrLogicExample class for the drivers
-					logic = new DriverDecentrLogicExample(agentId, sender, taxiModel, positionQuery,
-							allNetworkNodes, utils, vehicle, drivingActivity);
-					break;
-				}
+                driverAgent = driverDecentralizedAgent;
 
-				DecentDriverAgent decentDriverAgent = factory.createDecentDriverAgent(agentId, logic, injector);
-				taxiDriversTimer.addCallback(decentDriverAgent);
+            }
 
-				driverAgent = decentDriverAgent;
+            injector.getInstance(AgentPositionModel.class).setNewEntityPosition(driverAgent.getId(), initialLocation);
+            injector.getInstance(TestbedModel.class).addFreeTaxi(vehicle.getId(), driverAgent.getId());
+            injector.getInstance(VehicleMoveLogger.class).logVehicleMove(vehicle.getId(), initialLocation);
 
-			}
+            agents.add(driverAgent);
 
-			injector.getInstance(AgentPositionModel.class).setNewEntityPosition(driverAgent.getId(), initialLocation);
-			injector.getInstance(TestbedModel.class).addFreeTaxi(vehicle.getId(), driverAgent.getId());
-			injector.getInstance(VehicleMoveLogger.class).logVehicleMove(vehicle.getId(), initialLocation);
+        }
 
-			agents.add(driverAgent);
+        LOGGER.info("Taxi drivers have been created. The number of created taxi agents is: " + agents.size());
+        return agents;
+    }
 
-		}
+    private long findNearestNode(GPS gps, NodeExtendedFunction nearestNodeFinder) {
+        return nearestNodeFinder.getNearestNodeByNodeId(gps.longitude, gps.latitude);
+    }
 
-		LOGGER.info("Taxi drivers have been created. The number of created taxi agents is: " + agents.size());
-		return agents;
-	}
+    public List<Driver> loadSerializedPassengerPopulation(File serializedPopulation) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(serializedPopulation, new TypeReference<List<Driver>>() {
+            });
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
 
-	private long findNearestNode(GPS gps, NodeExtendedFunction nearestNodeFinder) {
-		return nearestNodeFinder.getNearestNodeByNodeId(gps.longitude, gps.latitude);
-	}
+        return new ArrayList<Driver>();
 
-	public List<Driver> loadSerializedPassengerPopulation(File serializedPopulation) {
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			return mapper.readValue(serializedPopulation, new TypeReference<List<Driver>>() {
-			});
-		} catch (IOException e) {
-			LOGGER.error(e);
-		}
+    }
 
-		return new ArrayList<Driver>();
+    private VehicleTemplate selectVehicleTemplate(VehicleDataModel vehicleDataModel, VehicleType vehicleType,
+                                                  Random random) {
 
-	}
+        TreeMap<Double, VehicleTemplateId> dist = vehicleDataModel.getDistributionForVehicleType(vehicleType);
+        Double key = dist.ceilingKey(random.nextDouble());
+        VehicleTemplateId vehicleTemplateId = dist.get(key);
 
-	private VehicleTemplate selectVehicleTemplate(VehicleDataModel vehicleDataModel, VehicleType vehicleType,
-			Random random) {
+        return vehicleDataModel.getVehicleTemplate(vehicleTemplateId);
 
-		TreeMap<Double, VehicleTemplateId> dist = vehicleDataModel.getDistributionForVehicleType(vehicleType);
-		Double key = dist.ceilingKey(random.nextDouble());
-		VehicleTemplateId vehicleTemplateId = dist.get(key);
-
-		return vehicleDataModel.getVehicleTemplate(vehicleTemplateId);
-
-	}
+    }
 
 }

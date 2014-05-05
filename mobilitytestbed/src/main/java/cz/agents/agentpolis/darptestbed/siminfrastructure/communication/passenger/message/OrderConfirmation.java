@@ -18,4 +18,8 @@ public class OrderConfirmation implements MessageVisitor<PassengerReceiverVisito
 		receiverVisitor.visit(this);
 	}
 
+    public String toString() {
+        return confirmation.toString();
+    }
+
 }
