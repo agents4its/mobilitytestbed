@@ -69,7 +69,7 @@ public class Main {
         if (args.length > 1) {
             experiment = new File(args[0]);
         } else if (args.length == 1) {
-            experiment = new File("experiments/" + args[0]);
+            experiment = new File("../experiments/" + args[0]);
         } else {
             experiment = new File(BENCHMARK_DIR);
         }
