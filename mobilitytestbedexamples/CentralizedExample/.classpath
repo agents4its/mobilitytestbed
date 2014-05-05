@@ -3,6 +3,15 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mobilitytestbed"/>
-	<classpathentry kind="lib" path="/mobilitytestbed/lib/mobilitytestbeddeps-1.0-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/geovisio-1.0.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/geovisiospy-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/guava-14.0.1.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/guice-3.0.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/agentpolis-3.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/dbtokmlexporter-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/initializator-1.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/importer-1.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/ondemandtransport-2.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -44,14 +44,14 @@ public class Main {
     // ====================== SETTINGS START =======================
 
     // choose if we should use centralized (DARP) or decentralized coordination algorithms
-    static boolean CENTRALIZED = true;
+    static boolean CENTRALIZED = false;
 
     // specify the path to the directory containing the benchmark scenario
     // (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
-//	static String BENCHMARK_DIR = "../../experiments/sanfrancisco_536_drivers";
-//    static String BENCHMARK_DIR = "../../experiments/hague_20_drivers";
-//    static String BENCHMARK_DIR = "../../experiments/dublin_5_drivers";
-    static String BENCHMARK_DIR = "../../experiments/prague";
+//	static String BENCHMARK_DIR = "experiments/sanfrancisco_536_drivers";
+//    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
+//    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
+    static String BENCHMARK_DIR = "experiments/prague";
 
     // ======================= SETTINGS END ========================
 
@@ -69,7 +69,7 @@ public class Main {
         if (args.length > 1) {
             experiment = new File(args[0]);
         } else if (args.length == 1) {
-            experiment = new File("../../experiments/" + args[0]);
+            experiment = new File("experiments/" + args[0]);
         } else {
             experiment = new File(BENCHMARK_DIR);
         }
