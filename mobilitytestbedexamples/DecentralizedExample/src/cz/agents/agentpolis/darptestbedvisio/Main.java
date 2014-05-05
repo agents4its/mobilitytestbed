@@ -9,7 +9,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerG
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.PassengerGetOffVehicleLogItem;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.init.TestbedPlannerModuleFactory;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.DecentralizedLogicConstructor;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.logicconstructor.DecentralizedLogicConstructor;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.TestbedEnvironmentFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.DispatchingAndTimersInitFactory;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.DriverForBenchmarkInitFactory;
@@ -49,9 +49,9 @@ public class Main {
     // specify the path to the directory containing the benchmark scenario
     // (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
 //	static String BENCHMARK_DIR = "experiments/sanfrancisco_536_drivers";
-//    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
+    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
 //    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
-    static String BENCHMARK_DIR = "experiments/prague";
+//    static String BENCHMARK_DIR = "experiments/prague";
 
     // ======================= SETTINGS END ========================
 

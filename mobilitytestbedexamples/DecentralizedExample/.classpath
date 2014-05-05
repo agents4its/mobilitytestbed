@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/importer-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/ondemandtransport-2.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/mobilitytestbed/lib/alite-1.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
