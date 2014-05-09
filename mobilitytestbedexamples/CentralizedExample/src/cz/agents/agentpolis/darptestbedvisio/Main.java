@@ -40,7 +40,6 @@ import java.util.Set;
  * The main class of Mobility Testbed.
  */
 public class Main {
-
     // ====================== SETTINGS START =======================
 
     // choose if we should use centralized (DARP) or decentralized coordination algorithms
@@ -50,8 +49,10 @@ public class Main {
     // (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
 //	static String BENCHMARK_DIR = "experiments/sanfrancisco_536_drivers";
     static String BENCHMARK_DIR = "experiments/hague_20_drivers";
-//    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
 //    static String BENCHMARK_DIR = "experiments/prague";
+//    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
+
+    private static final boolean INTERPOLATE_VISUALIZATION = true;
 
     // ======================= SETTINGS END ========================
 
@@ -92,7 +93,7 @@ public class Main {
         final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed",
                 "public");
         String visualizationName = darpResultFileName;
-        int visInterval = 2 * 60 * 1000;
+        int visInterval = 1 * 60 * 1000;
         File resultFolder = new File(experiment, "results" + File.separator + resultFolderId);
         // visualization settings end
 
@@ -235,7 +236,7 @@ public class Main {
         // export visualization to kml
         if (scenario.getBooleanValueFromConfig("createVisualizations") == true) {
             DarpTestbedKmlVisualisator kmlVisualisator = new DarpTestbedKmlVisualisator(settings, visInterval,
-                    "public", outputString);
+                    "public", outputString, INTERPOLATE_VISUALIZATION);
             kmlVisualisator.visualize();
         } else {
             LOGGER.info("Visualizations are turned off.");

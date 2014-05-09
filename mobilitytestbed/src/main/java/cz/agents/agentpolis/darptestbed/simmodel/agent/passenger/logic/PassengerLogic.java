@@ -385,4 +385,5 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     public long getSuccessfulArrivalTime() {
         return successfulArrivalTime != -1 ? successfulArrivalTime : utils.getCurrentTime();
     }
+
 }
