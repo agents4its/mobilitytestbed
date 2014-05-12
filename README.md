@@ -23,4 +23,4 @@ Links to follow:
 * [AgentPolis Platform](http://agentpolis.org/) on top of which the testbed is built
 * [Publications](http://github.com/agents4its/mobilitytestbed/wiki/Publications) related to the testbed
 
-[![Analytics](https://ga-beacon.appspot.com/UA-1173979-12/mobilitytestbed/readme)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-1173979-12/mobilitytestbed/readme?pixel)](https://github.com/igrigorik/ga-beacon)
