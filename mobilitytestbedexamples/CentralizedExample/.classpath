@@ -13,6 +13,6 @@
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/ondemandtransport-2.0.0-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/alite-1.1.0.jar"/>
 	<classpathentry kind="lib" path="/mobilitytestbed/lib/dbtokmlexporter-0.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="/mobilitytestbed/lib/geovisiospy-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mobilitytestbedanalyzer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
