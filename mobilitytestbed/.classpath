@@ -100,6 +100,7 @@
 	<classpathentry kind="lib" path="lib/xmlunit-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/xom-1.2.5.jar" sourcepath="lib/xom-1.2.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/xz-1.0.jar" sourcepath="lib/xz-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/libosm-2.5.2-RC1.jar"/>
 	<classpathentry kind="lib" path="lib/agentpolis-3.0.0-SNAPSHOT.jar" sourcepath="lib/agentpolis-3.0.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar" sourcepath="lib/commons-logging-1.0.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-1.3.2.jar" sourcepath="lib/commons-io-1.3.2-sources.jar"/>
@@ -124,7 +125,5 @@
 	<classpathentry kind="lib" path="lib/test-cases-0.4.8-RC2.jar" sourcepath="lib/test-cases-0.4.8-RC2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/TimeTableDataConvertor-1.0.1-SNAPSHOT.jar" sourcepath="lib/TimeTableDataConvertor-1.0.1-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="lib/wp5-common-0.4.8-RC2.jar" sourcepath="lib/wp5-common-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/ant-1.9.4.jar" sourcepath="lib/ant-1.9.4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/libosm-atg-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
