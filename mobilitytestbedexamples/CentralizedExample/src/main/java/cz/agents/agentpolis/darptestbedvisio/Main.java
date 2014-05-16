@@ -48,8 +48,8 @@ public class Main {
     // specify the path to the directory containing the benchmark scenario
     // (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
 //	static String BENCHMARK_DIR = "experiments/sanfrancisco_536_drivers";
-    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
-//    static String BENCHMARK_DIR = "experiments/prague";
+//    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
+    static String BENCHMARK_DIR = "experiments/prague";
 //    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
 
     private static final boolean INTERPOLATE_VISUALIZATION = true;
