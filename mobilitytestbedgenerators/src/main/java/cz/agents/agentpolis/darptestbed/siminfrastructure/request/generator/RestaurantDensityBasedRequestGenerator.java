@@ -2,7 +2,6 @@ package cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator;
 
 import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.init.TestbedPlannerModuleFactory;
@@ -17,7 +16,6 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.supp
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.VehicleGenerator;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.TestbedEnvironmentModul;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.KNearestNodesInitModuleFactory;
-import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.KNodesExtendedFunction;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.NodeExtendedFunction;
 import cz.agents.agentpolis.darptestbed.simulator.initializator.osm.init.NodeDensityMapInit;
 import cz.agents.agentpolis.simmodel.environment.AgentPolisEnvironmentModule;
@@ -26,6 +24,7 @@ import cz.agents.agentpolis.simulator.creator.initializator.impl.MapData;
 import cz.agents.agentpolis.simulator.importer.osm.OsmDataGetter;
 import cz.agents.agentpolis.simulator.importer.osm.util.OSMBoundsUtil;
 import cz.agents.agentpolis.utils.config.ConfigReader;
+import cz.agents.agentpolis.utils.config.ConfigReaderException;
 import cz.agents.alite.common.event.EventProcessor;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
@@ -35,6 +34,7 @@ import org.openstreetmap.osm.data.coordinates.Bounds;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -83,9 +83,7 @@ public class RestaurantDensityBasedRequestGenerator {
         this.random = random;
         this.maxNumberOfRequestPerAgent = maxNumberOfRequestPerAgent;
 
-//        if (injector == null)
-//        Injector injector = Guice.createInjector();
-            injector = createInjector(benchmarkDir, new File(osmFileName), injector);
+        injector = createInjector(benchmarkDir, new File(osmFileName), injector);
 
         utils = injector.getInstance(Utils.class);
 
@@ -130,7 +128,10 @@ public class RestaurantDensityBasedRequestGenerator {
 
             return injector;
 
-        } catch (Exception e) {
+        } catch (ConfigReaderException e) {
+            System.out.println(e.toString());
+            return null;
+        } catch (MalformedURLException e) {
             System.out.println(e.toString());
             return null;
         }

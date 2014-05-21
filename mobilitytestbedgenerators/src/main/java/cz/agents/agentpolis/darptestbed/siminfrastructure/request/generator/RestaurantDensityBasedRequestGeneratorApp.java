@@ -49,7 +49,7 @@ public class RestaurantDensityBasedRequestGeneratorApp {
         if (logFile.exists()) {
             DOMConfigurator.configure(LOG_LOG4J_XML);
         } else {
-            URL url = logFile.getClass().getResource("/log/log4j.xml");
+            URL url = RestaurantDensityBasedRequestGeneratorApp.class.getResource("/log/log4j.xml");
             DOMConfigurator.configure(url);
         }
 
@@ -64,6 +64,8 @@ public class RestaurantDensityBasedRequestGeneratorApp {
             System.out.println("Usage 2: DEFAULT");
 
             return;
+        } else {
+            System.out.printf("Using command-line parameters: %s %s %s %s\n", args);
         }
 
         final String osmFileName = "experiments/" + args[0] + "/data/" + args[1] + ".osm";
