@@ -2,6 +2,7 @@ package cz.agents.agentpolis.darptestbedvisio;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Injector;
+
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalyserProcessorInit;
@@ -29,6 +30,7 @@ import cz.agents.agentpolis.utils.config.ConfigReader;
 import cz.agents.agentpolis.utils.config.ConfigReaderException;
 import cz.agents.dbtokmlexporter.darptestbed.DarpTestbedKmlVisualisator;
 import eu.superhub.wp4.initializator.simulator.delaymodel.InfinityDelayingSegmentCapacityDeterminer;
+
 import org.apache.log4j.Logger;
 
 import java.awt.*;
@@ -40,18 +42,19 @@ import java.util.Set;
  * The main class of Mobility Testbed.
  */
 public class Main {
-    // ====================== SETTINGS START =======================
 
-    // choose if we should use centralized (DARP) or decentralized coordination algorithms
+	// ====================== SETTINGS START =======================
+
+	// get path to the "experiments" directory on your filesystem
+	private static String experimentsPath = new File(System.getProperty("user.dir")).getParentFile().getParent()+"/experiments/";
+
+	// choose if we should use centralized (DARP) or decentralized coordination algorithms
     static boolean CENTRALIZED = false;
 
-    // specify the path to the directory containing the benchmark scenario
-    // (these can be downloaded from http://github.com/agents4its/mobilitytestbed/wiki/Benchmarks)
-//	static String BENCHMARK_DIR = "experiments/sanfrancisco_536_drivers";
-    static String BENCHMARK_DIR = "experiments/hague_20_drivers";
-//    static String BENCHMARK_DIR = "experiments/dublin_5_drivers";
-//    static String BENCHMARK_DIR = "experiments/prague";
+	// specify the directory containing the benchmark scenario
+    static String BENCHMARK_DIR = experimentsPath+"hague_20_drivers";
 
+    // should the KML visualization be interpolated? (recommended: true)
     private static final boolean INTERPOLATE_VISUALIZATION = true;
 
     // ======================= SETTINGS END ========================
@@ -90,7 +93,7 @@ public class Main {
 //        args = new String[0];
 
         // visualization settings
-        final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "jeto", "jedno", "testbed",
+        final DatabaseConnectionSettings settings = new DatabaseConnectionSettings("", 0, "doesnt", "matter", "testbed",
                 "public");
         String visualizationName = darpResultFileName;
         int visInterval = 1 * 60 * 1000;
@@ -119,7 +122,6 @@ public class Main {
 
         creator.addAllowEventForEventViewer(logItems);
 
-//        args = new String[0];
         // generate a random seed for the whole application
         if (args.length > 1) {
             GlobalParams.setUseResultsFile(false);
