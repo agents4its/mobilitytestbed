@@ -40,18 +40,14 @@ import java.util.Set;
  * The main class of Mobility Testbed.
  */
 public class Main {
-	
 
-	// ====================== SETTINGS START =======================
+    // ====================== SETTINGS START =======================
 
-	// get path to the "experiments" directory on your filesystem
-	private static String experimentsPath = new File(System.getProperty("user.dir")).getParentFile().getParent()+"/experiments/";
+    // get path to the "experiments" directory on your filesystem
+    private static String experimentsPath = new File(System.getProperty("user.dir")).getParentFile().getParent() + "/experiments/";
 
-	// choose if we should use centralized (DARP) or decentralized coordination algorithms
-    static boolean CENTRALIZED = true;
-
-	// specify the directory containing the benchmark scenario
-    static String BENCHMARK_DIR = experimentsPath+"hague_20_drivers";
+    // specify the directory containing the benchmark scenario
+    static String BENCHMARK_DIR = experimentsPath + "hague_20_drivers";
 
     // should the KML visualization be interpolated? (recommended: true)
     private static final boolean INTERPOLATE_VISUALIZATION = true;
@@ -124,71 +120,35 @@ public class Main {
             GlobalParams.setUseResultsFile(false);
 
             GlobalParams.setRandomSeed(Long.parseLong(args[0]));
-            GlobalParams.setNumberOfPassengers(Integer.parseInt(args[1]));
-            GlobalParams.setNumberOfFiveSeatVehicles(Integer.parseInt(args[2]));
             GlobalParams.setTimeWindowsUsed(Boolean.parseBoolean(args[3]));
-            GlobalParams.setCityCenterRadius(Double.parseDouble(args[4]));
 
             // *algorithm type
             int algorithmTypeNum = Integer.parseInt(args[5]);
             int timerInterval = Integer.parseInt(args[6]);
 
             if (algorithmTypeNum < 3) {
-                GlobalParams.setCentralized(true);
-                GlobalParams.setCentralAlgType(algorithmTypeNum + 2);
                 GlobalParams.setTimerDispatchingInterval(timerInterval);
             } else {
-                GlobalParams.setCentralized(false);
-                GlobalParams.setDecentrAlgType(algorithmTypeNum - 2);
                 GlobalParams.setTimerDriverInterval(timerInterval);
                 GlobalParams.setTimerPassengerInterval(timerInterval / 2);
             }
 
             // **time windows size
             int timeWinSize = Integer.parseInt(args[7]);
-            GlobalParams.setMaxPassengerStartLifeTime(10 * timeWinSize);
-            GlobalParams.setEarliestDepartureShift((int) (15 * timeWinSize));
-            GlobalParams.setTimeWinRelSize(timeWinSize);
 
         } else {
             // default (in-source) settings of parameters
             GlobalParams.setUseResultsFile(true);
 
             GlobalParams.setRandomSeed(4);
-            GlobalParams.setNumberOfPassengers(30);
-            GlobalParams.setNumberOfFiveSeatVehicles(8);
             GlobalParams.setTimeWindowsUsed(true);
-            GlobalParams.setCityCenterRadius(600.0);
-
-            GlobalParams.setMaxPassengerStartLifeTime(30); // 30
-            GlobalParams.setEarliestDepartureShift(45); // 45
-            GlobalParams.setTimeWinRelSize(3); // 3
-
-            GlobalParams.setCentralized(CENTRALIZED); // use centralized coordination?
-
-            // applies only for centralized == true
-            GlobalParams.setCentralAlgType(1); // Parameter here can be any
-            // arbitrary number. This
-            // defaults to
-            // DispatchingLogicExample
-            // class (centralized
-            // example alg.)
             GlobalParams.setTimerDispatchingInterval(10);
 
-            // applies only for centralized == false
-            GlobalParams.setDecentrAlgType(50); // Parameter here can be any
-            // arbitrary number. This
-            // defaults to
-            // DriverDecentralizedLogicExample
-            // class (decentr. alg. example)
             GlobalParams.setTimerDriverInterval(1); // 30
             GlobalParams.setTimerPassengerInterval(1); // 35
         }
 
         // following parameters are usually the same
-        GlobalParams.setRequestGeneratorType(1);
-        GlobalParams.setNumberOfSixSeatVehicles(0);
-        GlobalParams.setNumberOfSevenSeatVehicles(0);
         GlobalParams.setVelocityInKmph(15);
         GlobalParams.setDriverReturnsBack(false);
         GlobalParams.setPricePerKilometer(1000);

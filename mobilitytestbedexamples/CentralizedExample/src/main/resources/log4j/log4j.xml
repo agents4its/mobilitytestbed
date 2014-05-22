@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{hh:mm:ss} [%-5p] (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- <appender name="FileA" class="org.apache.log4j.FileAppender"> -->
+	<!-- <param name="File" value="util.log" /> -->
+	<!-- <param name="Append" value="true" /> -->
+	<!-- <layout class="org.apache.log4j.PatternLayout"> -->
+	<!-- <param name="ConversionPattern" value="%-6r %-5p %c{2} - %m%n" /> -->
+	<!-- </layout> -->
+	<!-- </appender> -->
+
+
+	<!-- <logger name="eu.superhub.wp4.simulator.initializator.publictransport"> -->
+	<!-- <level value="error"/> -->
+	<!-- <appender-ref ref="CA" /> -->
+	<!-- </logger> -->
+
+	<logger name="cz.agents.agentpolis.tools">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+	
+	<logger name="cz.agents.dbtokmlexporter.darptestbed.kmlitembuilder">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+	
+	<logger name="cz.agents.dbtokmlexporter.kmlitem.builder">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="eu.superhub.wp5">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="cz.agents.agentpolis.model.simmodel">
+		<level value="error" />
+		<appender-ref ref="CA" />
+	</logger>
+
+
+	<logger
+		name="eu.superhub.wp4.model.simmodel.agent.citizen.activity.CitizenTravelActivity">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger
+		name="eu.superhub.wp4.model.siminfrastructure.citizen.activityscheduler.dayplansheduler.GreedyModeChoiceDayPlanScheduler">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+
+	<logger
+		name="eu.superhub.wp4.model.siminfrastructure.citizen.activityscheduler.dayplansheduler.DayPlanSchedulerImpl">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="eu.superhub.wp4.model.simmodel.agent.citizen.CitizenAgent">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+
+	<logger name="org.springframework.jdbc">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+
+	<logger
+		name="cz.agents.agentpolis.simulator.importer.osm.task.GraphImportTask">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger
+		name="eu.superhub.wp4.model.citizen.activityscheduler.planner.WP5PlannerAdapter">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="org.springframework.jdbc.core.JdbcTemplate">
+		<level value="off" />
+		<appender-ref ref="CA" />
+	</logger>
+
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="CA" />
+		<!-- <appender-ref ref="FileA" /> -->
+	</root>
+</log4j:configuration>
