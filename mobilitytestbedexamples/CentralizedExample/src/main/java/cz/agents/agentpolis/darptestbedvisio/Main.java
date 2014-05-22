@@ -2,6 +2,7 @@ package cz.agents.agentpolis.darptestbedvisio;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Injector;
+import cz.agents.agentpolis.darptestbed.global.GeneratorParams;
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.TestbedLogAnalyser;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.analyser.init.TestbedAnalyserProcessorInit;
@@ -64,7 +65,7 @@ public class Main {
     public static void main(String[] args) throws ConfigReaderException, IOException {
 
         // select the benchmark directory
-        File experiment = null;
+        File experiment;
         if (args.length > 1) {
             experiment = new File(args[0]);
         } else if (args.length == 1) {
@@ -119,31 +120,20 @@ public class Main {
         if (args.length > 1) {
             GlobalParams.setUseResultsFile(false);
 
-            GlobalParams.setRandomSeed(Long.parseLong(args[0]));
-            GlobalParams.setTimeWindowsUsed(Boolean.parseBoolean(args[3]));
+            GlobalParams.setRandomSeed(Long.parseLong(args[1]));
 
-            // *algorithm type
-            int algorithmTypeNum = Integer.parseInt(args[5]);
-            int timerInterval = Integer.parseInt(args[6]);
-
-            if (algorithmTypeNum < 3) {
-                GlobalParams.setTimerDispatchingInterval(timerInterval);
-            } else {
-                GlobalParams.setTimerDriverInterval(timerInterval);
-                GlobalParams.setTimerPassengerInterval(timerInterval / 2);
-            }
-
-            // **time windows size
-            int timeWinSize = Integer.parseInt(args[7]);
+            GlobalParams.setTimerDriverInterval(Integer.parseInt(args[2]));
+            GlobalParams.setTimerPassengerInterval(Integer.parseInt(args[3]));
+            if (args.length > 4)
+                GlobalParams.setTimerDispatchingInterval(Integer.parseInt(args[4]));
 
         } else {
             // default (in-source) settings of parameters
             GlobalParams.setUseResultsFile(true);
 
             GlobalParams.setRandomSeed(4);
-            GlobalParams.setTimeWindowsUsed(true);
-            GlobalParams.setTimerDispatchingInterval(10);
 
+            GlobalParams.setTimerDispatchingInterval(10);
             GlobalParams.setTimerDriverInterval(1); // 30
             GlobalParams.setTimerPassengerInterval(1); // 35
         }
