@@ -1,5 +1,6 @@
 package cz.agents.agentpolis.darptestbed.simmodel.agent.logicconstructor;
 
+import com.google.inject.Injector;
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatching.protocol.DispatchingMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
@@ -28,30 +29,39 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
 public class DecentralizedLogicConstructor implements LogicConstructor {
     @Override
-    public PassengerDecentralizedLogic constructDecentralizedPassengerLogic(String agentId, RequestConsumerMessageProtocol sender, DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile, TestbedPassengerActivity passengerActivity, TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
+    public PassengerDecentralizedLogic constructPassengerLogic(
+            String agentId, RequestConsumerMessageProtocol sender, DriverMessageProtocol driverMessageProtocol,
+            TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
+            TestbedPassengerActivity passengerActivity,
+            TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
         return new PassengerDecentralizedLogicExample(agentId, sender, driverMessageProtocol,
                 taxiModel, positionQuery, utils, passengerProfile, passengerActivity, timeSpendingActivity, logger);
     }
 
     @Override
-    public PassengerCentralizedLogic constructCentralizedPassengerLogic(String agentId, RequestConsumerMessageProtocol sender, DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile, TestbedPassengerActivity passengerActivity, TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
-        throw new IllegalArgumentException();
+    public boolean usesDispatching() {
+        return false;
     }
 
     @Override
-    public DriverDecentralizedLogic constructDecentralizedDriverLogic(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel, AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle, DriveVehicleActivity drivingActivity) {
+    public DriverDecentralizedLogic constructDriverLogic(String agentId, PassengerMessageProtocol sender,
+                                                                      TestbedModel taxiModel,
+                                                                      AgentPositionQuery positionQuery,
+                                                                      AllNetworkNodes allNetworkNodes, Utils utils,
+                                                                      TestbedVehicle vehicle,
+                                                                      DriveVehicleActivity drivingActivity,
+                                                                      Injector injector) {
         return new DriverDecentralizedLogicExample(agentId, sender,
                 taxiModel, positionQuery, allNetworkNodes, utils,
                 vehicle, drivingActivity);
     }
 
     @Override
-    public DriverCentralizedLogic constructCentralizedDriverLogic(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel, AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle, DriveVehicleActivity drivingActivity, DispatchingMessageProtocol dispatchingMessageProtocol) {
-        throw new IllegalArgumentException();
-    }
-
-    @Override
-    public DispatchingLogic constructDispatchingLogic(String dispatching, PassengerMessageProtocol sender, DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner, TestbedVehicleStorage vehicleStorage) {
+    public DispatchingLogic constructDispatchingLogic(
+            String dispatching, PassengerMessageProtocol sender,
+            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel,
+            AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
+            TestbedVehicleStorage vehicleStorage) {
         throw new IllegalArgumentException();
     }
 }
