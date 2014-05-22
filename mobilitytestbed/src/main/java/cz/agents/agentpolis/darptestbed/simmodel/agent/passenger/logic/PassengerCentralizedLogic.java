@@ -23,7 +23,7 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
  * 
  * @author Lukas Canda
  */
-public class PassengerCentralizedLogic extends PassengerLogic<RequestConsumerMessageProtocol> {
+public class PassengerCentralizedLogic extends PassengerLogicWithRequestConsumerMessageProtocol {
 
 	public PassengerCentralizedLogic(String agentId, RequestConsumerMessageProtocol sender,
                                      DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery,
@@ -35,7 +35,12 @@ public class PassengerCentralizedLogic extends PassengerLogic<RequestConsumerMes
 
 	}
 
-	/**
+    @Override
+    public final boolean isDecentralized() {
+        return false;
+    }
+
+    /**
 	 * Sends a request to the dispatching.
 	 * 
 	 * This method is usually called only by a request generator through the

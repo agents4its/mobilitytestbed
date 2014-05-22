@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogicWithRequestConsumerMessageProtocol;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -79,7 +80,6 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 		PassengerAgentFactory factory = new PassengerAgentFactory();
 		Timer passTimer = injector.getInstance(TestbedModel.class).getPassengersTimer();
 		// int randomBound = possibleNodes.size();
-		boolean centralized = GlobalParams.isCentralized();
 
 		// get ready for creating a logic (I couldn't figure out any better
 		// place to hide this code)
@@ -126,26 +126,24 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 
 			DriverMessageProtocol driverMessageProtocol = injector.getInstance(DriverMessageProtocol.class);
 
-			PassengerAgent<? extends PassengerLogic<?>> passengerAgent = null;
-			if (centralized) {
-				// centralized algorithms
+			PassengerAgent<? extends PassengerLogic<?>> passengerAgent;
+            RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+            PassengerLogicWithRequestConsumerMessageProtocol logic = logicConstructor.constructPassengerLogic(
+                    agentId, sender, driverMessageProtocol, taxiModel, positionQuery, utils, profile,
+                    passengerActivity, timeActivity, logger);
 
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+            if (!logic.isDecentralized()) {
+                // centralized algorithms
 
-				// load the PassengerCentralizedLogic class for the passengers (in centralized case)
-				PassengerCentralizedLogic logic = logicConstructor.constructCentralizedPassengerLogic(agentId, sender, driverMessageProtocol, taxiModel,
-                        positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-				passengerAgent = factory.createCentrAgent(agentId, logic, startLife,
+
+                // load the PassengerCentralizedLogic class for the passengers (in centralized case)
+				passengerAgent = factory.createCentrAgent(agentId, (PassengerCentralizedLogic) logic, startLife,
 						agentRequests.additionalRequirements, injector, generator);
 
 			} else {
-				PassengerDecentralizedLogic logic = null;
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
-
-				logic = logicConstructor.constructDecentralizedPassengerLogic(agentId, sender, driverMessageProtocol, taxiModel,
-                        positionQuery, utils, profile, passengerActivity, timeSpendingActivity, logger);
-				PassengerDecentralizedAgent passengerDecentralizedAgent = factory.createDecentrAgent(agentId, logic, startLife,
-						agentRequests.additionalRequirements, injector, generator);
+				PassengerDecentralizedAgent passengerDecentralizedAgent =
+                        factory.createDecentrAgent(agentId, (PassengerDecentralizedLogic) logic, startLife,
+                                agentRequests.additionalRequirements, injector, generator);
 				passTimer.addCallback(passengerDecentralizedAgent);
 
 				passengerAgent = passengerDecentralizedAgent;

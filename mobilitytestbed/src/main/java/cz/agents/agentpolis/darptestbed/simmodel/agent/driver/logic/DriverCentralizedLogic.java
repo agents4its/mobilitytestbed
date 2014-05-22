@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
  *
  * @author Lukas Canda
  */
-public class DriverCentralizedLogic extends DriverLogic<PassengerMessageProtocol> {
+public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProtocol {
 
     private static final Logger LOGGER = Logger.getLogger(DriverCentralizedLogic.class);
 
@@ -158,6 +158,11 @@ public class DriverCentralizedLogic extends DriverLogic<PassengerMessageProtocol
         dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                 new DriverReportsPassengerHasLeftMessage(passengerId, new TripInfo(this.getDriverId(),
                         this.getVehicle().getId())));
+    }
+
+    @Override
+    public final boolean isDecentralized() {
+        return false;
     }
 
     public void planConfirmed() {

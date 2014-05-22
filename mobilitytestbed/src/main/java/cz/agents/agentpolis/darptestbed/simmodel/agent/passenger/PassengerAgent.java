@@ -69,9 +69,7 @@ public abstract class PassengerAgent<TPassengerLogic extends PassengerLogic> ext
 		this.timeSpendingActivity = timeSpendingActivity;
 		this.passengerRequirements = passengerRequirements;
 
-		if (GlobalParams.getRequestGeneratorType() == 1) {
-			this.requestGenerator = requestGenerator;
-		}
+        this.requestGenerator = requestGenerator;
 	}
 
 	@Override

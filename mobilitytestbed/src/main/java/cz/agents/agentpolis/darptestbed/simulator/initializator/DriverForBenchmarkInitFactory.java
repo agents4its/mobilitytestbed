@@ -9,9 +9,11 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.VehicleMoveLogg
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.Driver;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.GPS;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DriverAgentFactory;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DriverCentralizedAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.DriverDecentralizedAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverCentralizedLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverDecentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverLogicWithPassengerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.timer.Timer;
 import cz.agents.agentpolis.darptestbed.simmodel.entity.vehicle.TestbedVehicle;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
@@ -68,8 +70,6 @@ public class DriverForBenchmarkInitFactory implements AgentInitFactory {
 
         Timer taxiDriversTimer = injector.getInstance(TestbedModel.class).getTaxiDriversTimer();
 
-        boolean centralized = GlobalParams.isCentralized();
-
         // get ready for creating a logic (I couldn't figure out any better
         // place to hide this code)
         TestbedModel taxiModel = injector.getInstance(TestbedModel.class);
@@ -79,11 +79,6 @@ public class DriverForBenchmarkInitFactory implements AgentInitFactory {
         NodeExtendedFunction nearestNodeFinder = injector.getInstance(NodeExtendedFunction.class);
         VehicleDataModel vehicleDataModel = injector.getInstance(VehicleDataModel.class);
         Random random = injector.getInstance(Random.class);
-
-        Map<Integer, Integer> seatsDistribution = new HashMap<Integer, Integer>();
-        seatsDistribution.put(5, GlobalParams.getNumberOfFiveSeatVehicles());
-        seatsDistribution.put(6, GlobalParams.getNumberOfSixSeatVehicles());
-        seatsDistribution.put(7, GlobalParams.getNumberOfSevenSeatVehicles());
 
         List<Agent> agents = new ArrayList<Agent>();
         DriverAgentFactory factory = new DriverAgentFactory();
@@ -117,32 +112,15 @@ public class DriverForBenchmarkInitFactory implements AgentInitFactory {
 
             Agent driverAgent = null;
 
-            if (centralized) {
-                // centralized algorithms
-                PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
-                DispatchingMessageProtocol dispatchingMessageProtocol =
-                        injector.getInstance(DispatchingMessageProtocol.class);
-
-                DriverCentralizedLogic logic =
-                        logicConstructor.constructCentralizedDriverLogic(agentId, sender, taxiModel,
+            PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
+            DriverLogicWithPassengerMessageProtocol logic =
+                    logicConstructor.constructDriverLogic(agentId, sender, taxiModel,
                             positionQuery, allNetworkNodes, utils,
-                            vehicle, drivingActivity, dispatchingMessageProtocol);
+                            vehicle, drivingActivity, injector);
 
-                driverAgent = factory.createCentrDriverAgent(agentId, logic, injector);
-
-            } else {
-                // decentralized algorithms
-                PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
-                DriverDecentralizedLogic logic =
-                        logicConstructor.constructDecentralizedDriverLogic(agentId, sender,
-                                taxiModel, positionQuery, allNetworkNodes, utils,
-                                vehicle, drivingActivity);
-
-                DriverDecentralizedAgent driverDecentralizedAgent = factory.createDecentDriverAgent(agentId, logic, injector);
-                taxiDriversTimer.addCallback(driverDecentralizedAgent);
-
-                driverAgent = driverDecentralizedAgent;
-
+            driverAgent = factory.createDriverAgent(agentId, logic, injector);
+            if (logic.isDecentralized()) {
+                taxiDriversTimer.addCallback((DriverDecentralizedAgent) driverAgent);
             }
 
             injector.getInstance(AgentPositionModel.class).setNewEntityPosition(driverAgent.getId(), initialLocation);

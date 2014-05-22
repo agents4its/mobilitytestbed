@@ -26,7 +26,7 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
  * 
  * @author Lukas Canda
  */
-public abstract class PassengerDecentralizedLogic extends PassengerLogic<RequestConsumerMessageProtocol> {
+public abstract class PassengerDecentralizedLogic extends PassengerLogicWithRequestConsumerMessageProtocol {
 
 	public PassengerDecentralizedLogic(String agentId, RequestConsumerMessageProtocol sender,
                                        DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery,
@@ -104,4 +104,7 @@ public abstract class PassengerDecentralizedLogic extends PassengerLogic<Request
 				useEndOfTripPositions);
 	}
 
+    public final boolean isDecentralized() {
+        return true;
+    }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cz.agents.agentpolis.darptestbed.global.GeneratorParams;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogicWithRequestConsumerMessageProtocol;
 import org.apache.log4j.Logger;
 import org.joda.time.Duration;
 import org.openstreetmap.osm.data.coordinates.LatLon;
@@ -80,7 +82,6 @@ public class PassengerInitFactory implements AgentInitFactory {
 
 		Timer passTimer = injector.getInstance(TestbedModel.class).getPassengersTimer();
 		int randomBound = possibleNodes.size();
-		boolean centralized = GlobalParams.isCentralized();
 
 		// get ready for creating a logic (I couldn't figure out any better
 		// place to hide this code)
@@ -88,30 +89,10 @@ public class PassengerInitFactory implements AgentInitFactory {
 		AgentPositionQuery positionQuery = injector.getInstance(AgentPositionQuery.class);
 		Utils utils = injector.getInstance(Utils.class);
 
-		int numberOfPassengers = GlobalParams.getNumberOfPassengers();
-		int maxStartLife = GlobalParams.getMaxPassengerStartLifeTime();
-		boolean useCenter = true;
-		long centerNode = 135476471;
-		double centerRadius = GlobalParams.getCityCenterRadius();
+		int numberOfPassengers = GeneratorParams.getNumberOfPassengers();
+		int maxStartLife = GeneratorParams.getMaxPassengerStartLifeTime();
 
-		Node centerNodeObj = injector.getInstance(AllNetworkNodes.class).getAllNetworkNodes().get(centerNode);
-
-		// remove all nodes, that does not lie in the center
-		if (useCenter) {
-			for (int i = randomBound - 1; i >= 0; i--) {
-				try {
-					Long nodeId = possibleNodes.get(i);
-					Double distance = LatLon.distanceInMeters(injector.getInstance(AllNetworkNodes.class)
-							.getAllNetworkNodes().get(nodeId).getLatLon(), centerNodeObj.getLatLon());
-					if (distance > centerRadius) {
-						possibleNodes.remove(nodeId);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		randomBound = possibleNodes.size();
+  		randomBound = possibleNodes.size();
 
 		// create passengers
 		for (int i = 0; i < numberOfPassengers; i++) {
@@ -133,28 +114,19 @@ public class PassengerInitFactory implements AgentInitFactory {
 
 			DriverMessageProtocol driverMessageProtocol = injector.getInstance(DriverMessageProtocol.class);
 
-			PassengerAgent<? extends PassengerLogic> passenger = null;
-			if (centralized) {
-
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
-
-				PassengerCentralizedLogic logic =
-                        logicConstructor.constructCentralizedPassengerLogic(
-                                agentId, sender, driverMessageProtocol, taxiModel,
-						    positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-				passenger = factory.createCentrAgent(agentId, logic, startLife, Sets.<String> newHashSet(), injector,
-						requestGenerator);
-
+			PassengerAgent<? extends PassengerLogic> passenger;
+            RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+            PassengerLogicWithRequestConsumerMessageProtocol logic =
+                    logicConstructor.constructPassengerLogic(
+                            agentId, sender, driverMessageProtocol, taxiModel,
+                            positionQuery, utils, profile, passengerActivity, timeActivity, logger);
+            if (!logic.isDecentralized()) {
+				passenger = factory.createCentrAgent(agentId, (PassengerCentralizedLogic) logic, startLife,
+                        Sets.<String> newHashSet(), injector, requestGenerator);
 			} else {
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
-				// decentralized algorithms
-                PassengerDecentralizedLogic logic =
-                        logicConstructor.constructDecentralizedPassengerLogic(
-                                agentId, sender, driverMessageProtocol, taxiModel,
-                        positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-
-				PassengerDecentralizedAgent passengerDecentralizedAgent = factory.createDecentrAgent(agentId, logic, startLife,
-						Sets.<String> newHashSet(), injector, requestGenerator);
+				PassengerDecentralizedAgent passengerDecentralizedAgent =
+                        factory.createDecentrAgent(agentId, (PassengerDecentralizedLogic) logic, startLife,
+                                Sets.<String>newHashSet(), injector, requestGenerator);
 				passTimer.addCallback(passengerDecentralizedAgent);
 
 				passenger = passengerDecentralizedAgent;

@@ -47,7 +47,7 @@ public class DispatchingAndTimersInitFactory implements InitModuleFactory {
         EventProcessor eventProcessor = injector.getInstance(EventProcessor.class);
         Utils utils = injector.getInstance(Utils.class);
 
-        if (!GlobalParams.isCentralized()) {
+        if (!logicConstructor.usesDispatching()) {
             // create timers
             taxiModel.setTimers(
                     null,

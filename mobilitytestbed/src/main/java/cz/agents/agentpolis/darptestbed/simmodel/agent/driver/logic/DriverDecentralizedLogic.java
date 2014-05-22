@@ -30,7 +30,7 @@ import java.util.List;
  * @author Lukas Canda
  */
 
-public abstract class DriverDecentralizedLogic extends DriverLogic<PassengerMessageProtocol> {
+public abstract class DriverDecentralizedLogic extends DriverLogicWithPassengerMessageProtocol {
 
     protected static final Logger LOGGER = Logger.getLogger(DriverDecentralizedLogic.class);
 
@@ -159,5 +159,10 @@ public abstract class DriverDecentralizedLogic extends DriverLogic<PassengerMess
     @Override
     protected void sendTaxiArrivedToPickup(String passengerId) {
         sender.sendMessage(passengerId, new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+    }
+
+    @Override
+    public final boolean isDecentralized() {
+        return true;
     }
 }
