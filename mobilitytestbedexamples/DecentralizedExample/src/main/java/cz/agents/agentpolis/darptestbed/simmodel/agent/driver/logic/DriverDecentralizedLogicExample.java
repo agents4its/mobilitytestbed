@@ -162,7 +162,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
 
     @Override
     protected void sendTaxiArrivedToDropOff(String passengerId) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        sender.sendMessage(passengerId, new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
     }
 
     @Override

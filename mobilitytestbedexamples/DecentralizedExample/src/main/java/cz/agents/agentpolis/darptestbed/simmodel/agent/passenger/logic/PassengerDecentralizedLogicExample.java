@@ -34,6 +34,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
     // past
     private ArrayList<String> driversThatRejectedMe = new ArrayList<String>();
 
+
     /**
      * Sends a request to closest free driver, that has never rejected us or
      * give up after too many rejections.
@@ -44,7 +45,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
 
         // if too many drivers rejected us, don't even try
         if (driversThatRejectedMe.size() >= 3) {
-            LOGGER.debug(request.getPassengerId() + "giving up after 3 rejections.");
+            LOGGER.debug(request.getPassengerId() + " giving up after 3 rejections.");
             logger.logRequestRejected(passengerId);
             return;
         }
@@ -68,6 +69,9 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
         if (closestDriver != null) {
             super.sendRequest(request);
             sender.sendMessage(closestDriver, request);
+        } else {
+            LOGGER.debug(request.getPassengerId() + " giving up failing to find possible driver.");
+            logger.logRequestRejected(passengerId);
         }
 
     }
@@ -89,6 +93,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
         if (!driversThatRejectedMe.contains(rejection.rejectReceivedFrom))
             driversThatRejectedMe.add(rejection.rejectReceivedFrom);
         // and send the request again (now to someone else)
+        this.stopWaiting(rejection.rejectReceivedFrom);
         this.sendRequest(rejection.request);
     }
 
