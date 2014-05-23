@@ -91,7 +91,8 @@ public class TestbedLogAnalyser {
         passengerTravelTime.addEndLogItem(passengerGetOffVehicle.passengerId, passengerGetOffVehicle.simulationTime);
         PassengerRequestLogItem passengerRequestLogItem = passengerRequestLogItems
                 .get(passengerGetOffVehicle.passengerId);
-        if (passengerRequestLogItem.timeWindow.getLatestArrival() < passengerGetOffVehicle.simulationTime) {
+
+        if (passengerRequestLogItem.timeWindow.getLatestArrival() <= passengerGetOffVehicle.simulationTime) {
             failedRequests++;
         } else {
             successfulRequests++;

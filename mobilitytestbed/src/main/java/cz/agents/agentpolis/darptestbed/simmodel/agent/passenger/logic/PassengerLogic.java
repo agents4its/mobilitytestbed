@@ -20,9 +20,10 @@ import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.pr
 import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
 import cz.agents.agentpolis.simmodel.agent.activity.callback.TimeActivityCallback;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -172,7 +173,6 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                                 .currentRequestConfirmed
                                 .getFromNode() : "NULL") + " " + this.getCurrentPositionNode());
                     }
-
                     this.currentDriverId = driverId;
                     this.currentVehicleId = vehicleId;
                 } else {
@@ -184,7 +184,6 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                     this.currentVehicleId = null;
                     this.currentRequestConfirmed = null;
                 }
-
             } else if (this.currentRequestConfirmed.getToNode() == this.getCurrentPositionNode()) {
                 currentVehicleId = null;
                 currentDriverId = null;
@@ -399,7 +398,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     protected void stopWaiting(String driverId) {
         if (driverId == null || !driverId.equals(this.currentDriverId))
             return;
-        logger.logRequestRejected(passengerId);
+//        logger.logRequestRejected(passengerId);
         LOGGER.debug("Stopped waiting for taxi: " + driverId + " " +
                 ((this.requestLastSent != null) ? this.requestLastSent : " null "));
         this.currentDriverId = null;
