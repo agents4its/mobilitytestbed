@@ -254,37 +254,33 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 
 //        LOGGER.debug(getVehicle().getId() + ": " + "Location - " +  getCurrentPositionNode() + " Drive TripPlan: " + tripPlan);
 
-        if (tripPlan == null) {
-            tripFinished();
-            return;
-        }
-
         Long currentPos = this.getCurrentPositionNode();
         PassengersInAndOutPair passengersToGetInAndOut =
                 tripPlan.getNodeWithBoardingAndDisembarkingPassengers(currentPos);
         // if there are passengers waiting to get in on this node
         if (passengersToGetInAndOut != null) {
-            if (!isEverybodyOnBoard() || !isEverybodyOffBoard()) {
-                lastLoadingNode = currentPos;
+            lastLoadingNode = currentPos;
+            boolean waitOnBoarding = false;
+            if (numOfPassenToGetIn == -1 || !isEverybodyOnBoard()) {
+                processBoardingPassengers(currentPos, passengersToGetInAndOut);
 
-                if (!isEverybodyOnBoard()) {
-                    processBoardingPassengers(currentPos, passengersToGetInAndOut);
-//                    LOGGER.debug("passed");
+                if (!isEverybodyOnBoard())
+                    waitOnBoarding = true;
+            }
 
-                }
+            if (numOfPassenToGetOff == -1 || !isEverybodyOffBoard()) {
+                if (processDisembarkingPassengers(currentPos, passengersToGetInAndOut))
+                    return;
+            }
 
-                if (!isEverybodyOffBoard()) {
-
-                    if (processDisembarkingPassengers(currentPos, passengersToGetInAndOut)) return;
-                }
+            if (waitOnBoarding)
+                return;
 
 //                LOGGER.debug("Leaving with boarding: " + informedBoardingPassengersAtCurrentNode);
 //                LOGGER.debug("Leaving with disembarking: " + informedDisembarkingPassengersAtCurrentNode);
-
-                if (tripPlan == null || !tripPlan.getTrips().hasTrip())
-                    tripFinished();
-                return;
-            }
+//
+//                if (tripPlan == null || !tripPlan.getTrips().hasTrip())
+//                    tripFinished();
         }
         this.numOfPassenToGetIn = -1;
         this.numOfPassenToGetOff = -1;
@@ -319,21 +315,30 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
         LOGGER.debug("Processing off - driver: " + getVehicle().getId() + " " + tripPlan + " " +
                 this.numOfPassenToGetOff);
 
-        for (String passengerId : passengersToGetOut) {
-            if (!passengersOnBoard.contains(passengerId))
-                return true;
+        if (this.numOfPassenToGetOff > 0) {
 
-            LOGGER.debug("Driver: DISEMBARK of " + passengerId + ", used " + getVehicle().getId() +
+            for (String passengerId : passengersToGetOut) {
+                if (!passengersOnBoard.contains(passengerId)) {
+                    informedDisembarkingPassengersAtCurrentNode.add(passengerId);
+                    --numOfPassenToGetOff;
+                    continue;
+                }
 
-                    ", driven by " + getDriverId() + " at " + currentPos + ". " +
-                    passengersToGetOut);
-            tripPlan.removePassengerFromDisembarkingPassengersAtNode(passengerId, currentPos);
-            sendTaxiArrivedToDropOff(passengerId);
+                LOGGER.debug("Driver: DISEMBARK of " + passengerId + ", used " + getVehicle().getId() +
+                        ", driven by " + getDriverId() + " at " + currentPos + ". " +
+                        passengersToGetOut);
+                tripPlan.removePassengerFromDisembarkingPassengersAtNode(passengerId, currentPos);
+                sendTaxiArrivedToDropOff(passengerId);
 
-            informedDisembarkingPassengersAtCurrentNode.add(passengerId);
-            passengersOnBoard.remove(passengerId);
+                informedDisembarkingPassengersAtCurrentNode.add(passengerId);
+                passengersOnBoard.remove(passengerId);
+            }
+
+            return (this.numOfPassenToGetOff > 0);
+
+        } else {
+            return false;
         }
-        return false;
     }
 
     private void processBoardingPassengers(Long currentPos, PassengersInAndOutPair passengersToGetInAndOut) {

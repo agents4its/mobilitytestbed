@@ -190,6 +190,8 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                 currentDriverId = null;
                 currentRequestConfirmed = null;
                 passengerAdditionalRequirements = null;
+                taxiModel.removePassengerOnBoard(passengerId, vehicleId);
+                // log the event
                 sendPassengerGotOffVehicle(driverId, vehicleId);
                 LOGGER.debug("PASSENGER OFF BOARD: " + vehicleId + " " + taxiModel.getNumOfPassenOnBoard(vehicleId) +
                         " " +
@@ -224,7 +226,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      */
     private void processVehicleArrivedNoTimeWindows(String driverId, String vehicleId) {
 
-        LOGGER.info(passengerId + " got in at " + getCurrentTimeStr());
+//        LOGGER.info(passengerId + " got in at " + getCurrentTimeStr());
         passengerActivity.useArrivedVehicle(passengerId, vehicleId, currentRequestConfirmed.getToNode(), this);
         sendPassengerGotInVehicle(driverId, vehicleId);
     }
@@ -329,6 +331,8 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
         this.currentRequestConfirmed = this.requestLastSent;
     }
 
+
+
     /**
      * This callback is called after getting off at the target node
      */
@@ -384,5 +388,22 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 
     public long getSuccessfulArrivalTime() {
         return successfulArrivalTime != -1 ? successfulArrivalTime : utils.getCurrentTime();
+    }
+
+    /**
+     * The request communication has ended and a taxi will pick me up. Now I
+     * wait.
+     *
+     * @param driverId  the driver who'll pick me up
+     */
+    protected void stopWaiting(String driverId) {
+        if (driverId == null || !driverId.equals(this.currentDriverId))
+            return;
+        logger.logRequestRejected(passengerId);
+        LOGGER.debug("Stopped waiting for taxi: " + driverId + " " +
+                ((this.requestLastSent != null) ? this.requestLastSent : " null "));
+        this.currentDriverId = null;
+        this.currentVehicleId = null;
+        this.currentRequestConfirmed = null;
     }
 }

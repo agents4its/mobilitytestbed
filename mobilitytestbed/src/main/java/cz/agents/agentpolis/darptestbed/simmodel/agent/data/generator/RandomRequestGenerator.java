@@ -53,7 +53,7 @@ public class RandomRequestGenerator extends ARequestGenerator {
 		// prepare the request to be send
 		Request reqNew = null;
 
-		if (GlobalParams.isTimeWindowsUsed()) {
+		if (GeneratorParams.isTimeWindowsUsed()) {
 			int intPassengerStartLife = (int) passengerStartLife.getMillis();
 			long minDeparture = intPassengerStartLife + GeneratorParams.getEarliestDepartureShift() * 60000;
 			// an alternative - random earliest departure

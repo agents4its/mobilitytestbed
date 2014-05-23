@@ -68,6 +68,7 @@ public class PassengerCentralizedLogic extends PassengerLogicWithRequestConsumer
 	public void processRejection(RequestReject rejection) {
 		// log the request failure for statistical purposes
 		logger.logRequestRejected(passengerId);
+        this.stopWaiting(rejection.rejectReceivedFrom);
 	}
 
 }

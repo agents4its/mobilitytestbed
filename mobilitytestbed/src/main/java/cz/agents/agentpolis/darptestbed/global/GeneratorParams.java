@@ -38,6 +38,10 @@ public class GeneratorParams {
      * time window is always 2.5 times bigger than it has to be
      */
     private static double timeWinRelSize;
+    /**
+     * True if the request generator should include time windows in its requests
+     */
+    static boolean timeWindowsUsed;
 
     public static Random getRandom() {
         if (randomSeed <= 0) {
@@ -138,4 +142,16 @@ public class GeneratorParams {
         }
     }
 
+    public static boolean isTimeWindowsUsed() {
+        return timeWindowsUsed;
+    }
+
+    /**
+     * @param timeWindowsUsed
+     *            true = time windows are generated and respected, false = no
+     *            time windows are used in the whole simulation
+     */
+    public static void setTimeWindowsUsed(boolean timeWindowsUsed) {
+        GeneratorParams.timeWindowsUsed = timeWindowsUsed;
+    }
 }

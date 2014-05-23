@@ -48,7 +48,7 @@ public class DriverDecentralizedAgent extends DriverAgent<DriverDecentralizedLog
 
     @Override
     public void visit(ProposalAccept proposalAccept) {
-        //LOGGER.debug(getId() + ":" + proposalAccept.getClass().getSimpleName());
+        LOGGER.debug(getId() + ":" + proposalAccept.getClass().getSimpleName());
         logic.processNewAcceptance(proposalAccept.proposal);
 
     }

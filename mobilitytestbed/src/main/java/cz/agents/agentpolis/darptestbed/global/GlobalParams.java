@@ -17,11 +17,7 @@ public class GlobalParams {
 	 * output
 	 */
 	private static boolean useResultsFile;
-	/**
-	 * True if the request generator should include time windows in its requests
-	 */
-	private static boolean timeWindowsUsed;
-	// TODO: Remove it. It was replaced by vehicleCapacity in json
+    // TODO: Remove it. It was replaced by vehicleCapacity in json
 
     // more detailed settings follow...
     /**
@@ -68,19 +64,6 @@ public class GlobalParams {
 	 */
 	public static void setRandomSeed(long randomSeed) {
 		GlobalParams.randomSeed = randomSeed;
-	}
-
-	public static boolean isTimeWindowsUsed() {
-		return timeWindowsUsed;
-	}
-
-	/**
-	 * @param timeWindowsUsed
-	 *            true = time windows are generated and respected, false = no
-	 *            time windows are used in the whole simulation
-	 */
-	public static void setTimeWindowsUsed(boolean timeWindowsUsed) {
-		GlobalParams.timeWindowsUsed = timeWindowsUsed;
 	}
 
     public static double getVelocityInKmph() {

@@ -110,7 +110,7 @@ public abstract class PassengerAgent<TPassengerLogic extends PassengerLogic> ext
 
 	@Override
 	public void visit(RequestReject requestReject) {
-		//LOGGER.debug(getId() + ":" + requestReject.getClass().getSimpleName());
+		LOGGER.debug(getId() + ":" + requestReject.getClass().getSimpleName());
 		logic.processRejection(requestReject);
 	}
 
