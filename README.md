@@ -13,7 +13,7 @@ It allows users to:
 * discover the **weaknesses and strengths** of their algorithms
 * and **compare** their **performance** with the alternatives.
 
-<img src="https://raw.github.com/agents4its/mobilitytestbed/screenshots/screenshot1.jpg" width="240" align="right" />
+<img src="https://raw.github.com/agents4its/mobilitytestbed/screenshots/screenshot1.jpg" width="280" align="right" />
 
 Links to follow:
 * [Mobility Testbed Wiki](http://github.com/agents4its/mobilitytestbed/wiki) with all the necessary instructions
