@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogicWithRequestConsumerMessageProtocol;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -27,14 +29,11 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.request.PassengerReque
 import cz.agents.agentpolis.darptestbed.simmodel.agent.activity.movement.TestbedPassengerActivity;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.BenchmarkRequestGenerator;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.support.RequestBuilder;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.exception.WrongSettingsException;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerAgentFactory;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerDecentrAgent;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerDecentralizedAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerProfile;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentrLogicExample;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentralizedLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.timer.Timer;
 import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
@@ -54,17 +53,22 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 	private final File serializedPassengerPopulation;
 
 	private final int populationLimit;
+    private final LogicConstructor logicConstructor;
 
-	public PassengerForBenchmarkInitFactory(File serializedPassengerPopulation, int populationLimit) {
+    public PassengerForBenchmarkInitFactory(File serializedPassengerPopulation, int populationLimit,
+                                            LogicConstructor logicConstructor) {
 		super();
 		this.serializedPassengerPopulation = serializedPassengerPopulation;
 		this.populationLimit = populationLimit;
+        this.logicConstructor = logicConstructor;
 	}
 
-	public PassengerForBenchmarkInitFactory(File serializedPassengerPopulation) {
+	public PassengerForBenchmarkInitFactory(File serializedPassengerPopulation,
+                                            LogicConstructor logicConstructor) {
 		super();
 		this.serializedPassengerPopulation = serializedPassengerPopulation;
 		this.populationLimit = Integer.MAX_VALUE;
+        this.logicConstructor = logicConstructor;
 	}
 
 	/**
@@ -76,7 +80,6 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 		PassengerAgentFactory factory = new PassengerAgentFactory();
 		Timer passTimer = injector.getInstance(TestbedModel.class).getPassengersTimer();
 		// int randomBound = possibleNodes.size();
-		boolean centralized = GlobalParams.isCentralized();
 
 		// get ready for creating a logic (I couldn't figure out any better
 		// place to hide this code)
@@ -123,41 +126,27 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 
 			DriverMessageProtocol driverMessageProtocol = injector.getInstance(DriverMessageProtocol.class);
 
-			PassengerAgent<? extends PassengerLogic<?>> passengerAgent = null;
-			if (centralized) {
-				// centralized algorithms
+			PassengerAgent<? extends PassengerLogic<?>> passengerAgent;
+            RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+            PassengerLogicWithRequestConsumerMessageProtocol logic = logicConstructor.constructPassengerLogic(
+                    agentId, sender, driverMessageProtocol, taxiModel, positionQuery, utils, profile,
+                    passengerActivity, timeActivity, logger);
 
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+            if (!logic.isDecentralized()) {
+                // centralized algorithms
 
-				// load the PassengerCentrLogic class for the passengers (in centralized case)
-				PassengerCentrLogic logic = new PassengerCentrLogic(agentId, sender, driverMessageProtocol, taxiModel,
-						positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-				passengerAgent = factory.createCentrAgent(agentId, logic, startLife,
+
+                // load the PassengerCentralizedLogic class for the passengers (in centralized case)
+				passengerAgent = factory.createCentrAgent(agentId, (PassengerCentralizedLogic) logic, startLife,
 						agentRequests.additionalRequirements, injector, generator);
 
 			} else {
-				PassengerDecentrLogic logic = null;
-				RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
+				PassengerDecentralizedAgent passengerDecentralizedAgent =
+                        factory.createDecentrAgent(agentId, (PassengerDecentralizedLogic) logic, startLife,
+                                agentRequests.additionalRequirements, injector, generator);
+				passTimer.addCallback(passengerDecentralizedAgent);
 
-				// decentralized algorithms
-				switch (GlobalParams.getDecentrAlgType()) {
-				//case 1:
-				//	break;
-				//case 2:
-				//	break;
-				//case 3:
-				//	break;
-				default:
-					// by default, load the PassengerDecentrLogicExample class for the passengers (decentr. case)
-					logic = new PassengerDecentrLogicExample(agentId, sender, driverMessageProtocol,
-							taxiModel, positionQuery, utils, profile, passengerActivity, timeActivity, logger);
-				}
-
-				PassengerDecentrAgent passengerDecentrAgent = factory.createDecentrAgent(agentId, logic, startLife,
-						agentRequests.additionalRequirements, injector, generator);
-				passTimer.addCallback(passengerDecentrAgent);
-
-				passengerAgent = passengerDecentrAgent;
+				passengerAgent = passengerDecentralizedAgent;
 
 			}
 

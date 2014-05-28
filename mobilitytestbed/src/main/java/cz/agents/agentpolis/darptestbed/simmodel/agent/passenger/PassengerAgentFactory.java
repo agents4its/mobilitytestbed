@@ -10,8 +10,8 @@ import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.RequestGenerator;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentrLogic;
-import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentrLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentralizedLogic;
+import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic;
 import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
 
 /**
@@ -21,7 +21,7 @@ import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
  */
 public class PassengerAgentFactory {
 
-	public PassengerCentrAgent createCentrAgent(String passengerId, PassengerCentrLogic logic, Duration startLife,
+	public PassengerCentralizedAgent createCentrAgent(String passengerId, PassengerCentralizedLogic logic, Duration startLife,
 			Set<String> passengerRequirements, Injector injector, RequestGenerator requestGenerator) {
 
 		// WalkingActivity walkingActivity =
@@ -29,7 +29,7 @@ public class PassengerAgentFactory {
 		Utils utils = injector.getInstance(Utils.class);
 		TimeSpendingActivity timeSpendingActivity = injector.getInstance(TimeSpendingActivity.class);
 
-		PassengerCentrAgent passengerAgent = new PassengerCentrAgent(passengerId, TestbedEntityType.PASSENGER, logic,
+		PassengerCentralizedAgent passengerAgent = new PassengerCentralizedAgent(passengerId, TestbedEntityType.PASSENGER, logic,
 				utils, startLife, timeSpendingActivity, passengerRequirements, requestGenerator);
 
 		// add the agent into message receivers table
@@ -38,7 +38,7 @@ public class PassengerAgentFactory {
 		return passengerAgent;
 	}
 
-	public PassengerDecentrAgent createDecentrAgent(String passengerId, PassengerDecentrLogic logic,
+	public PassengerDecentralizedAgent createDecentrAgent(String passengerId, PassengerDecentralizedLogic logic,
 			Duration startLife, Set<String> passengerRequirements, Injector injector, RequestGenerator requestGenerator) {
 
 		// WalkingActivity walkingActivity =
@@ -46,7 +46,7 @@ public class PassengerAgentFactory {
 		Utils utils = injector.getInstance(Utils.class);
 		TimeSpendingActivity timeSpendingActivity = injector.getInstance(TimeSpendingActivity.class);
 
-		PassengerDecentrAgent passengerAgent = new PassengerDecentrAgent(passengerId, TestbedEntityType.PASSENGER,
+		PassengerDecentralizedAgent passengerAgent = new PassengerDecentralizedAgent(passengerId, TestbedEntityType.PASSENGER,
 				logic, utils, startLife, timeSpendingActivity, passengerRequirements, requestGenerator);
 
 		// add the agent into message receivers table

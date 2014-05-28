@@ -3,7 +3,7 @@ package cz.agents.agentpolis.darptestbed.siminfrastructure.logger;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.VehilceMovementLogItem;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.item.VehicleMovementLogItem;
 import cz.agents.agentpolis.siminfrastructure.logger.Logger;
 import cz.agents.agentpolis.siminfrastructure.logger.PublishSubscribeLogger;
 import cz.agents.alite.common.event.EventProcessor;
@@ -38,7 +38,7 @@ public class VehicleMoveLogger extends Logger {
 		// logCommonEvent(vehicleId, EVehicleLogItemType.VEHICLE_MOVEMENT,
 		// eventData);
 
-		log(new VehilceMovementLogItem(vehicleId, getCurrentSimulationTime(), toByNodeId));
+		log(new VehicleMovementLogItem(vehicleId, getCurrentSimulationTime(), toByNodeId));
 	}
 
 }

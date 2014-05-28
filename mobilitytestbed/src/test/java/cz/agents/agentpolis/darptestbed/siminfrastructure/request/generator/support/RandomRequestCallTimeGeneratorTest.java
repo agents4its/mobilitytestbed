@@ -54,7 +54,7 @@
 //	private void testGeneratedValue(double returnRandomValue, long duration, long inputTime) {
 //		Random random = mock(Random.class);
 //		when(random.nextDouble()).thenReturn(returnRandomValue);
-//		PasssengerGeneratorImpl randomRequestCallTimeGenerator = new PasssengerGeneratorImpl(duration,
+//		PassengerGeneratorImpl randomRequestCallTimeGenerator = new PassengerGeneratorImpl(duration,
 //				random);
 //
 //		long requestCallTimeInDayRange = randomRequestCallTimeGenerator.generateRequestCallTimeInDayRange(inputTime);

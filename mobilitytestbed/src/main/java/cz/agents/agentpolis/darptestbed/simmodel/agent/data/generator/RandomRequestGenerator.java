@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import cz.agents.agentpolis.darptestbed.global.GeneratorParams;
 import org.joda.time.Duration;
 
 import cz.agents.agentpolis.darptestbed.global.GlobalParams;
@@ -52,9 +53,9 @@ public class RandomRequestGenerator extends ARequestGenerator {
 		// prepare the request to be send
 		Request reqNew = null;
 
-		if (GlobalParams.isTimeWindowsUsed()) {
+		if (GeneratorParams.isTimeWindowsUsed()) {
 			int intPassengerStartLife = (int) passengerStartLife.getMillis();
-			long minDeparture = intPassengerStartLife + GlobalParams.getEarliestDepartureShift() * 60000;
+			long minDeparture = intPassengerStartLife + GeneratorParams.getEarliestDepartureShift() * 60000;
 			// an alternative - random earliest departure
 			// long minDeparture = intPassengerStartLife +
 			// GlobalParams.getRandom()
@@ -62,7 +63,7 @@ public class RandomRequestGenerator extends ARequestGenerator {
 
 			long timeToDrive = utils
 					.computeDrivingTime(initialPosition, targetPosition, GlobalParams.getVelocityInKmph());
-			long timeWindowLength = (long) (timeToDrive * GlobalParams.getTimeWinRelSize());
+			long timeWindowLength = (long) (timeToDrive * GeneratorParams.getTimeWinRelSize());
 
 			TimeWindow timeWindow = new TimeWindow(minDeparture, minDeparture + timeWindowLength - timeToDrive,
 					minDeparture + timeToDrive, minDeparture + timeWindowLength);

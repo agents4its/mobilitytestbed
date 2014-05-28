@@ -23,7 +23,8 @@ public class NodeExtendedFunction {
 		this.wgs84Convertor = wgs84Convertor;
 	}
 
-	public long getNearestNodeByNodeId(double longitude, double latitude) {
+    // TODO: this is not "ByNodeId"
+	public Long getNearestNodeByNodeId(double longitude, double latitude) {
 		Coordinate coordinate = wgs84Convertor.convert(longitude, latitude);
 		return (Long) kdTreeForAllNodes.nearest(new double[] { coordinate.x, coordinate.y });
 
@@ -35,4 +36,15 @@ public class NodeExtendedFunction {
 		return from.distance(to);
 	}
 
+    protected Map<Long, Coordinate> getProjectedNodeCoordinats() {
+        return projectedNodeCoordinats;
+    }
+
+    protected KDTree getKdTreeForAllNodes() {
+        return kdTreeForAllNodes;
+    }
+
+    protected WGS84Convertor getWgs84Convertor() {
+        return wgs84Convertor;
+    }
 }

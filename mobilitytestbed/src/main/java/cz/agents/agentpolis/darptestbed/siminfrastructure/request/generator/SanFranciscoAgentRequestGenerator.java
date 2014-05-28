@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.PassengerGenerator;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -27,7 +28,6 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.request.GPS;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.Passenger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.PassengerRequest;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.TimeWindow;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.PasssengerGenerator;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support.VehicleGenerator;
 
 public class SanFranciscoAgentRequestGenerator {
@@ -37,12 +37,12 @@ public class SanFranciscoAgentRequestGenerator {
 	private static final long HOUR24 = Duration.standardDays(1).getMillis();
 
 	private final VehicleGenerator vehicleCapacityGenerator;
-	private final PasssengerGenerator requestCallTimeGenerator;
+	private final PassengerGenerator requestCallTimeGenerator;
 	private final ObjectMapper mapper;
 	private final Duration requestCallTimeShifft;
 
 	public SanFranciscoAgentRequestGenerator(VehicleGenerator vehicleCapacityGenerator,
-			PasssengerGenerator requestCallTimeGenerator, ObjectMapper mapper, Duration requestCallTimeShifft) {
+			PassengerGenerator requestCallTimeGenerator, ObjectMapper mapper, Duration requestCallTimeShifft) {
 		super();
 		this.vehicleCapacityGenerator = vehicleCapacityGenerator;
 		this.requestCallTimeGenerator = requestCallTimeGenerator;
