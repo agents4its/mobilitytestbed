@@ -44,6 +44,8 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.openstreetmap.osm.data.coordinates.Bounds;
 
 import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -75,7 +77,7 @@ public class NodeDensityMapInit extends AbstractModule implements MapInitFactory
 		SpeedLimitCollector speedLimitCollector = new SpeedLimitCollector<HighwayNode, HighwayEdge>(EGraphType.HIGHWAY,
 				50, new DefaultSpeedLimitRoadTypeProvider());
 
-		Graph highWay = importer.executeTaskForWay(new HighwayGraphImportTask(speedLimitCollector),
+        Graph highWay = importer.executeTaskForWay(new HighwayGraphImportTask(speedLimitCollector),
 				RoadwayGraphOsmBinder.getSelector());
 		highWay = connectivity(highWay);
 
