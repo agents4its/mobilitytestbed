@@ -4,6 +4,7 @@ import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalAccept;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
@@ -23,11 +24,14 @@ import java.util.ArrayList;
 public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLogic {
 
     public PassengerDecentralizedLogicExample(String agentId, RequestConsumerMessageProtocol sender,
-                                              DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery,
-                                              Utils utils, PassengerProfile passengerProfile, TestbedPassengerActivity passengerActivity,
+                                              DriverMessageProtocol driverMessageProtocol,
+                                              GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
+                                              AgentPositionQuery positionQuery,
+                                              Utils utils, PassengerProfile passengerProfile,
+                                              TestbedPassengerActivity passengerActivity,
                                               TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
-        super(agentId, sender, driverMessageProtocol, taxiModel, positionQuery, utils, passengerProfile,
-                passengerActivity, timeSpendingActivity, logger);
+        super(agentId, sender, driverMessageProtocol, generalMessageProtocol, taxiModel, positionQuery, utils,
+                passengerProfile, passengerActivity, timeSpendingActivity, logger);
     }
 
     // list in which this passenger remembers which drivers rejected him in the
@@ -46,7 +50,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
         // if too many drivers rejected us, don't even try
         if (driversThatRejectedMe.size() >= 3) {
             LOGGER.debug(request.getPassengerId() + " giving up after 3 rejections.");
-            logger.logRequestRejected(passengerId);
+            logger.logRequestRejected(getAgentId());
             return;
         }
 
@@ -71,7 +75,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
             sender.sendMessage(closestDriver, request);
         } else {
             LOGGER.debug(request.getPassengerId() + " giving up failing to find possible driver.");
-            logger.logRequestRejected(passengerId);
+            logger.logRequestRejected(getAgentId());
         }
 
     }

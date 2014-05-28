@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatch
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
@@ -31,10 +32,11 @@ public class DecentralizedLogicConstructor implements LogicConstructor {
     @Override
     public PassengerDecentralizedLogic constructPassengerLogic(
             String agentId, RequestConsumerMessageProtocol sender, DriverMessageProtocol driverMessageProtocol,
+            GeneralMessageProtocol generalMessageProtocol,
             TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
             TestbedPassengerActivity passengerActivity,
             TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
-        return new PassengerDecentralizedLogicExample(agentId, sender, driverMessageProtocol,
+        return new PassengerDecentralizedLogicExample(agentId, sender, driverMessageProtocol, generalMessageProtocol,
                 taxiModel, positionQuery, utils, passengerProfile, passengerActivity, timeSpendingActivity, logger);
     }
 
@@ -45,21 +47,22 @@ public class DecentralizedLogicConstructor implements LogicConstructor {
 
     @Override
     public DriverDecentralizedLogic constructDriverLogic(String agentId, PassengerMessageProtocol sender,
-                                                                      TestbedModel taxiModel,
-                                                                      AgentPositionQuery positionQuery,
-                                                                      AllNetworkNodes allNetworkNodes, Utils utils,
-                                                                      TestbedVehicle vehicle,
-                                                                      DriveVehicleActivity drivingActivity,
-                                                                      Injector injector) {
-        return new DriverDecentralizedLogicExample(agentId, sender,
-                taxiModel, positionQuery, allNetworkNodes, utils,
-                vehicle, drivingActivity);
+                                                                    GeneralMessageProtocol generalMessageProtocol,
+                                                                    TestbedModel taxiModel,
+                                                                    AgentPositionQuery positionQuery,
+                                                                    AllNetworkNodes allNetworkNodes, Utils utils,
+                                                                    TestbedVehicle vehicle,
+                                                                    DriveVehicleActivity drivingActivity,
+                                                                    Injector injector) {
+        return new DriverDecentralizedLogicExample(agentId, sender, generalMessageProtocol,
+                taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
     }
 
     @Override
     public DispatchingLogic constructDispatchingLogic(
             String dispatching, PassengerMessageProtocol sender,
-            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel,
+            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol,
+            GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
             AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
             TestbedVehicleStorage vehicleStorage) {
         throw new IllegalArgumentException();
