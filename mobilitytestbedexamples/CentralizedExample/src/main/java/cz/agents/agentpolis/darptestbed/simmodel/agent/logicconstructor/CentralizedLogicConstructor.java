@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatch
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
@@ -33,10 +34,11 @@ public class CentralizedLogicConstructor implements LogicConstructor {
     @Override
     public PassengerLogicWithRequestConsumerMessageProtocol constructPassengerLogic(
             String agentId, RequestConsumerMessageProtocol sender, DriverMessageProtocol driverMessageProtocol,
+            GeneralMessageProtocol generalMessageProtocol,
             TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
             TestbedPassengerActivity passengerActivity, TimeSpendingActivity timeSpendingActivity,
             RequestLogger logger) {
-        return new PassengerCentralizedLogic(agentId, sender, driverMessageProtocol, taxiModel,
+        return new PassengerCentralizedLogic(agentId, sender, driverMessageProtocol, generalMessageProtocol, taxiModel,
                 positionQuery, utils, passengerProfile, passengerActivity, timeSpendingActivity, logger);
     }
 
@@ -48,23 +50,24 @@ public class CentralizedLogicConstructor implements LogicConstructor {
     @Override
     public DispatchingLogic constructDispatchingLogic(
             String dispatching, PassengerMessageProtocol sender,
-            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel,
+            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol,
+            GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
             AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
             TestbedVehicleStorage vehicleStorage) {
-        return new DispatchingLogicExample("Dispatching", sender, driverCentralizedMessageProtocol, taxiModel,
-                            positionQuery, allNetworkNodes, utils, pathPlanner, vehicleStorage);
+        return new DispatchingLogicExample("Dispatching", sender, driverCentralizedMessageProtocol,
+                generalMessageProtocol, taxiModel, positionQuery, allNetworkNodes, utils, pathPlanner, vehicleStorage);
     }
 
     @Override
     public DriverLogicWithPassengerMessageProtocol constructDriverLogic(
-            String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel, AgentPositionQuery positionQuery,
+            String agentId, PassengerMessageProtocol sender,
+            GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery,
             AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle, DriveVehicleActivity drivingActivity,
             Injector injector) {
 
         DispatchingMessageProtocol dispatchingMessageProtocol =
                 injector.getInstance(DispatchingMessageProtocol.class);
-        return new DriverCentralizedLogic(agentId, sender,
-                taxiModel, positionQuery, allNetworkNodes, utils,
-                vehicle, drivingActivity, dispatchingMessageProtocol);
+        return new DriverCentralizedLogic(agentId, sender, generalMessageProtocol, taxiModel, positionQuery,
+                allNetworkNodes, utils, vehicle, drivingActivity, dispatchingMessageProtocol);
     }
 }
