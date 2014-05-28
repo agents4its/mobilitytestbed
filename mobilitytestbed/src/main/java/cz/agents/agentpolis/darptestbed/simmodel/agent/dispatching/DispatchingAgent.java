@@ -2,6 +2,7 @@ package cz.agents.agentpolis.darptestbed.simmodel.agent.dispatching;
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatching.protocol.DispatchingMessageProtocolCombinedVisitor;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.message.*;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalAccept;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalReject;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
@@ -95,5 +96,11 @@ public class DispatchingAgent extends Agent implements TimerCallback, Dispatchin
     @Override
     public void visit(DriverNewPlanRejectMessage driverNewPlanRejectMessage) {
         logic.processDriverRejectsNewPlan(driverNewPlanRejectMessage);
+    }
+
+    @Override
+    public void visit(StringMessage stringMessage) {
+        LOGGER.debug(getId() + ":" + stringMessage.getClass().getSimpleName() + ":" + stringMessage);
+        logic.processTextMessage(stringMessage);
     }
 }

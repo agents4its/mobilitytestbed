@@ -2,6 +2,7 @@ package cz.agents.agentpolis.darptestbed.simmodel.agent.passenger;
 
 import java.util.Set;
 
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import org.joda.time.Duration;
 
 import com.google.inject.Injector;
@@ -35,6 +36,8 @@ public class PassengerAgentFactory {
 		// add the agent into message receivers table
 		injector.getInstance(PassengerMessageProtocol.class).addReceiverVisitor(passengerId, passengerAgent);
 
+        injector.getInstance(GeneralMessageProtocol.class).addReceiverVisitor(passengerId, passengerAgent);
+
 		return passengerAgent;
 	}
 
@@ -51,6 +54,8 @@ public class PassengerAgentFactory {
 
 		// add the agent into message receivers table
 		injector.getInstance(PassengerMessageProtocol.class).addReceiverVisitor(passengerId, passengerAgent);
+
+        injector.getInstance(GeneralMessageProtocol.class).addReceiverVisitor(passengerId, passengerAgent);
 
 		return passengerAgent;
 	}

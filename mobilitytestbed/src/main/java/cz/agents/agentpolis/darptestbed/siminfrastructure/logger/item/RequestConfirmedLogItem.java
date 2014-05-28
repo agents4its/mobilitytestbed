@@ -24,7 +24,7 @@ public class RequestConfirmedLogItem implements LogItem {
 
 	@Override
 	public String toString() {
-		return "RequestConfirmedLogItem [passengerId=" + passengerId + ", driverId=" + driverId + ", vehicleId="
+		return "RequestConfirmedLogItem [passengerId=" + passengerId + ", agentId=" + driverId + ", vehicleId="
 				+ vehicleId + "]";
 	}
 }

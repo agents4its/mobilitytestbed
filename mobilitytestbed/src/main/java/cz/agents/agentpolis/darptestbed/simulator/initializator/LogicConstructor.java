@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatch
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
@@ -28,15 +29,18 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwor
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
 public interface LogicConstructor {
-    PassengerLogicWithRequestConsumerMessageProtocol constructPassengerLogic(String agentId,
-                                                                             RequestConsumerMessageProtocol sender,
-                                                                             DriverMessageProtocol driverMessageProtocol,
-                                                                             TestbedModel taxiModel,
-                                                                             AgentPositionQuery positionQuery, Utils utils,
-                                                                             PassengerProfile passengerProfile,
-                                                                             TestbedPassengerActivity passengerActivity,
-                                                                             TimeSpendingActivity timeSpendingActivity,
-                                                                             RequestLogger logger);
+    PassengerLogicWithRequestConsumerMessageProtocol
+    constructPassengerLogic(String agentId,
+                            RequestConsumerMessageProtocol sender,
+                            DriverMessageProtocol driverMessageProtocol,
+                            GeneralMessageProtocol
+                                    generalMessageProtocol,
+                            TestbedModel taxiModel,
+                            AgentPositionQuery positionQuery, Utils utils,
+                            PassengerProfile passengerProfile,
+                            TestbedPassengerActivity passengerActivity,
+                            TimeSpendingActivity timeSpendingActivity,
+                            RequestLogger logger);
 
 
     boolean usesDispatching();
@@ -44,15 +48,19 @@ public interface LogicConstructor {
 
     DispatchingLogic constructDispatchingLogic(String dispatching, PassengerMessageProtocol sender,
                                                DriverCentralizedMessageProtocol driverCentralizedMessageProtocol,
+                                               GeneralMessageProtocol generalMessageProtocol,
                                                TestbedModel taxiModel, AgentPositionQuery positionQuery,
                                                AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
                                                TestbedVehicleStorage vehicleStorage);
 
-    DriverLogicWithPassengerMessageProtocol constructDriverLogic(String agentId, PassengerMessageProtocol sender,
-                                                                 TestbedModel taxiModel,
-                                                                 AgentPositionQuery positionQuery,
-                                                                 AllNetworkNodes allNetworkNodes, Utils utils,
-                                                                 TestbedVehicle vehicle,
-                                                                 DriveVehicleActivity drivingActivity,
-                                                                 Injector injector);
+    DriverLogicWithPassengerMessageProtocol
+    constructDriverLogic(String agentId, PassengerMessageProtocol sender,
+                         GeneralMessageProtocol
+                                 generalMessageProtocol,
+                         TestbedModel taxiModel,
+                         AgentPositionQuery positionQuery,
+                         AllNetworkNodes allNetworkNodes, Utils utils,
+                         TestbedVehicle vehicle,
+                         DriveVehicleActivity drivingActivity,
+                         Injector injector);
 }

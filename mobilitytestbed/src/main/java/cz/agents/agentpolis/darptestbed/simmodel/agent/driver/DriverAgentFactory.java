@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.receiver.RequestConsumerReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
@@ -45,6 +46,8 @@ public class DriverAgentFactory {
         }
 
         injector.getInstance(DriverMessageProtocol.class).addReceiverVisitor(driverId, driverAgent);
+
+        injector.getInstance(GeneralMessageProtocol.class).addReceiverVisitor(driverId, driverAgent);
 
         return driverAgent;
     }

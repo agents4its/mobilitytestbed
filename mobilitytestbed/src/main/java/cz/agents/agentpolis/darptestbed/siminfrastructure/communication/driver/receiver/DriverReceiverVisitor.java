@@ -4,8 +4,10 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatch
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerIsInTaxiMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerIsOffTaxiMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerSaysTaxiIsTooLateForPickupMessage;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.BaseReceiverVisitor;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 
-public interface DriverReceiverVisitor {
+public interface DriverReceiverVisitor extends BaseReceiverVisitor {
 
     public void visit(PassengerIsInTaxiMessage passengerIsInTaxiMessage);
 
@@ -15,4 +17,5 @@ public interface DriverReceiverVisitor {
 
     public void visit(DispatcherRequestsInsertionMessage dispatcherRequestsInsertionMessage);
 
+    public void visit(StringMessage stringMessage);
 }

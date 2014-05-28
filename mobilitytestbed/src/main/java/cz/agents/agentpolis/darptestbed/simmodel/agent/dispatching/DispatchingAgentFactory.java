@@ -1,6 +1,7 @@
 package cz.agents.agentpolis.darptestbed.simmodel.agent.dispatching;
 
 import com.google.inject.Injector;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.TestbedEntityType;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.dispatching.logic.DispatchingLogic;
@@ -20,6 +21,8 @@ public class DispatchingAgentFactory {
 
         injector.getInstance(RequestConsumerMessageProtocol.class).addReceiverVisitor(dispatchingId, dispatchingAgent);
         injector.getInstance(DispatchingMessageProtocol.class).addReceiverVisitor(dispatchingId, dispatchingAgent);
+
+        injector.getInstance(GeneralMessageProtocol.class).addReceiverVisitor(dispatchingId, dispatchingAgent);
 
         return dispatchingAgent;
     }

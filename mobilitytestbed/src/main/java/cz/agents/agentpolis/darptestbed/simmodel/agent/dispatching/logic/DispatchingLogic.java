@@ -9,6 +9,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.p
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalAccept;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalReject;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
@@ -56,11 +57,13 @@ public abstract class DispatchingLogic extends AgentLogic<PassengerMessageProtoc
     protected final TestbedVehicleStorage vehicleStorage;
 
     public DispatchingLogic(String agentId, PassengerMessageProtocol sender,
-                            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel,
-                            AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
+                            DriverCentralizedMessageProtocol driverCentralizedMessageProtocol,
+                            GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
+                            AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils,
+                            TestbedPlanner pathPlanner,
                             TestbedVehicleStorage vehicleStorage) {
 
-        super(sender, taxiModel, positionQuery, utils);
+        super(agentId, sender, generalMessageProtocol, taxiModel, positionQuery, utils);
         this.queueOfRequests = new ArrayList<Request>();
         this.pathPlanner = pathPlanner;
         this.driverCentralizedMessageProtocol = driverCentralizedMessageProtocol;
@@ -160,4 +163,5 @@ public abstract class DispatchingLogic extends AgentLogic<PassengerMessageProtoc
     public abstract void processDriverAcceptsNewPlan(DriverNewPlanAcceptMessage driverNewPlanAcceptMessage);
 
     public abstract void processDriverRejectsNewPlan(DriverNewPlanRejectMessage driverNewPlanRejectMessage);
+
 }

@@ -1,12 +1,10 @@
 package cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic;
 
 import cz.agents.agentpolis.darptestbed.global.Utils;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerIsInTaxiMessage;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerIsOffTaxiMessage;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerSaysTaxiIsTooLateForPickupMessage;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.*;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.BaseReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.AgentLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.activity.movement.TestbedPassengerActivity;
@@ -22,8 +20,6 @@ import cz.agents.agentpolis.simmodel.agent.activity.callback.TimeActivityCallbac
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -35,13 +31,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Lukas Canda
  */
-public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?>> extends AgentLogic<TMessageProtocol>
-        implements TestbedPassengerActivityCallback, TimeActivityCallback {
+public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<? extends BaseReceiverVisitor>> extends
+        AgentLogic<TMessageProtocol> implements TestbedPassengerActivityCallback, TimeActivityCallback {
 
     protected static final Logger LOGGER = Logger.getLogger(PassengerLogic.class);
-
-    protected final String passengerId; // TODO: Agent takes this inforamtion
-    // too
 
     /**
      * Passenger's personal information and properties
@@ -81,7 +74,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      * @return the passenger's current position node
      */
     protected Long getCurrentPositionNode() {
-        return this.positionQuery.getCurrentPositionByNodeId(this.passengerId);
+        return this.positionQuery.getCurrentPositionByNodeId(this.getAgentId());
     }
 
     protected Request requestLastSent = null;
@@ -94,11 +87,11 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     private final DriverMessageProtocol driverMessageProtocol;
 
     public PassengerLogic(String agentId, TMessageProtocol sender, DriverMessageProtocol driverCentrMessageProtocol,
-                          TestbedModel taxiModel, AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
+                          GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
+                          AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
                           TestbedPassengerActivity passengerActivity, TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
 
-        super(sender, taxiModel, positionQuery, utils);
-        this.passengerId = agentId;
+        super(agentId, sender, generalMessageProtocol, taxiModel, positionQuery, utils);
         this.passengerProfile = passengerProfile;
         this.passengerActivity = passengerActivity;
         this.timeSpendingActivity = timeSpendingActivity;
@@ -118,17 +111,17 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 
         // log
         if (request.getTimeWindow() == null) {
-            this.logger.logPassengerSentRequest(passengerId, request.getFromNode(), request.getToNode(), utils);
+            this.logger.logPassengerSentRequest(getAgentId(), request.getFromNode(), request.getToNode(), utils);
         } else {
             TimeWindow tw = request.getTimeWindow();
-            this.logger.logPassengerSentRequest(passengerId, request.getFromNode(), request.getToNode(),
+            this.logger.logPassengerSentRequest(getAgentId(), request.getFromNode(), request.getToNode(),
                     tw.getEarliestDeparture(), tw.getLatestDeparture(), tw.getEarliestArrival(),
                     tw.getLatestArrival(), utils);
         }
 
         // print out
-//        String printReq = "request " + passengerId + " from "
-//                + this.positionQuery.getCurrentPositionByNodeId(passengerId) + " to " + request.getToNode();
+//        String printReq = "request " + getAgentId() + " from "
+//                + this.positionQuery.getCurrentPositionByNodeId(getAgentId()) + " to " + request.getToNode();
 //        TimeWindow timeWin = request.getTimeWindow();
 //        if (timeWin != null) {
 //            printReq += " time win (" + utils.toHoursAndMinutes(timeWin.getEarliestDeparture()) + " "
@@ -157,18 +150,18 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                 } else {
                     processVehicleArrivedNoTimeWindows(driverId, vehicleId);
                 }
-//                LOGGER.debug("ON BOARD: " + vehicleId + " " + taxiModel.getNumOfPassenOnBoard(vehicleId) + " " + passengerId);
+//                LOGGER.debug("ON BOARD: " + vehicleId + " " + taxiModel.getNumOfPassenOnBoard(vehicleId) + " " + getAgentId());
 
                 if (result) {
                     if (!driverId.equals(currentDriverId)) {
-                        LOGGER.debug("PASSENGER BOARDS UNEXPECTED TAXI: " + passengerId + " curr: " + (currentDriverId
+                        LOGGER.debug("PASSENGER BOARDS UNEXPECTED TAXI: " + getAgentId() + " curr: " + (currentDriverId
                                 == null ? "NULL" : currentDriverId) + " unex: " + driverId + " curr: " +
                                 (currentVehicleId == null ? "NULL" : currentVehicleId)
                                 + " unex: " + vehicleId + " " + ((this.currentRequestConfirmed != null) ?
                                 this.currentRequestConfirmed.getFromNode() :
                                 "NULL") + " " + this.getCurrentPositionNode());
                     } else {
-                        LOGGER.debug("PASSENGER BOARDS TAXI: " + passengerId + " curr: " + currentDriverId + " " +
+                        LOGGER.debug("PASSENGER BOARDS TAXI: " + getAgentId() + " curr: " + currentDriverId + " " +
                                 currentVehicleId + " " + ((this.currentRequestConfirmed != null) ? this
                                 .currentRequestConfirmed
                                 .getFromNode() : "NULL") + " " + this.getCurrentPositionNode());
@@ -176,7 +169,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                     this.currentDriverId = driverId;
                     this.currentVehicleId = vehicleId;
                 } else {
-                    LOGGER.debug("PASSENGER REJECTS BOARDING TAXI: " + passengerId + " curr: " + currentDriverId + " " +
+                    LOGGER.debug("PASSENGER REJECTS BOARDING TAXI: " + getAgentId() + " curr: " + currentDriverId + " " +
                             currentVehicleId + " " + ((this.currentRequestConfirmed != null) ? this
                             .currentRequestConfirmed
                             .getFromNode() : "NULL") + " " + this.getCurrentPositionNode());
@@ -189,14 +182,14 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
                 currentDriverId = null;
                 currentRequestConfirmed = null;
                 passengerAdditionalRequirements = null;
-                taxiModel.removePassengerOnBoard(passengerId, vehicleId);
+                taxiModel.removePassengerOnBoard(getAgentId(), vehicleId);
                 // log the event
                 sendPassengerGotOffVehicle(driverId, vehicleId);
                 LOGGER.debug("PASSENGER OFF BOARD: " + vehicleId + " " + taxiModel.getNumOfPassenOnBoard(vehicleId) +
                         " " +
-                        passengerId);
+                        getAgentId());
             } else {
-                throw new IllegalArgumentException("The driver " + driverId + " informed " + passengerId +
+                throw new IllegalArgumentException("The driver " + driverId + " informed " + getAgentId() +
                     "about a location the passenger neither boards on nor disembarks at - " +
                         this.getCurrentPositionNode());
             }
@@ -212,7 +205,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      */
     public void acceptTripInfo(TripInfo tripInfo, Set<String> passengerAdditionalRequirements) {
 //        if (tripInfo.getDriverId().equals("DriverId19"))
-        LOGGER.debug("PASSENGER RECEIVED TRIP INFO: " + passengerId + " " + tripInfo);
+        LOGGER.debug("PASSENGER RECEIVED TRIP INFO: " + getAgentId() + " " + tripInfo);
         startWaiting(tripInfo.getDriverId(), tripInfo.getVehicleId(), passengerAdditionalRequirements);
     }
 
@@ -225,8 +218,8 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      */
     private void processVehicleArrivedNoTimeWindows(String driverId, String vehicleId) {
 
-//        LOGGER.info(passengerId + " got in at " + getCurrentTimeStr());
-        passengerActivity.useArrivedVehicle(passengerId, vehicleId, currentRequestConfirmed.getToNode(), this);
+//        LOGGER.info(getAgentId() + " got in at " + getCurrentTimeStr());
+        passengerActivity.useArrivedVehicle(getAgentId(), vehicleId, currentRequestConfirmed.getToNode(), this);
         sendPassengerGotInVehicle(driverId, vehicleId);
     }
 
@@ -249,21 +242,21 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 
         if (delay < 0) {
             // the taxi has arrived too early
-            LOGGER.info(driverId + " arrived too soon for " + passengerId + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.info(driverId + " arrived too soon for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                 " (earliest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getEarliestDeparture()) + ")");
             timeSpendingActivity.spendingTime(this, -delay);
             return true;
         } else if (delay == 0) {
             // on time
-            LOGGER.info(driverId + " arrived on time for " + passengerId + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.info(driverId + " arrived on time for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                     " (earliest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getEarliestDeparture()) + ")");
             processVehicleArrivedNoTimeWindows(driverId, vehicleId);
             return true;
         } else {
             // too late
-            LOGGER.info(driverId + " arrived too late for " + passengerId + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.info(driverId + " arrived too late for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                     " (latest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getLatestArrival()) + ")");
             sendVehicleIsTooLate(driverId, true, delay);
@@ -280,7 +273,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      */
     protected void sendPassengerGotInVehicle(String driverId, String vehicleId) {
 
-        driverMessageProtocol.sendMessage(driverId, new PassengerIsInTaxiMessage(passengerId, new TripInfo(driverId,
+        driverMessageProtocol.sendMessage(driverId, new PassengerIsInTaxiMessage(getAgentId(), new TripInfo(driverId,
                 vehicleId)));
 
     }
@@ -293,7 +286,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      */
     protected void sendPassengerGotOffVehicle(String driverId, String vehicleId) {
 
-        driverMessageProtocol.sendMessage(driverId, new PassengerIsOffTaxiMessage(passengerId, new TripInfo(driverId,
+        driverMessageProtocol.sendMessage(driverId, new PassengerIsOffTaxiMessage(getAgentId(), new TripInfo(driverId,
                 vehicleId)));
 
     }
@@ -309,7 +302,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     protected void sendVehicleIsTooLate(String driverId, boolean departure, long delay) {
 
         driverMessageProtocol.sendMessage(driverId,
-                new PassengerSaysTaxiIsTooLateForPickupMessage(passengerId, departure, delay));
+                new PassengerSaysTaxiIsTooLateForPickupMessage(getAgentId(), departure, delay));
 
     }
 
@@ -321,7 +314,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
      * @param vehicleId the driver's vehicle
      */
     protected void startWaiting(String driverId, String vehicleId, Set<String> passengerAdditionalRequirements) {
-        logger.logRequestConfirmed(passengerId, driverId, vehicleId);
+        logger.logRequestConfirmed(getAgentId(), driverId, vehicleId);
         LOGGER.debug("Waiting for taxi: " + driverId + " " + vehicleId + " " +
                 ((this.requestLastSent != null) ? this.requestLastSent : " null "));
         this.passengerAdditionalRequirements = passengerAdditionalRequirements;
@@ -340,10 +333,10 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 
         long currentTime = utils.getCurrentTime();
         LOGGER.info("TRIP FINISHED [" + currentTime + ", " + currentDriverId + ", " +
-                passengerId + "] at " + targetNode);
+                getAgentId() + "] at " + targetNode);
 
         // print out
-        String printReq = passengerId + " has finished his trip at " + getCurrentTimeStr();
+        String printReq = getAgentId() + " has finished his trip at " + getCurrentTimeStr();
         TimeWindow timeWin = currentRequestConfirmed.getTimeWindow();
         if (timeWin != null) {
             long delay = timeWin.getArrivalDelay(currentTime);
@@ -398,11 +391,12 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     protected void stopWaiting(String driverId) {
         if (driverId == null || !driverId.equals(this.currentDriverId))
             return;
-//        logger.logRequestRejected(passengerId);
+//        logger.logRequestRejected(getAgentId());
         LOGGER.debug("Stopped waiting for taxi: " + driverId + " " +
                 ((this.requestLastSent != null) ? this.requestLastSent : " null "));
         this.currentDriverId = null;
         this.currentVehicleId = null;
         this.currentRequestConfirmed = null;
     }
+
 }

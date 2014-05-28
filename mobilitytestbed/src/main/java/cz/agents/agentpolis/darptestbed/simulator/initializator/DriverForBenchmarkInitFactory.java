@@ -5,6 +5,7 @@ import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatching.protocol.DispatchingMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.VehicleMoveLogger;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.Driver;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.request.GPS;
@@ -113,8 +114,10 @@ public class DriverForBenchmarkInitFactory implements AgentInitFactory {
             Agent driverAgent = null;
 
             PassengerMessageProtocol sender = injector.getInstance(PassengerMessageProtocol.class);
+            GeneralMessageProtocol generalMessageProtocol = injector.getInstance(GeneralMessageProtocol.class);
+
             DriverLogicWithPassengerMessageProtocol logic =
-                    logicConstructor.constructDriverLogic(agentId, sender, taxiModel,
+                    logicConstructor.constructDriverLogic(agentId, sender, generalMessageProtocol, taxiModel,
                             positionQuery, allNetworkNodes, utils,
                             vehicle, drivingActivity, injector);
 

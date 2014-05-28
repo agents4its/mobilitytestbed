@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import cz.agents.agentpolis.darptestbed.global.GeneratorParams;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogicWithRequestConsumerMessageProtocol;
 import org.apache.log4j.Logger;
 import org.joda.time.Duration;
@@ -114,11 +115,13 @@ public class PassengerInitFactory implements AgentInitFactory {
 
 			DriverMessageProtocol driverMessageProtocol = injector.getInstance(DriverMessageProtocol.class);
 
+            GeneralMessageProtocol generalMessageProtocol = injector.getInstance(GeneralMessageProtocol.class);
+
 			PassengerAgent<? extends PassengerLogic> passenger;
             RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
             PassengerLogicWithRequestConsumerMessageProtocol logic =
                     logicConstructor.constructPassengerLogic(
-                            agentId, sender, driverMessageProtocol, taxiModel,
+                            agentId, sender, driverMessageProtocol, generalMessageProtocol, taxiModel,
                             positionQuery, utils, profile, passengerActivity, timeActivity, logger);
             if (!logic.isDecentralized()) {
 				passenger = factory.createCentrAgent(agentId, (PassengerCentralizedLogic) logic, startLife,

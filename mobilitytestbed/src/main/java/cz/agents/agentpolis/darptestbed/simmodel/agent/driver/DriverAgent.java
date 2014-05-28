@@ -4,6 +4,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenge
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerIsOffTaxiMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.PassengerSaysTaxiIsTooLateForPickupMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.receiver.DriverReceiverVisitor;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic.DriverLogic;
 import cz.agents.agentpolis.siminfrastructure.description.DescriptionImpl;
 import cz.agents.agentpolis.simmodel.agent.Agent;
@@ -82,6 +83,12 @@ public abstract class DriverAgent<TDriverLogic extends DriverLogic> extends Agen
         logic.processVehicleIsTooLate(passengerSaysTaxiIsTooLate.passengerId, passengerSaysTaxiIsTooLate.departure,
                 passengerSaysTaxiIsTooLate.delay);
 
+    }
+
+    @Override
+    public void visit(StringMessage message) {
+        LOGGER.debug(getId() + ":" + message.getClass().getSimpleName() + ":" + message);
+        logic.processTextMessage(message);
     }
 
 }
