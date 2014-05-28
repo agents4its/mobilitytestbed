@@ -37,7 +37,7 @@ public class PassengerTaxiDriverPairKmlItemBuilder extends KmlItemBuilder {
 
 	public PassengerTaxiDriverPairKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval) {
 		super(connection, schemaName, interval, "taxi_passenger_pair.kml");
-		this.descriptionFactory = new TableColumnsDescriptionFactory();
+		this.descriptionFactory = new TableColumnsDescriptionFactory("PASSENGER", "TAXI_DRIVER");
 	}
 
 	@Override
@@ -47,9 +47,14 @@ public class PassengerTaxiDriverPairKmlItemBuilder extends KmlItemBuilder {
 		        interval);
 
 		String sql = " SELECT " + "pas.agentid," + "pas.geom AS p1," + " taxi.geom AS p2," + "pas.from_time, "
-		        + "pas.agentid AS passenger, " + "taxi.agentid AS taxi_driver " + " FROM "
+		        + "pas.agentid AS passenger, " + "taxi.agentid AS taxi_driver, "
+                + "pas.request_status AS status"
+                + " FROM "
 		        + "passengers AS pas INNER JOIN "
-		        + "taxi_drivers AS taxi ON pas.current_driver_id = taxi.agentid AND pas.from_time = taxi.from_time ";
+		        + "taxi_drivers AS taxi ON pas.current_driver_id = taxi.agentid AND pas.from_time = taxi.from_time "
+                + "AND pas.request_status != 'OUT_OF_VEHICLE' "
+                + "AND pas.request_status != 'OUT_OF_VEHICLE_WITH_DELAYED_ARRIVAL'"
+                + "AND pas.request_status != 'REJECTED'";
 
 		ResultSet resultSet = connection.executeQueryWithFetchSize(sql, 10000);
 		while (resultSet.next()) {
