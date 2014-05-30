@@ -1,129 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<classpath>
+	<classpath>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="lib/osmosis-core-0.43-RELEASE.jar" sourcepath="lib/osmosis-core-0.43-RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="lib/geovisio-1.0.2-SNAPSHOT.jar" sourcepath="lib/geovisio-1.0.2-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-api-9.2.jar" sourcepath="lib/gt-api-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-data-9.2.jar" sourcepath="lib/gt-data-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-epsg-hsql-9.2.jar" sourcepath="lib/gt-epsg-hsql-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-main-9.2.jar" sourcepath="lib/gt-main-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-metadata-9.2.jar" sourcepath="lib/gt-metadata-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-opengis-9.2.jar" sourcepath="lib/gt-opengis-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-referencing-9.2.jar" sourcepath="lib/gt-referencing-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/gt-shapefile-9.2.jar" sourcepath="lib/gt-shapefile-9.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/activation-1.1.jar" sourcepath="lib/activation-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/alite-1.1.0.jar" sourcepath="lib/alite-1.1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/analyser-1.0.0-SNAPSHOT.jar" sourcepath="lib/analyser-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/antlr-2.7.7.jar"/>
-	<classpathentry kind="lib" path="lib/aopalliance-1.0.jar" sourcepath="lib/aopalliance-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/apgooglearth-2.0.1-SNAPSHOT.jar" sourcepath="lib/apgooglearth-2.0.1-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/asm-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/asm-analysis-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/asm-commons-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/asm-tree-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/asm-util-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/bson4jackson-2.1.0.jar" sourcepath="lib/bson4jackson-2.1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar" sourcepath="lib/commons-cli-1.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-codec-1.3.jar" sourcepath="lib/commons-codec-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-compress-1.4.1.jar" sourcepath="lib/commons-compress-1.4.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar" sourcepath="lib/commons-httpclient-3.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.3.jar" sourcepath="lib/commons-lang-2.3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math-2.2.jar" sourcepath="lib/commons-math-2.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-math3-3.1.1.jar" sourcepath="lib/commons-math3-3.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-pool-1.5.4.jar" sourcepath="lib/commons-pool-1.5.4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/CustomJavaAPIforKml-2.2.0.jar" sourcepath="lib/CustomJavaAPIforKml-2.2.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/geoserver-manager-1.5.1.jar" sourcepath="lib/geoserver-manager-1.5.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/groovy-1.8.8.jar" sourcepath="lib/groovy-1.8.8-sources.jar"/>
-	<classpathentry kind="lib" path="lib/guava-14.0.1.jar" sourcepath="lib/guava-14.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/guice-3.0.jar" sourcepath="lib/guice-3.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/h2-1.3.173.jar" sourcepath="lib/h2-1.3.173-sources.jar"/>
-	<classpathentry kind="lib" path="lib/hamcrest-core-1.1.jar" sourcepath="lib/hamcrest-core-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/hsqldb-1.8.0.7.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient-4.0.1.jar" sourcepath="lib/httpclient-4.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/httpcore-4.0.1.jar" sourcepath="lib/httpcore-4.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/importer-1.0.1-SNAPSHOT.jar" sourcepath="lib/importer-1.0.1-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/initializator-1.0.0-SNAPSHOT.jar" sourcepath="lib/initializator-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-annotations-2.3.0.jar" sourcepath="lib/jackson-annotations-2.3.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-2.3.0.jar" sourcepath="lib/jackson-core-2.3.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.12.jar" sourcepath="lib/jackson-core-asl-1.9.12-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-databind-2.3.0.jar" sourcepath="lib/jackson-databind-2.3.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.12.jar" sourcepath="lib/jackson-mapper-asl-1.9.12-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jai_core-1.1.3.jar"/>
-	<classpathentry kind="lib" path="lib/JavaAPIforKml-2.2.0.jar" sourcepath="lib/JavaAPIforKml-2.2.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/javax.inject-1.jar" sourcepath="lib/javax.inject-1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-api-2.2.jar" sourcepath="lib/jaxb-api-2.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-impl-2.2.jar" sourcepath="lib/jaxb-impl-2.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jaxb-xjc-2.2.jar" sourcepath="lib/jaxb-xjc-2.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jcl-over-slf4j-1.5.11.jar" sourcepath="lib/jcl-over-slf4j-1.5.11-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jdom-1.0.jar" sourcepath="lib/jdom-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-continuation-8.0.0.M3.jar" sourcepath="lib/jetty-continuation-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-http-8.0.0.M3.jar" sourcepath="lib/jetty-http-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-io-8.0.0.M3.jar" sourcepath="lib/jetty-io-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-security-8.0.0.M3.jar" sourcepath="lib/jetty-security-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-server-8.0.0.M3.jar" sourcepath="lib/jetty-server-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-servlet-8.0.0.M3.jar" sourcepath="lib/jetty-servlet-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-util-8.0.0.M3.jar" sourcepath="lib/jetty-util-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-webapp-8.0.0.M3.jar" sourcepath="lib/jetty-webapp-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-xml-8.0.0.M3.jar" sourcepath="lib/jetty-xml-8.0.0.M3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jgraph-5.13.0.0.jar" sourcepath="lib/jgraph-5.13.0.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jgrapht-jdk1.6-0.8.2.jar"/>
-	<classpathentry kind="lib" path="lib/jgridshift-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/joda-time-2.1.jar" sourcepath="lib/joda-time-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jpf-1.5.jar" sourcepath="lib/jpf-1.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/json-20070829.jar" sourcepath="lib/json-20070829-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jsr-275-1.0-beta-2.jar" sourcepath="lib/jsr-275-1.0-beta-2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jts-1.13.jar" sourcepath="lib/jts-1.13-sources.jar"/>
-	<classpathentry kind="lib" path="lib/kml_visio-1.0.0.jar" sourcepath="lib/kml_visio-1.0.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar" sourcepath="lib/log4j-1.2.16-sources.jar"/>
-	<classpathentry kind="lib" path="lib/mockito-core-1.8.5.jar" sourcepath="lib/mockito-core-1.8.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/model-1.0.0-SNAPSHOT.jar" sourcepath="lib/model-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/mongo-java-driver-2.12.0-rc2.jar" sourcepath="lib/mongo-java-driver-2.12.0-rc2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/mongojack-2.0.0-RC5.jar" sourcepath="lib/mongojack-2.0.0-RC5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/objenesis-1.0.jar" sourcepath="lib/objenesis-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/ondemandtransport-2.0.0-SNAPSHOT.jar" sourcepath="lib/ondemandtransport-2.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/opencsv-2.1.jar" sourcepath="lib/opencsv-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/persistence-api-1.0.2.jar" sourcepath="lib/persistence-api-1.0.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/postgresql-9.2-1002-jdbc4.jar" sourcepath="lib/postgresql-9.2-1002-jdbc4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/resultsvisio-0.0.1-SNAPSHOT.jar" sourcepath="lib/resultsvisio-0.0.1-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api-2.5.jar" sourcepath="lib/servlet-api-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api-3.0.20100224.jar" sourcepath="lib/servlet-api-3.0.20100224-sources.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.5.11.jar" sourcepath="lib/slf4j-api-1.5.11-sources.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-nop-1.5.11.jar" sourcepath="lib/slf4j-nop-1.5.11-sources.jar"/>
-	<classpathentry kind="lib" path="lib/stax-api-1.0-2.jar" sourcepath="lib/stax-api-1.0-2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/stax2-api-3.1.1.jar" sourcepath="lib/stax2-api-3.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/vecmath-1.5.2.jar" sourcepath="lib/vecmath-1.5.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/woodstox-core-lgpl-4.1.4.jar" sourcepath="lib/woodstox-core-lgpl-4.1.4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/xalan-2.7.0.jar" sourcepath="lib/xalan-2.7.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl-2.9.1.jar"/>
-	<classpathentry kind="lib" path="lib/xml-apis-1.3.03.jar"/>
-	<classpathentry kind="lib" path="lib/xmlunit-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/xom-1.2.5.jar" sourcepath="lib/xom-1.2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/xz-1.0.jar" sourcepath="lib/xz-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="lib/libosm-2.5.2-RC1.jar"/>
-	<classpathentry kind="lib" path="lib/agentpolis-3.0.0-SNAPSHOT.jar" sourcepath="lib/agentpolis-3.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar" sourcepath="lib/commons-logging-1.0.4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-1.3.2.jar" sourcepath="lib/commons-io-1.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/dbtokmlexporter-0.0.1-SNAPSHOT.jar" sourcepath="lib/dbtokmlexporter-0.0.1-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar" sourcepath="lib/commons-io-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/javassist-3.12.1.GA.jar" sourcepath="lib/javassist-3.12.1.GA-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jgrapht-0.8.3.jar" sourcepath="lib/jgrapht-0.8.3-sources.jar"/>
-	<classpathentry kind="lib" path="lib/jmk-1.0.0-SNAPSHOT.jar" sourcepath="lib/jmk-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/journey-plan-data-model-0.4.8-RC2.jar" sourcepath="lib/journey-plan-data-model-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/junit-3.8.1.jar" sourcepath="lib/junit-3.8.1-sources.jar"/>
-	<classpathentry kind="lib" path="lib/mobilitymodel-1.0.0-SNAPSHOT.jar" sourcepath="lib/mobilitymodel-1.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/planner-0.4.8-RC2.jar" sourcepath="lib/planner-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/planner-critic-0.4.8-RC2.jar" sourcepath="lib/planner-critic-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/planner-data-importer-0.4.8-RC2.jar" sourcepath="lib/planner-data-importer-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/postgresql-9.1-901.jdbc4.jar" sourcepath="lib/postgresql-9.1-901.jdbc4-sources.jar"/>
-	<classpathentry kind="lib" path="lib/publictransport-3.0.0-SNAPSHOT.jar" sourcepath="lib/publictransport-3.0.0-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/spring-beans-3.2.2.RELEASE.jar" sourcepath="lib/spring-beans-3.2.2.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="lib/spring-core-3.2.2.RELEASE.jar" sourcepath="lib/spring-core-3.2.2.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="lib/spring-jdbc-3.2.2.RELEASE.jar" sourcepath="lib/spring-jdbc-3.2.2.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="lib/spring-tx-3.2.2.RELEASE.jar" sourcepath="lib/spring-tx-3.2.2.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="lib/sqltool-2.2.8.jar"/>
-	<classpathentry kind="lib" path="lib/test-cases-0.4.8-RC2.jar" sourcepath="lib/test-cases-0.4.8-RC2-sources.jar"/>
-	<classpathentry kind="lib" path="lib/TimeTableDataConvertor-1.0.1-SNAPSHOT.jar" sourcepath="lib/TimeTableDataConvertor-1.0.1-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="lib/wp5-common-0.4.8-RC2.jar" sourcepath="lib/wp5-common-0.4.8-RC2-sources.jar"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="lib" path="activation-1.1.jar" sourcepath="activation-1.1-sources.jar"/>
+	<classpathentry kind="lib" path="agentpolis-3.0.0-SNAPSHOT.jar" sourcepath="agentpolis-3.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="alite-1.1.0.jar" sourcepath="alite-1.1.0-sources.jar"/>
+	<classpathentry kind="lib" path="analyser-1.0.0-SNAPSHOT.jar" sourcepath="analyser-1.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="ant-1.9.4.jar" sourcepath="ant-1.9.4-sources.jar"/>
+	<classpathentry kind="lib" path="ant-launcher-1.9.4.jar" sourcepath="ant-launcher-1.9.4-sources.jar"/>
+	<classpathentry kind="lib" path="antlr-2.7.7.jar" sourcepath="antlr-2.7.7-sources.jar"/>
+	<classpathentry kind="lib" path="aopalliance-1.0.jar" sourcepath="aopalliance-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="apgooglearth-2.0.1-SNAPSHOT.jar" sourcepath="apgooglearth-2.0.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="asm-3.2.jar" sourcepath="asm-3.2-sources.jar"/>
+	<classpathentry kind="lib" path="asm-analysis-3.2.jar" sourcepath="asm-analysis-3.2-sources.jar"/>
+	<classpathentry kind="lib" path="asm-commons-3.2.jar" sourcepath="asm-commons-3.2-sources.jar"/>
+	<classpathentry kind="lib" path="asm-tree-3.2.jar" sourcepath="asm-tree-3.2-sources.jar"/>
+	<classpathentry kind="lib" path="asm-util-3.2.jar" sourcepath="asm-util-3.2-sources.jar"/>
+	<classpathentry kind="lib" path="bson4jackson-2.1.0.jar" sourcepath="bson4jackson-2.1.0-sources.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.2.jar" sourcepath="commons-cli-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="commons-codec-1.3.jar" sourcepath="commons-codec-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="commons-compress-1.4.1.jar" sourcepath="commons-compress-1.4.1-sources.jar"/>
+	<classpathentry kind="lib" path="commons-httpclient-3.1.jar" sourcepath="commons-httpclient-3.1-sources.jar"/>
+	<classpathentry kind="lib" path="commons-io-1.3.2.jar" sourcepath="commons-io-1.3.2-sources.jar"/>
+	<classpathentry kind="lib" path="commons-lang-2.3.jar" sourcepath="commons-lang-2.3-sources.jar"/>
+	<classpathentry kind="lib" path="commons-logging-1.0.4.jar" sourcepath="commons-logging-1.0.4-sources.jar"/>
+	<classpathentry kind="lib" path="commons-math-2.2.jar" sourcepath="commons-math-2.2-sources.jar"/>
+	<classpathentry kind="lib" path="commons-math3-3.1.1.jar" sourcepath="commons-math3-3.1.1-sources.jar"/>
+	<classpathentry kind="lib" path="commons-pool-1.5.4.jar" sourcepath="commons-pool-1.5.4-sources.jar"/>
+	<classpathentry kind="lib" path="CustomJavaAPIforKml-2.2.0.jar" sourcepath="CustomJavaAPIforKml-2.2.0-sources.jar"/>
+	<classpathentry kind="lib" path="dbtokmlexporter-0.0.1-SNAPSHOT.jar" sourcepath="dbtokmlexporter-0.0.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="geoserver-manager-1.5.1.jar" sourcepath="geoserver-manager-1.5.1-sources.jar"/>
+	<classpathentry kind="lib" path="geovisio-1.0.2-SNAPSHOT.jar" sourcepath="geovisio-1.0.2-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="groovy-1.8.8.jar" sourcepath="groovy-1.8.8-sources.jar"/>
+	<classpathentry kind="lib" path="gt-api-9.2.jar" sourcepath="gt-api-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-data-9.2.jar" sourcepath="gt-data-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-epsg-hsql-9.2.jar" sourcepath="gt-epsg-hsql-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-main-9.2.jar" sourcepath="gt-main-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-metadata-9.2.jar" sourcepath="gt-metadata-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-opengis-9.2.jar" sourcepath="gt-opengis-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-referencing-9.2.jar" sourcepath="gt-referencing-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="gt-shapefile-9.2.jar" sourcepath="gt-shapefile-9.2-sources.jar"/>
+	<classpathentry kind="lib" path="guava-14.0.1.jar" sourcepath="guava-14.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="guice-3.0.jar" sourcepath="guice-3.0-sources.jar"/>
+	<classpathentry kind="lib" path="h2-1.3.173.jar" sourcepath="h2-1.3.173-sources.jar"/>
+	<classpathentry kind="lib" path="hamcrest-core-1.3.jar" sourcepath="hamcrest-core-1.3-sources.jar"/>
+	<classpathentry kind="lib" path="hsqldb-1.8.0.7.jar" sourcepath="hsqldb-1.8.0.7-sources.jar"/>
+	<classpathentry kind="lib" path="httpclient-4.0.1.jar" sourcepath="httpclient-4.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="httpcore-4.0.1.jar" sourcepath="httpcore-4.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="importer-1.0.1-SNAPSHOT.jar" sourcepath="importer-1.0.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="initializator-1.0.0-SNAPSHOT.jar" sourcepath="initializator-1.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="jackson-annotations-2.3.0.jar" sourcepath="jackson-annotations-2.3.0-sources.jar"/>
+	<classpathentry kind="lib" path="jackson-core-2.3.0.jar" sourcepath="jackson-core-2.3.0-sources.jar"/>
+	<classpathentry kind="lib" path="jackson-core-asl-1.9.12.jar" sourcepath="jackson-core-asl-1.9.12-sources.jar"/>
+	<classpathentry kind="lib" path="jackson-databind-2.3.0.jar" sourcepath="jackson-databind-2.3.0-sources.jar"/>
+	<classpathentry kind="lib" path="jackson-mapper-asl-1.9.12.jar" sourcepath="jackson-mapper-asl-1.9.12-sources.jar"/>
+	<classpathentry kind="lib" path="jai_core-1.1.3.jar" sourcepath="jai_core-1.1.3-sources.jar"/>
+	<classpathentry kind="lib" path="javassist-3.12.1.GA.jar" sourcepath="javassist-3.12.1.GA-sources.jar"/>
+	<classpathentry kind="lib" path="javax.inject-1.jar" sourcepath="javax.inject-1-sources.jar"/>
+	<classpathentry kind="lib" path="jaxb-api-2.2.jar" sourcepath="jaxb-api-2.2-sources.jar"/>
+	<classpathentry kind="lib" path="jaxb-impl-2.2.jar" sourcepath="jaxb-impl-2.2-sources.jar"/>
+	<classpathentry kind="lib" path="jaxb-xjc-2.2.jar" sourcepath="jaxb-xjc-2.2-sources.jar"/>
+	<classpathentry kind="lib" path="jcl-over-slf4j-1.5.11.jar" sourcepath="jcl-over-slf4j-1.5.11-sources.jar"/>
+	<classpathentry kind="lib" path="jdom-1.0.jar" sourcepath="jdom-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-continuation-8.0.0.M3.jar" sourcepath="jetty-continuation-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-http-8.0.0.M3.jar" sourcepath="jetty-http-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-io-8.0.0.M3.jar" sourcepath="jetty-io-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-security-8.0.0.M3.jar" sourcepath="jetty-security-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-server-8.0.0.M3.jar" sourcepath="jetty-server-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-servlet-8.0.0.M3.jar" sourcepath="jetty-servlet-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-util-8.0.0.M3.jar" sourcepath="jetty-util-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-webapp-8.0.0.M3.jar" sourcepath="jetty-webapp-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jetty-xml-8.0.0.M3.jar" sourcepath="jetty-xml-8.0.0.M3-sources.jar"/>
+	<classpathentry kind="lib" path="jgraph-5.13.0.0.jar" sourcepath="jgraph-5.13.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="jgrapht-jdk1.6-0.8.2.jar" sourcepath="jgrapht-jdk1.6-0.8.2-sources.jar"/>
+	<classpathentry kind="lib" path="jgridshift-1.0.jar" sourcepath="jgridshift-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="joda-time-2.1.jar" sourcepath="joda-time-2.1-sources.jar"/>
+	<classpathentry kind="lib" path="jpf-1.5.jar" sourcepath="jpf-1.5-sources.jar"/>
+	<classpathentry kind="lib" path="json-20070829.jar" sourcepath="json-20070829-sources.jar"/>
+	<classpathentry kind="lib" path="jsr-275-1.0-beta-2.jar" sourcepath="jsr-275-1.0-beta-2-sources.jar"/>
+	<classpathentry kind="lib" path="jts-1.13.jar" sourcepath="jts-1.13-sources.jar"/>
+	<classpathentry kind="lib" path="junit-4.11.jar" sourcepath="junit-4.11-sources.jar"/>
+	<classpathentry kind="lib" path="kml_visio-1.0.0.jar" sourcepath="kml_visio-1.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="libosm-atg-1.0.0.jar" sourcepath="libosm-atg-1.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="log4j-1.2.16.jar" sourcepath="log4j-1.2.16-sources.jar"/>
+	<classpathentry kind="lib" path="mockito-core-1.8.5.jar" sourcepath="mockito-core-1.8.5-sources.jar"/>
+	<classpathentry kind="lib" path="model-1.0.0-SNAPSHOT.jar" sourcepath="model-1.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="mongojack-2.0.0-RC5.jar" sourcepath="mongojack-2.0.0-RC5-sources.jar"/>
+	<classpathentry kind="lib" path="mongo-java-driver-2.12.0-rc2.jar" sourcepath="mongo-java-driver-2.12.0-rc2-sources.jar"/>
+	<classpathentry kind="lib" path="objenesis-1.0.jar" sourcepath="objenesis-1.0-sources.jar"/>
+	<classpathentry kind="lib" path="ondemandtransport-2.0.0-SNAPSHOT.jar" sourcepath="ondemandtransport-2.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="opencsv-2.1.jar" sourcepath="opencsv-2.1-sources.jar"/>
+	<classpathentry kind="lib" path="osmosis-core-0.43-RELEASE.jar" sourcepath="osmosis-core-0.43-RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="persistence-api-1.0.2.jar" sourcepath="persistence-api-1.0.2-sources.jar"/>
+	<classpathentry kind="lib" path="postgresql-9.2-1002-jdbc4.jar" sourcepath="postgresql-9.2-1002-jdbc4-sources.jar"/>
+	<classpathentry kind="lib" path="publictransport-3.0.0-SNAPSHOT.jar" sourcepath="publictransport-3.0.0-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="resultsvisio-0.0.1-SNAPSHOT.jar" sourcepath="resultsvisio-0.0.1-SNAPSHOT-sources.jar"/>
+	<classpathentry kind="lib" path="servlet-api-2.5.jar" sourcepath="servlet-api-2.5-sources.jar"/>
+	<classpathentry kind="lib" path="servlet-api-3.0.20100224.jar" sourcepath="servlet-api-3.0.20100224-sources.jar"/>
+	<classpathentry kind="lib" path="slf4j-api-1.5.11.jar" sourcepath="slf4j-api-1.5.11-sources.jar"/>
+	<classpathentry kind="lib" path="slf4j-nop-1.5.11.jar" sourcepath="slf4j-nop-1.5.11-sources.jar"/>
+	<classpathentry kind="lib" path="stax2-api-3.1.1.jar" sourcepath="stax2-api-3.1.1-sources.jar"/>
+	<classpathentry kind="lib" path="stax-api-1.0-2.jar" sourcepath="stax-api-1.0-2-sources.jar"/>
+	<classpathentry kind="lib" path="vecmath-1.5.2.jar" sourcepath="vecmath-1.5.2-sources.jar"/>
+	<classpathentry kind="lib" path="woodstox-core-lgpl-4.1.4.jar" sourcepath="woodstox-core-lgpl-4.1.4-sources.jar"/>
+	<classpathentry kind="lib" path="xalan-2.7.0.jar" sourcepath="xalan-2.7.0-sources.jar"/>
+	<classpathentry kind="lib" path="xercesImpl-2.9.1.jar" sourcepath="xercesImpl-2.9.1-sources.jar"/>
+	<classpathentry kind="lib" path="xml-apis-1.3.03.jar" sourcepath="xml-apis-1.3.03-sources.jar"/>
+	<classpathentry kind="lib" path="xmlunit-1.2.jar" sourcepath="xmlunit-1.2-sources.jar"/>
+	<classpathentry kind="lib" path="xom-1.2.5.jar" sourcepath="xom-1.2.5-sources.jar"/>
+	<classpathentry kind="lib" path="xz-1.0.jar" sourcepath="xz-1.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
