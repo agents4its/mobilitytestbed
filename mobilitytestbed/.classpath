@@ -2,6 +2,7 @@
 	<classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mobilitytestbeddbtokmlexporter"/>
 	<classpathentry kind="lib" path="activation-1.1.jar" sourcepath="activation-1.1-sources.jar"/>
 	<classpathentry kind="lib" path="agentpolis-3.0.0-SNAPSHOT.jar" sourcepath="agentpolis-3.0.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="alite-1.1.0.jar" sourcepath="alite-1.1.0-sources.jar"/>
