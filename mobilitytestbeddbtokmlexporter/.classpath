@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="/var/lib/tomcat6/.m2/repository/org/openstreetmap/osmosis/osmosis-core/0.43-RELEASE/osmosis-core-0.43-RELEASE.jar" sourcepath="/var/lib/tomcat6/.m2/repository/org/openstreetmap/osmosis/osmosis-core/0.43-RELEASE/osmosis-core-0.43-RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="../mobilitytestbed/lib/osmosis-core-0.43-RELEASE.jar" sourcepath="../mobilitytestbed/lib/osmosis-core-0.43-RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/stax2-api-3.1.1.jar" sourcepath="../mobilitytestbed/lib/stax2-api-3.1.1-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/xercesImpl-2.9.1.jar" sourcepath="../mobilitytestbed/lib/xercesImpl-2.9.1-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/woodstox-core-lgpl-4.1.4.jar" sourcepath="../mobilitytestbed/lib/woodstox-core-lgpl-4.1.4-sources.jar"/>
