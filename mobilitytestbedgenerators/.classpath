@@ -76,7 +76,6 @@
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/hsqldb-1.8.0.7.jar" sourcepath="../mobilitytestbed/lib/hsqldb-1.8.0.7-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/joda-time-2.1.jar" sourcepath="../mobilitytestbed/lib/joda-time-2.1-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/opencsv-2.1.jar" sourcepath="../mobilitytestbed/lib/opencsv-2.1-sources.jar"/>
-	<classpathentry kind="lib" path="../mobilitytestbed/lib/dbtokmlexporter-0.0.1-SNAPSHOT.jar" sourcepath="../mobilitytestbed/lib/dbtokmlexporter-0.0.1-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/CustomJavaAPIforKml-2.2.0.jar" sourcepath="../mobilitytestbed/lib/CustomJavaAPIforKml-2.2.0-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/jaxb-impl-2.2.jar" sourcepath="../mobilitytestbed/lib/jaxb-impl-2.2-sources.jar"/>
 	<classpathentry kind="lib" path="../mobilitytestbed/lib/jaxb-api-2.2.jar" sourcepath="../mobilitytestbed/lib/jaxb-api-2.2-sources.jar"/>
