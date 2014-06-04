@@ -1,11 +1,10 @@
 package cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.receiver;
 
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.DriverArrivedMessage;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.OrderConfirmation;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.*;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.BaseReceiverVisitor;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 
-public interface PassengerReceiverVisitor {
+public interface PassengerReceiverVisitor extends BaseReceiverVisitor {
 
 	public void visit(OrderConfirmation taxiSendConfirmationToPassengerMessage);
 
@@ -14,5 +13,4 @@ public interface PassengerReceiverVisitor {
 	public void visit(RequestReject requestReject);
 
 	public void visit(DriverArrivedMessage driverArrivedMessage);
-
 }

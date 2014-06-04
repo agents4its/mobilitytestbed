@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.dispatching.DispatchingAgent;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.dispatching.DispatchingAgentFactory;
@@ -47,6 +48,8 @@ public class DispatchingAndTimersInitFactory implements InitModuleFactory {
         EventProcessor eventProcessor = injector.getInstance(EventProcessor.class);
         Utils utils = injector.getInstance(Utils.class);
 
+        GeneralMessageProtocol generalMessageProtocol = injector.getInstance(GeneralMessageProtocol.class);
+
         if (!logicConstructor.usesDispatching()) {
             // create timers
             taxiModel.setTimers(
@@ -68,10 +71,9 @@ public class DispatchingAndTimersInitFactory implements InitModuleFactory {
             TestbedPlanner pathPlanner = injector.getInstance(TestbedPlanner.class);
             TestbedVehicleStorage vehicleStorage = injector.getInstance(TestbedVehicleStorage.class);
 
-            DispatchingLogic logic = logicConstructor.constructDispatchingLogic("Dispatching", sender, driverCentralizedMessageProtocol, taxiModel,
+            DispatchingLogic logic = logicConstructor.constructDispatchingLogic("Dispatching", sender,
+                    driverCentralizedMessageProtocol, generalMessageProtocol, taxiModel,
                             positionQuery, allNetworkNodes, utils, pathPlanner, vehicleStorage);
-//                    logic = new DispatchingTabuSearchLogic("Dispatching", sender, driverCentralizedMessageProtocol, taxiModel,
-//                            positionQuery, allNetworkNodes, utils, pathPlanner, vehicleStorage);
 
             DispatchingAgent dispatchingAgent = (DispatchingAgent) factory.createAgent("Dispatching", logic, injector);
 

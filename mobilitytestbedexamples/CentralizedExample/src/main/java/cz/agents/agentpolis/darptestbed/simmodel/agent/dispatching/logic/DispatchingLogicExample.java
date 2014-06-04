@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.m
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverCentralizedMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.OrderConfirmation;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalAccept;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalReject;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.planner.TestbedPlanner;
@@ -22,6 +23,7 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.transportnetwor
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,10 +33,12 @@ public class DispatchingLogicExample extends DispatchingLogic {
     private static final Logger LOGGER = Logger.getLogger(DispatchingLogicExample.class);
 
     public DispatchingLogicExample(String agentId, PassengerMessageProtocol sender,
-                                   DriverCentralizedMessageProtocol driverCentralizedMessageProtocol, TestbedModel taxiModel,
+                                   DriverCentralizedMessageProtocol driverCentralizedMessageProtocol,
+                                   GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
                                    AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedPlanner pathPlanner,
                                    TestbedVehicleStorage vehicleStorage) {
-        super(agentId, sender, driverCentralizedMessageProtocol, taxiModel, positionQuery, allNetworkNodes, utils,
+        super(agentId, sender, driverCentralizedMessageProtocol, generalMessageProtocol, taxiModel, positionQuery,
+                allNetworkNodes, utils,
                 pathPlanner, vehicleStorage);
 
     }
@@ -181,5 +185,4 @@ public class DispatchingLogicExample extends DispatchingLogic {
     public void processDriverRejectsNewPlan(DriverNewPlanRejectMessage driverNewPlanRejectMessage) {
         sendFinalPlanFailure(driverNewPlanRejectMessage.tripInfo.getDriverId());
     }
-
 }

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogicWithRequestConsumerMessageProtocol;
 import org.apache.log4j.Logger;
@@ -125,11 +126,13 @@ public class PassengerForBenchmarkInitFactory implements AgentInitFactory {
 			}
 
 			DriverMessageProtocol driverMessageProtocol = injector.getInstance(DriverMessageProtocol.class);
+            GeneralMessageProtocol generalMessageProtocol = injector.getInstance(GeneralMessageProtocol.class);
 
 			PassengerAgent<? extends PassengerLogic<?>> passengerAgent;
             RequestConsumerMessageProtocol sender = injector.getInstance(RequestConsumerMessageProtocol.class);
             PassengerLogicWithRequestConsumerMessageProtocol logic = logicConstructor.constructPassengerLogic(
-                    agentId, sender, driverMessageProtocol, taxiModel, positionQuery, utils, profile,
+                    agentId, sender, driverMessageProtocol, generalMessageProtocol, taxiModel, positionQuery, utils,
+                    profile,
                     passengerActivity, timeActivity, logger);
 
             if (!logic.isDecentralized()) {

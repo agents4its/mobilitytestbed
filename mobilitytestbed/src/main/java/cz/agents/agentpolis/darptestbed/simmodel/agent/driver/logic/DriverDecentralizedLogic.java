@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenge
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.FlexiblePlan;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
@@ -34,11 +35,12 @@ public abstract class DriverDecentralizedLogic extends DriverLogicWithPassengerM
 
     protected static final Logger LOGGER = Logger.getLogger(DriverDecentralizedLogic.class);
 
-    public DriverDecentralizedLogic(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel,
+    public DriverDecentralizedLogic(String agentId, PassengerMessageProtocol sender,
+                                    GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
                                     AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
                                     DriveVehicleActivity drivingActivity) {
 
-        super(agentId, sender, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
+        super(agentId, sender, generalMessageProtocol, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
     }
 
     /**
@@ -69,7 +71,7 @@ public abstract class DriverDecentralizedLogic extends DriverLogicWithPassengerM
      * @param request request to which we are replying
      */
     protected void sendRequestRejectionToPassenger(Request request) {
-        sender.sendMessage(request.getPassengerId(), new RequestReject(request, this.getDriverId()));
+        sender.sendMessage(request.getPassengerId(), new RequestReject(request, this.getAgentId()));
     }
 
     // TAXI_PROPOSES_TO_PASSENGER
@@ -143,12 +145,12 @@ public abstract class DriverDecentralizedLogic extends DriverLogicWithPassengerM
     protected void sendTripConfirmationToPassengers(List<Request> requests) {
 
         for (Request req : requests) {
-            sender.sendMessage(req.getPassengerId(), new OrderConfirmation(new TripInfo(getDriverId(), this.getVehicle().getId())));
+            sender.sendMessage(req.getPassengerId(), new OrderConfirmation(new TripInfo(getAgentId(), this.getVehicle().getId())));
         }
 
         // print out
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(getDriverId() + " has set out to work for ");
+        stringBuilder.append(getAgentId() + " has set out to work for ");
         for (Request req : requests) {
             stringBuilder.append(req.getPassengerId() + " ");
         }
@@ -158,7 +160,7 @@ public abstract class DriverDecentralizedLogic extends DriverLogicWithPassengerM
 
     @Override
     protected void sendTaxiArrivedToPickup(String passengerId) {
-        sender.sendMessage(passengerId, new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+        sender.sendMessage(passengerId, new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
     }
 
     @Override

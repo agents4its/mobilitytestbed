@@ -5,6 +5,8 @@ import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.DriverArrivedMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
@@ -26,10 +28,12 @@ import java.util.Map;
  */
 public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
 
-    public DriverDecentralizedLogicExample(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel,
+    public DriverDecentralizedLogicExample(String agentId, PassengerMessageProtocol sender,
+                                           GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
                                            AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
                                            DriveVehicleActivity drivingActivity) {
-        super(agentId, sender, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
+        super(agentId, sender, generalMessageProtocol, taxiModel, positionQuery, allNetworkNodes, utils, vehicle,
+                drivingActivity);
     }
 
     // If we receive a request from the passenger ...
@@ -38,7 +42,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
 
         // debug output
         LOGGER.debug("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture()) + "] "
-                + request.getPassengerId() + "->" + this.getDriverId() + ", latest departure: "
+                + request.getPassengerId() + "->" + this.getAgentId() + ", latest departure: "
                 + utils.toHoursAndMinutes(request.getTimeWindow().getLatestDeparture()));
 
         // if we don't have some of the requested special equipment (wheelchair support, etc.), reject the request
@@ -66,7 +70,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
         }
 
         // compute the driving time between the passenger and the driver
-        double timeToPassenger = utils.computeDrivingTime(this.getDriverId(), request.getPassengerId());
+        double timeToPassenger = utils.computeDrivingTime(this.getAgentId(), request.getPassengerId());
         // estimate when this driver could pick the passenger up
         long pickUpTime = Math.max(request.getTimeWindow().getEarliestDeparture(), utils.getCurrentTime() + Math.round(timeToPassenger));
 
@@ -80,7 +84,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
         if ((pickUpTime <= request.getTimeWindow().getLatestDeparture()) && (dropOffTime <= request.getTimeWindow().getLatestArrival())) {
 
             // send a proposal to the passenger
-            this.sendProposalToPassenger(new Proposal(request, this.getDriverId(), this.getVehicle().getId()));
+            this.sendProposalToPassenger(new Proposal(request, this.getAgentId(), this.getVehicle().getId()));
 
             // while we're waiting for the reply, flag ourselves as "busy", so we won't accept new requests
             this.setBusy();
@@ -131,7 +135,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
         // set the trip plan for the driver
         TripPlan tripPlan = new TripPlan(drivePath, pickUpAndDropOffMap);
         this.setTripPlan(tripPlan);
-        LOGGER.debug("Setting trip plan for " + this.getDriverId() + " (" + this.getCurrentPassengersOnBoard() + "/" + this.getVehicle().getCapacity() + ") to:\n" + tripPlan);
+        LOGGER.debug("Setting trip plan for " + this.getAgentId() + " (" + this.getCurrentPassengersOnBoard() + "/" + this.getVehicle().getCapacity() + ") to:\n" + tripPlan);
 
         // start driving
         driveNextPartOfTripPlan();
@@ -157,12 +161,12 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
     // Notify the passenger that the taxi arrived, so he can get in.
     @Override
     protected void sendTaxiArrivedToPickup(String passengerId) {
-        sender.sendMessage(passengerId, new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+        sender.sendMessage(passengerId, new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
     }
 
     @Override
     protected void sendTaxiArrivedToDropOff(String passengerId) {
-        sender.sendMessage(passengerId, new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+        sender.sendMessage(passengerId, new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
     }
 
     @Override

@@ -6,6 +6,7 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.dispatch
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.message.*;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.DriverArrivedMessage;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.protocol.PassengerMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripInfo;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.PassengersInAndOutPair;
@@ -41,12 +42,14 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
 
     private DriverState driverState = DriverState.ACCEPTING_NEW_PLANS;
 
-    public DriverCentralizedLogic(String agentId, PassengerMessageProtocol sender, TestbedModel taxiModel,
-                                  AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
+    public DriverCentralizedLogic(String agentId, PassengerMessageProtocol sender,
+                                  GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
+                                  AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils,
+                                  TestbedVehicle vehicle,
                                   DriveVehicleActivity drivingActivity,
                                   DispatchingMessageProtocol dispatchingMessageProtocol) {
 
-        super(agentId, sender, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
+        super(agentId, sender, generalMessageProtocol, taxiModel, positionQuery, allNetworkNodes, utils, vehicle, drivingActivity);
         this.dispatchingMessageProtocol = dispatchingMessageProtocol;
     }
 
@@ -72,16 +75,16 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
      */
     public void setTripPlan(TripPlan tripPlan) {
         if (isTripPlanAcceptable(tripPlan)) {
-            LOGGER.info("Accepted plan - " + getDriverId() + "\nNEW: " + tripPlan + "\nOLD: " + this.getTripPlan());
+            LOGGER.info("Accepted plan - " + getAgentId() + "\nNEW: " + tripPlan + "\nOLD: " + this.getTripPlan());
             candidateTripPlan = tripPlan;
             oldPlan = this.getTripPlan();
             dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
-                new DriverNewPlanAcceptMessage(new TripInfo(getDriverId(), getVehicle().getId())));
+                new DriverNewPlanAcceptMessage(new TripInfo(getAgentId(), getVehicle().getId())));
             driverState = DriverState.WAITING_FOR_PLAN_CONFIRMATION;
         } else {
-            LOGGER.info("Rejected plan - " + getDriverId() + ": " + tripPlan);
+            LOGGER.info("Rejected plan - " + getAgentId() + ": " + tripPlan);
             dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
-                    new DriverNewPlanRejectMessage(new TripInfo(getDriverId(), getVehicle().getId())));
+                    new DriverNewPlanRejectMessage(new TripInfo(getAgentId(), getVehicle().getId())));
         }
     }
 
@@ -99,7 +102,7 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
                     return;
 
 
-                long driverPosition = positionQuery.getCurrentPositionByNodeId(getDriverId());
+                long driverPosition = positionQuery.getCurrentPositionByNodeId(getAgentId());
                 PassengersInAndOutPair nodeWithBoardingAndDisembarkingPassengers =
                         getTripPlan().getNodeWithBoardingAndDisembarkingPassengers(driverPosition);
                 boolean hasList = nodeWithBoardingAndDisembarkingPassengers == null;
@@ -138,25 +141,25 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
     protected void sendTaxiArrivedLateMessageToDispatching(String passengerId) {
         dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                 new DriverReportsLateForPassengerMessage(passengerId,
-                        new TripInfo(getDriverId(), getVehicle().getId())));
+                        new TripInfo(getAgentId(), getVehicle().getId())));
     }
 
     @Override
     protected void sendTaxiArrivedToPickup(String passengerId) {
         LOGGER.debug("Sending pickup: " + passengerId);
         sender.sendMessage(passengerId,
-                new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+                new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
         dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                 new DriverReportsPassengerIsInMessage(passengerId,
-                new TripInfo(this.getDriverId(), this.getVehicle().getId())));
+                new TripInfo(this.getAgentId(), this.getVehicle().getId())));
     }
 
     @Override
     protected void sendTaxiArrivedToDropOff(String passengerId) {
         sender.sendMessage(passengerId,
-                new DriverArrivedMessage(getDriverId(), new TripInfo(getDriverId(), this.getVehicle().getId())));
+                new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
         dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
-                new DriverReportsPassengerHasLeftMessage(passengerId, new TripInfo(this.getDriverId(),
+                new DriverReportsPassengerHasLeftMessage(passengerId, new TripInfo(this.getAgentId(),
                         this.getVehicle().getId())));
     }
 

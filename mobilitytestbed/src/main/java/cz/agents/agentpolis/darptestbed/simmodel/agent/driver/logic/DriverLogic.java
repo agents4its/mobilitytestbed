@@ -1,6 +1,8 @@
 package cz.agents.agentpolis.darptestbed.simmodel.agent.driver.logic;
 
 import cz.agents.agentpolis.darptestbed.global.Utils;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.BaseReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.AgentLogic;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.FlexiblePlan;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan;
@@ -25,12 +27,11 @@ import java.util.Set;
  *
  * @author Lukas Canda
  */
-public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> extends AgentLogic<TMessageProtocol>
+public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<? extends BaseReceiverVisitor>> extends
+        AgentLogic<TMessageProtocol>
         implements DrivingFinishedActivityCallback {
 
     private static final Logger LOGGER = Logger.getLogger(DriverLogic.class);
-
-    private final String driverId;
 
     /**
      * The taxi I'm driving
@@ -72,28 +73,21 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
 
     private long lastLoadingNode = -1;
 
-    public DriverLogic(String agentId, TMessageProtocol sender, TestbedModel serviceModel,
+    public DriverLogic(String agentId, TMessageProtocol sender, GeneralMessageProtocol generalMessageProtocol,
+                       TestbedModel serviceModel,
                        AgentPositionQuery positionQuery, AllNetworkNodes allNetworkNodes, Utils utils, TestbedVehicle vehicle,
                        DriveVehicleActivity drivingActivity) {
 
-        super(sender, serviceModel, positionQuery, utils);
-        this.driverId = agentId;
+        super(agentId, sender, generalMessageProtocol, serviceModel, positionQuery, utils);
         this.vehicle = vehicle;
         this.drivingActivity = drivingActivity;
-    }
-
-    /**
-     * @return the driver's id
-     */
-    protected String getDriverId() {
-        return this.driverId;
     }
 
     /**
      * @return the driver's current position node
      */
     protected Long getCurrentPositionNode() {
-        return this.positionQuery.getCurrentPositionByNodeId(this.getDriverId());
+        return this.positionQuery.getCurrentPositionByNodeId(this.getAgentId());
     }
 
     /**
@@ -157,7 +151,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
             }
         }
 
-        LOGGER.debug("Assigned to " + driverId + " " + tripPlan);
+        LOGGER.debug("Assigned to " + getAgentId() + " " + tripPlan);
     }
 
     /**
@@ -305,7 +299,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
                 this.flexiblePlan.removeNodesBefore(tripToDrive.showLastTripItem().tripPositionByNodeId);
             }
             LOGGER.debug("Drive: " + vehicle.getId() + " " + tripToDrive);
-            drivingActivity.drive(driverId, vehicle, tripToDrive, this);
+            drivingActivity.drive(getAgentId(), vehicle, tripToDrive, this);
         }
     }
 
@@ -325,7 +319,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
                 }
 
                 LOGGER.debug("Driver: DISEMBARK of " + passengerId + ", used " + getVehicle().getId() +
-                        ", driven by " + getDriverId() + " at " + currentPos + ". " +
+                        ", driven by " + getAgentId() + " at " + currentPos + ". " +
                         passengersToGetOut);
                 tripPlan.removePassengerFromDisembarkingPassengersAtNode(passengerId, currentPos);
                 sendTaxiArrivedToDropOff(passengerId);
@@ -347,7 +341,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
         LOGGER.debug("Processing in - driver: " + getVehicle().getId() + " " + this.numOfPassenToGetIn);
         for (String passengerId : passengersToGetIn) {
             LOGGER.debug("Driver: PICKUP of " + passengerId + ", used " + getVehicle().getId() +
-                    ", driven by " + getDriverId() + " at " + currentPos + " - " +
+                    ", driven by " + getAgentId() + " at " + currentPos + " - " +
                 passengersToGetIn.toString());
 
             tripPlan.removePassengerFromBoardingPassengersAtNode(passengerId, currentPos);
@@ -391,7 +385,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
         tripPlan = null;
         flexiblePlan = null;
         taxiModel.setTaxiFree(vehicle.getId());
-        LOGGER.debug(this.driverId + ": I've finished my trip at " + utils.toHoursAndMinutes(utils.getCurrentTime()));
+        LOGGER.debug(this.agentId + ": I've finished my trip at " + utils.toHoursAndMinutes(utils.getCurrentTime()));
     }
 
     /**
@@ -409,7 +403,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
      * @return true, if the driver is currently busy for some reason (on a trip or communicating with passenger)
      */
     protected boolean isBusy() {
-        if (!taxiModel.getTaxiDriversFree().contains(this.getDriverId())) {
+        if (!taxiModel.getTaxiDriversFree().contains(this.getAgentId())) {
             return true;
         } else {
             return false;
@@ -454,7 +448,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<?>> 
     }
 
     public String toString() {
-        return driverId;
+        return getAgentId();
     }
 
 }

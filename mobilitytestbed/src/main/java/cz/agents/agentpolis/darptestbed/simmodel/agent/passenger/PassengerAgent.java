@@ -2,15 +2,12 @@ package cz.agents.agentpolis.darptestbed.simmodel.agent.passenger;
 
 import java.util.Set;
 
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.*;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.receiver.StringMessage;
 import org.apache.log4j.Logger;
 import org.joda.time.Duration;
 
-import cz.agents.agentpolis.darptestbed.global.GlobalParams;
 import cz.agents.agentpolis.darptestbed.global.Utils;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.DriverArrivedMessage;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.OrderConfirmation;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
-import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.receiver.PassengerReceiverVisitor;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.RequestGenerator;
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.generator.RequestGeneratorCall;
@@ -119,5 +116,11 @@ public abstract class PassengerAgent<TPassengerLogic extends PassengerLogic> ext
 		LOGGER.debug(getId() + ":" + proposal.getClass().getSimpleName());
 		logic.processProposal(proposal);
 	}
+
+    @Override
+    public void visit(StringMessage message) {
+        LOGGER.debug(getId() + ":" + message.getClass().getSimpleName() + ":" + message);
+        logic.processTextMessage(message);
+    }
 
 }

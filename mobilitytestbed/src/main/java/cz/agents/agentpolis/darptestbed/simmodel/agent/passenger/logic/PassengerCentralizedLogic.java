@@ -4,6 +4,7 @@ import cz.agents.agentpolis.darptestbed.global.Utils;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.driver.protocol.DriverMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.Proposal;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenger.message.RequestReject;
+import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.protocol.GeneralMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.message.ProposalAccept;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.requestconsumer.protocol.RequestConsumerMessageProtocol;
 import cz.agents.agentpolis.darptestbed.siminfrastructure.logger.RequestLogger;
@@ -26,12 +27,14 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 public class PassengerCentralizedLogic extends PassengerLogicWithRequestConsumerMessageProtocol {
 
 	public PassengerCentralizedLogic(String agentId, RequestConsumerMessageProtocol sender,
-                                     DriverMessageProtocol driverMessageProtocol, TestbedModel taxiModel, AgentPositionQuery positionQuery,
-                                     Utils utils, PassengerProfile passengerProfile, TestbedPassengerActivity passengerActivity,
+                                     DriverMessageProtocol driverMessageProtocol,
+                                     GeneralMessageProtocol generalMessageProtocol, TestbedModel taxiModel,
+                                     AgentPositionQuery positionQuery, Utils utils, PassengerProfile passengerProfile,
+                                     TestbedPassengerActivity passengerActivity,
                                      TimeSpendingActivity timeSpendingActivity, RequestLogger logger) {
 
-		super(agentId, sender, driverMessageProtocol, taxiModel, positionQuery, utils, passengerProfile,
-				passengerActivity, timeSpendingActivity, logger);
+		super(agentId, sender, driverMessageProtocol, generalMessageProtocol, taxiModel, positionQuery, utils,
+                passengerProfile, passengerActivity, timeSpendingActivity, logger);
 
 	}
 
@@ -67,7 +70,7 @@ public class PassengerCentralizedLogic extends PassengerLogicWithRequestConsumer
 	@Override
 	public void processRejection(RequestReject rejection) {
 		// log the request failure for statistical purposes
-		logger.logRequestRejected(passengerId);
+		logger.logRequestRejected(getAgentId());
         this.stopWaiting(rejection.rejectReceivedFrom);
 	}
 
