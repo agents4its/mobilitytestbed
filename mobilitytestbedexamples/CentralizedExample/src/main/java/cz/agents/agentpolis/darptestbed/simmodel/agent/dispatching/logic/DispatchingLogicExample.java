@@ -47,7 +47,7 @@ public class DispatchingLogicExample extends DispatchingLogic {
     public void processNewRequest(Request request) {
 
         // print out the request for debugging purposes
-        LOGGER.debug("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture())
+        LOGGER.info("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture())
                 + "] from " + request.getPassengerId() + ", latest departure: "
                 + utils.toHoursAndMinutes(request.getTimeWindow().getLatestDeparture()) + " " + request);
 
@@ -56,7 +56,7 @@ public class DispatchingLogicExample extends DispatchingLogic {
             // if there are no free drivers, dispatcher needs to reject the
             // request
             this.sendRequestReject(request.getPassengerId(), request);
-            LOGGER.debug("	Reply:   REJECT [no free taxis]");
+            LOGGER.info("	Reply:   REJECT [no free taxis]");
             return;
         }
 
@@ -121,7 +121,6 @@ public class DispatchingLogicExample extends DispatchingLogic {
 
                 // confirm the request and tell the passenger which car will
                 // pick him/her up
-                // TODO: should not work, move sends out taxi into confirm order
                 sendMessageDispatcherSendsOutTaxi(taxiDriverId, tripPlan);
                 sendMessageDispatcherAcceptsRequest(request, new TripInfo(taxiDriverId, taxiVehicle.getId()));
 
@@ -129,8 +128,8 @@ public class DispatchingLogicExample extends DispatchingLogic {
                 taxiModel.setTaxiBusy(taxiVehicle.getId());
 
                 // print some debug information
-                LOGGER.debug("	Reply:   ACCEPT [sending " + taxiVehicle.getId() + "]");
-                LOGGER.debug("	Trips:\n" + tripPlan.getTrips().toString());
+                LOGGER.info("	Reply:   ACCEPT [sending " + taxiVehicle.getId() + "]");
+                LOGGER.info("	Trips:\n\n" + tripPlan.getTrips().toString());
 
                 // once we've sent the driver out, we can finish the execution
                 // of this function
@@ -141,7 +140,7 @@ public class DispatchingLogicExample extends DispatchingLogic {
         }
 
         sendRequestReject(request.getPassengerId(), request);
-        LOGGER.debug("	Reply:   REJECT [suitable taxi not found]");
+        LOGGER.info("	Reply:   REJECT [suitable taxi not found]");
 
     }
 
