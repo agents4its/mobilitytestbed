@@ -75,14 +75,14 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
      */
     public void setTripPlan(TripPlan tripPlan) {
         if (isTripPlanAcceptable(tripPlan)) {
-            LOGGER.info("Accepted plan - " + getAgentId() + "\nNEW: " + tripPlan + "\nOLD: " + this.getTripPlan());
+            LOGGER.debug("Accepted plan - " + getAgentId() + "\nNEW: " + tripPlan + "\nOLD: " + this.getTripPlan());
             candidateTripPlan = tripPlan;
             oldPlan = this.getTripPlan();
             dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                 new DriverNewPlanAcceptMessage(new TripInfo(getAgentId(), getVehicle().getId())));
             driverState = DriverState.WAITING_FOR_PLAN_CONFIRMATION;
         } else {
-            LOGGER.info("Rejected plan - " + getAgentId() + ": " + tripPlan);
+            LOGGER.debug("Rejected plan - " + getAgentId() + ": " + tripPlan);
             dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                     new DriverNewPlanRejectMessage(new TripInfo(getAgentId(), getVehicle().getId())));
         }

@@ -242,21 +242,21 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
 
         if (delay < 0) {
             // the taxi has arrived too early
-            LOGGER.info(driverId + " arrived too soon for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.debug(driverId + " arrived too soon for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                 " (earliest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getEarliestDeparture()) + ")");
             timeSpendingActivity.spendingTime(this, -delay);
             return true;
         } else if (delay == 0) {
             // on time
-            LOGGER.info(driverId + " arrived on time for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.debug(driverId + " arrived on time for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                     " (earliest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getEarliestDeparture()) + ")");
             processVehicleArrivedNoTimeWindows(driverId, vehicleId);
             return true;
         } else {
             // too late
-            LOGGER.info(driverId + " arrived too late for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
+            LOGGER.debug(driverId + " arrived too late for " + getAgentId() + " (at " + getCurrentTimeStr() + ")" +
                     " (latest departure " +
                     utils.toHoursAndMinutes(currentRequestConfirmed.getTimeWindow().getLatestArrival()) + ")");
             sendVehicleIsTooLate(driverId, true, delay);
@@ -332,7 +332,7 @@ public abstract class PassengerLogic<TMessageProtocol extends AMessageProtocol<?
     public void tripFinished(long targetNode) {
 
         long currentTime = utils.getCurrentTime();
-        LOGGER.info("TRIP FINISHED [" + currentTime + ", " + currentDriverId + ", " +
+        LOGGER.debug("TRIP FINISHED [" + currentTime + ", " + currentDriverId + ", " +
                 getAgentId() + "] at " + targetNode);
 
         // print out
