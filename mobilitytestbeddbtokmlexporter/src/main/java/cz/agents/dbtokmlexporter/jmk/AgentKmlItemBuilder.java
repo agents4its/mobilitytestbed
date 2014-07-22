@@ -27,14 +27,13 @@ public class AgentKmlItemBuilder extends InterpolableTimeKmlItemBuilder {
 	private static final String TABLE_NAME = "agents";
 	private static final String WHERE_CLAUSE = " ";
 
-	private static final String ICON_NAME = "man";
-	
 	private final ProjectionTransformer transformer;
 
 	public AgentKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
                                Color agentColor, ProjectionTransformer transformer, boolean interpolate) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_NAME,
-		        agentColor, 0.75), new PointGeometryFactory(), interpolate);
+		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, 
+				new IconStyleFactory("http://raw.githubusercontent.com/agents4its/mobilitytestbed/screenshots/passenger.png", 0.75), 
+				new PointGeometryFactory(), interpolate);
 		this.transformer= transformer;
 	}
 

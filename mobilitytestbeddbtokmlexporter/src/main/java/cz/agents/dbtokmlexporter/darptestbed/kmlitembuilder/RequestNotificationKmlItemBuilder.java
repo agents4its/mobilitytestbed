@@ -31,30 +31,35 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 
 	private static final Logger logger = Logger.getLogger(RequestNotificationKmlItemBuilder.class);
 
-	private static final String ICON_NAME = "shaded_dot";
-
+	private String iconUrl;
 	private final long notificationDuration;
 	private final String[] notifiedRequestStatuses;
-	private final Color notificationColor;
 
+	// general constructor
 	public RequestNotificationKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
-	        String fileName, long notificationDuration, Color notificationColor, String... notifiedRequestStatuses) {
+	        String fileName, long notificationDuration, String iconUrl, String... notifiedRequestStatuses) {
 		super(connection, schemaName, interval, fileName);
 		this.notificationDuration = notificationDuration;
 		this.notifiedRequestStatuses = notifiedRequestStatuses;
-		this.notificationColor = notificationColor;
+		this.iconUrl = iconUrl;
 	}
 
+	// SUCCESS notification constructor
 	public static RequestNotificationKmlItemBuilder createSuccessNotificationKmlItemBuilder(
 	        DatabaseConnection connection, String schemaName, long interval, long notificationDuration) {
 		return new RequestNotificationKmlItemBuilder(connection, schemaName, interval,
-		        "succes_request_notification.kml", notificationDuration, Color.GREEN, "OUT_OF_VEHICLE");
+		        "succes_request_notification.kml", notificationDuration, 
+		        "../../../data/visualizations/success.png", 
+		        "OUT_OF_VEHICLE");
 	}
 
+	// FAIL notification constructor
 	public static RequestNotificationKmlItemBuilder createFailNotificationKmlItemBuilder(DatabaseConnection connection,
 	        String schemaName, long interval, long notificationDuration) {
-		return new RequestNotificationKmlItemBuilder(connection, schemaName, interval, "fail_request_notification.kml",
-		        notificationDuration, Color.RED, "OUT_OF_VEHICLE_WITH_DELAYED_ARRIVAL", "REJECTED");
+		return new RequestNotificationKmlItemBuilder(connection, schemaName, interval, 
+				"fail_request_notification.kml", notificationDuration,
+		        "../../../data/visualizations/fail.png", 
+		        "OUT_OF_VEHICLE_WITH_DELAYED_ARRIVAL", "REJECTED");
 	}
 
 	@Override
@@ -65,7 +70,7 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 		List<String> additionalColumnNames = getAdditionalColumnNames();
 
 		DescriptionFactory descriptionFactory = new TableColumnsDescriptionFactory(additionalColumnNames);
-		StyleFactory styleFactory = new IconStyleFactory(ICON_NAME, notificationColor, 1.0);
+		StyleFactory styleFactory = new IconStyleFactory(this.iconUrl, 0.75);
 
 		NotificationKmlItem kmlItem = new NotificationKmlItem(styleFactory, new PointGeometryFactory(),
 		        notificationDuration);

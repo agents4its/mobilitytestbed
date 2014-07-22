@@ -58,7 +58,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		conn.connect();
 
 		OneStringDescriptionFactory descfac = new OneStringDescriptionFactory("agentid");
-		saveToKml(createPointVis(schemaName, "taxi_drivers", "", conn, Color.GREEN, "cabs", descfac), schemaName
+		saveToKml(createPointVis(schemaName, "taxi_drivers", "", conn, "../../../data/visualizations/car.png", descfac), schemaName
 				+ "\\taxi_non_interpolated.kml");
 		List<String> requestColumnNames = new ArrayList<>();
 		requestColumnNames.add("agentid");
@@ -71,8 +71,8 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 
 		saveToKml(
 				createPointVis(schemaName, "passengers",
-						"where from_time BETWEEN request_departure_min AND request_arrival_max", conn, Color.CYAN,
-						"man", requestDescription), schemaName + "\\active_passengers_non_interpolated.kml");
+						"where from_time BETWEEN request_departure_min AND request_arrival_max", conn,
+						"../../../data/visualizations/passenger.png", requestDescription), schemaName + "\\active_passengers_non_interpolated.kml");
 		// saveToKml(
 		// createPointVis(
 		// schemaName,
@@ -82,8 +82,8 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		// + "\\delayed_passengers_non_interpolated.kml");
 		saveToKml(
 				createPointVis(schemaName, "passengers",
-						"where from_time NOT BETWEEN request_departure_min AND request_arrival_max", conn, Color.BLUE,
-						"man", requestDescription), schemaName + "\\inactive_passengers_non_interpolated.kml");
+						"where from_time NOT BETWEEN request_departure_min AND request_arrival_max", conn, 
+						"../../../data/visualizations/passenger.png", requestDescription), schemaName + "\\inactive_passengers_non_interpolated.kml");
 		// System.out.println(Color.CYAN.getRGB());
 
 		List<String> pairColumnNames = new ArrayList<>();
@@ -107,7 +107,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 	}
 
 	public static NonInterpolatedTimeKmlItem createPointVis(String schemaName, String tableName, String whereSql,
-			DatabaseConnection conn, final Color color, final String iconName, DescriptionFactory descriptionFactory)
+			DatabaseConnection conn, final String iconUrl, DescriptionFactory descriptionFactory)
 			throws SQLException, NoSuchAuthorityCodeException, FactoryException, TransformException {
 		String columns = "*";
 		String sql = "SELECT " + columns + " FROM " + schemaName + "." + tableName + " " + whereSql
@@ -117,7 +117,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		GeometryFactory geometryFactory = new PointGeometryFactory();
-		StyleFactory styleFactory = new IconStyleFactory(iconName, color, 0.75);
+		StyleFactory styleFactory = new IconStyleFactory(iconUrl, 0.75);
 
 		NonInterpolatedTimeKmlItem kmlItem = new NonInterpolatedTimeKmlItem(transformer, styleFactory,
 				geometryFactory, 24 * 3600 * 1000, false, 2 * 60 * 1000);

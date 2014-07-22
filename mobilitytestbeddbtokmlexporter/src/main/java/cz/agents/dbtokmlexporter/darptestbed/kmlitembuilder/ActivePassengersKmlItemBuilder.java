@@ -26,12 +26,10 @@ public class ActivePassengersKmlItemBuilder extends InterpolableTimeKmlItemBuild
         " AND request_status != 'REJECTED'";
 //        " AND request_status != 'CONFIRMED'";
 
-	private static final String ICON_NAME = "man";
-
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color passengerColor, boolean interpolate) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, new IconStyleFactory(ICON_NAME,
-				passengerColor, 0.75), new PointGeometryFactory(), interpolate);
+		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, 
+				new IconStyleFactory("../../../data/visualizations/passenger.png", 0.75), new PointGeometryFactory(), interpolate);
 	}
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			Color passengerColor, boolean interpolate) {
