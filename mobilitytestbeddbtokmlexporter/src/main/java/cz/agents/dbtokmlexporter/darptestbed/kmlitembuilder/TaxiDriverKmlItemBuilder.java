@@ -22,13 +22,13 @@ public class TaxiDriverKmlItemBuilder extends InterpolableTimeKmlItemBuilder {
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
 			Color driverColor, boolean interpolate) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory("../../../data/visualizations/car.png", 
-				0.75), new PointGeometryFactory(), interpolate);
+		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory("data/car.png", 
+				0.75), new PointGeometryFactory(), interpolate, true);
 	}
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, Color driverColor,
                                     boolean interpolate) {
-		this(connection, schemaName, interval, "taxi_driver.kml", driverColor, interpolate);
+		this(connection, schemaName, interval, "taxi_driver.kmz", driverColor, interpolate);
 	}
 
 	@Override

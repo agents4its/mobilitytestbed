@@ -58,7 +58,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		conn.connect();
 
 		OneStringDescriptionFactory descfac = new OneStringDescriptionFactory("agentid");
-		saveToKml(createPointVis(schemaName, "taxi_drivers", "", conn, "../../../data/visualizations/car.png", descfac), schemaName
+		saveToKml(createPointVis(schemaName, "taxi_drivers", "", conn, "data/car.png", descfac), schemaName
 				+ "\\taxi_non_interpolated.kml");
 		List<String> requestColumnNames = new ArrayList<>();
 		requestColumnNames.add("agentid");
@@ -72,7 +72,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		saveToKml(
 				createPointVis(schemaName, "passengers",
 						"where from_time BETWEEN request_departure_min AND request_arrival_max", conn,
-						"../../../data/visualizations/passenger.png", requestDescription), schemaName + "\\active_passengers_non_interpolated.kml");
+						"data/passenger.png", requestDescription), schemaName + "\\active_passengers_non_interpolated.kml");
 		// saveToKml(
 		// createPointVis(
 		// schemaName,
@@ -83,7 +83,7 @@ public class DarpTestbedFromDbToNonInterpolatedKmlMain {
 		saveToKml(
 				createPointVis(schemaName, "passengers",
 						"where from_time NOT BETWEEN request_departure_min AND request_arrival_max", conn, 
-						"../../../data/visualizations/passenger.png", requestDescription), schemaName + "\\inactive_passengers_non_interpolated.kml");
+						"data/passenger.png", requestDescription), schemaName + "\\inactive_passengers_non_interpolated.kml");
 		// System.out.println(Color.CYAN.getRGB());
 
 		List<String> pairColumnNames = new ArrayList<>();

@@ -38,7 +38,7 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 	// general constructor
 	public RequestNotificationKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 	        String fileName, long notificationDuration, String iconUrl, String... notifiedRequestStatuses) {
-		super(connection, schemaName, interval, fileName);
+		super(connection, schemaName, interval, fileName, true);
 		this.notificationDuration = notificationDuration;
 		this.notifiedRequestStatuses = notifiedRequestStatuses;
 		this.iconUrl = iconUrl;
@@ -48,8 +48,8 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 	public static RequestNotificationKmlItemBuilder createSuccessNotificationKmlItemBuilder(
 	        DatabaseConnection connection, String schemaName, long interval, long notificationDuration) {
 		return new RequestNotificationKmlItemBuilder(connection, schemaName, interval,
-		        "succes_request_notification.kml", notificationDuration, 
-		        "../../../data/visualizations/success.png", 
+		        "success_request_notification.kmz", notificationDuration, 
+		        "data/success.png", 
 		        "OUT_OF_VEHICLE");
 	}
 
@@ -57,8 +57,8 @@ public class RequestNotificationKmlItemBuilder extends KmlItemBuilder {
 	public static RequestNotificationKmlItemBuilder createFailNotificationKmlItemBuilder(DatabaseConnection connection,
 	        String schemaName, long interval, long notificationDuration) {
 		return new RequestNotificationKmlItemBuilder(connection, schemaName, interval, 
-				"fail_request_notification.kml", notificationDuration,
-		        "../../../data/visualizations/fail.png", 
+				"fail_request_notification.kmz", notificationDuration,
+		        "data/fail.png", 
 		        "OUT_OF_VEHICLE_WITH_DELAYED_ARRIVAL", "REJECTED");
 	}
 

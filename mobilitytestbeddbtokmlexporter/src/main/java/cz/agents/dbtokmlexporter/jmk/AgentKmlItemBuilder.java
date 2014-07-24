@@ -32,8 +32,8 @@ public class AgentKmlItemBuilder extends InterpolableTimeKmlItemBuilder {
 	public AgentKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
                                Color agentColor, ProjectionTransformer transformer, boolean interpolate) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, 
-				new IconStyleFactory("http://raw.githubusercontent.com/agents4its/mobilitytestbed/screenshots/passenger.png", 0.75), 
-				new PointGeometryFactory(), interpolate);
+				new IconStyleFactory("http://maps.google.com/mapfiles/kml/shapes/man.png", 0.75), 
+				new PointGeometryFactory(), interpolate, false);
 		this.transformer= transformer;
 	}
 

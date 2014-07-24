@@ -92,7 +92,7 @@ public abstract class SimpleKmlItemBuilder {
 	 * @throws java.sql.SQLException
 	 * @throws java.io.IOException
 	 */
-	public static void saveBuiltKmlItemsToSeparateFiles(List<? extends SimpleKmlItemBuilder> builders, String folderName)
+	public static void saveBuiltKmlItemsToSeparateFiles(List<? extends SimpleKmlItemBuilder> builders, String folderName, String additionalResourcesFolderPath)
 			throws SQLException, IOException {
 		File folder = new File(folderName);
 		folder.mkdir();
@@ -106,7 +106,7 @@ public abstract class SimpleKmlItemBuilder {
 
 			String fileName = folderName + "/" + builder.fileName;
 			if (builder.hasToBeSavedToKmz) {
-				saveToKmz(builder.buildKmlItem(), fileName);
+				saveToKmz(builder.buildKmlItem(), fileName, additionalResourcesFolderPath);
 			} else {
 				saveToKml(builder.buildKmlItem(), fileName);
 			}
@@ -114,18 +114,27 @@ public abstract class SimpleKmlItemBuilder {
 		}
 	}
 
-	public static void saveToKmz(KmlItem output, String path) throws FileNotFoundException, IOException {
+	public static void saveToKmz(KmlItem output, String path, String additionalResourcesFolderPath) throws FileNotFoundException, IOException {
 
 		Kml kml = new Kml();
 		Kmz kmz = new Kmz(kml);
 
 		Folder folder = output.initFeatureForKml(kmz);
+		
 		if (folder == null) {
 			return;
 		}
 
 		kml.createAndSetDocument().addToFeature(folder);
 
+		// add additional resources (icon image files) to KMZ
+		File additionalResFolder = new File(additionalResourcesFolderPath);
+		if (additionalResFolder != null) {
+			for (File f : additionalResFolder.listFiles()) {
+				kmz.loadFile(f);
+			}
+		} 
+		
 		kmz.writeToStream(new FileOutputStream(path));
 	}
 

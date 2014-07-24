@@ -29,11 +29,11 @@ public class ActivePassengersKmlItemBuilder extends InterpolableTimeKmlItemBuild
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color passengerColor, boolean interpolate) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, WHERE_CLAUSE, 
-				new IconStyleFactory("../../../data/visualizations/passenger.png", 0.75), new PointGeometryFactory(), interpolate);
+				new IconStyleFactory("data/passenger.png", 0.75), new PointGeometryFactory(), interpolate, true);
 	}
 	public ActivePassengersKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			Color passengerColor, boolean interpolate) {
-		this(connection, schemaName, interval, "active_passengers.kml", passengerColor, interpolate);
+		this(connection, schemaName, interval, "active_passengers.kmz", passengerColor, interpolate);
 	}
 
 	protected List<String> getDescriptionColumnNames() {

@@ -23,7 +23,7 @@ public class TaxiPassengerPairKmlItemBuilder extends InterpolableTimeKmlItemBuil
 	public TaxiPassengerPairKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
 			String fileName, Color pairColor) {
 		super(connection, schemaName, interval, fileName, TABLE_NAME, "", new LineStyleFactory(pairColor, 2),
-				new LineGeometryFactory(), false);
+				new LineGeometryFactory(), false, false);
 	}
 
 	public TaxiPassengerPairKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
