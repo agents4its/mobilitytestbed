@@ -5,8 +5,10 @@ import cz.agents.agentpolis.simmodel.environment.model.citymodel.restaurantnetwo
 import cz.agents.dbtokmlexporter.darptestbed.kmlitembuilder.NodeDensityHeatMapKmlItemBuilder;
 import cz.agents.dbtokmlexporter.kmlitem.builder.KmlItemBuilder;
 import cz.agents.dbtokmlexporter.kmlitem.builder.SimpleKmlItemBuilder;
+
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class RestaurantDensityCalculatorApp {
         itemBuilders.add(nodeDensityHeatMap);
 
         KmlItemBuilder.saveBuiltKmlItemsToSeparateFiles(itemBuilders, outputFolderParent + "experiments/" + args[0]
-                + "/node_density/");
+                + "/node_density/", BENCHMARK_DIR+File.separator+"data"+File.separator+"visualizations");
 
 
 
