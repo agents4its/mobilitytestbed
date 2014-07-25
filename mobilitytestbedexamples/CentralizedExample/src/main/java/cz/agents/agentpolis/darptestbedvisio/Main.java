@@ -184,7 +184,7 @@ public class Main {
         // export visualization to kml
         if (scenario.getBooleanValueFromConfig("createVisualizations") == true) {
             DarpTestbedKmlVisualisator kmlVisualisator = new DarpTestbedKmlVisualisator(settings, visInterval,
-                    "public", outputString, INTERPOLATE_VISUALIZATION);
+                    "public", outputString, INTERPOLATE_VISUALIZATION, BENCHMARK_DIR+File.separator+"data"+File.separator+"visualizations");
             kmlVisualisator.visualize();
         } else {
             LOGGER.info("Visualizations are turned off.");
