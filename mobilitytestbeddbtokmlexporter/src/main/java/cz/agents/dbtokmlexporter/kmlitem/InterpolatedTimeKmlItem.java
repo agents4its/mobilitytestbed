@@ -1,6 +1,7 @@
 package cz.agents.dbtokmlexporter.kmlitem;
 
 import com.vividsolutions.jts.geom.*;
+
 import cz.agents.agentpolis.tools.geovisio.projection.ProjectionTransformer;
 import cz.agents.alite.googleearth.updates.Kmz;
 import cz.agents.dbtokmlexporter.factory.geometry.GeometryFactory;
@@ -12,6 +13,7 @@ import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.gx.Coord;
 import de.micromata.opengis.kml.v_2_2_0.gx.Track;
 import de.micromata.opengis.kml.v_2_2_0.gx.custom.TrackPoint;
+
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -72,7 +74,20 @@ public class InterpolatedTimeKmlItem implements TimeKmlItem {
 		Style style = styleFactory.createStyle();
 		folder.addToStyleSelector(style);
 
-
+		// add LookAt KML tag to folder
+		Map.Entry<String, TimeRecords> firstRecord = recordMap.entrySet().iterator().next(); 
+		if (firstRecord != null) {
+			LookAt lookat = new LookAt();
+			lookat.setLatitude(firstRecord.getValue().getFinalRecords().get(0).coord.getLatitude());
+			lookat.setLongitude(firstRecord.getValue().getFinalRecords().get(0).coord.getLongitude());
+			lookat.setAltitude(3000);
+			lookat.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+			lookat.setRange(500);
+			lookat.setTilt(15);
+			lookat.setHeading(0);
+			folder.setAbstractView(lookat);
+		}
+		
 		for (TimeRecords timeRecords : recordMap.values()) {
 
             Placemark p = new Placemark();
@@ -130,7 +145,7 @@ public class InterpolatedTimeKmlItem implements TimeKmlItem {
 	static int skipCounter = 0;
 	static int totalCounter = 0;
 
-	private class TimeRecords {
+	public class TimeRecords {
 		String id;
 
 		List<Record> records = new ArrayList<>();

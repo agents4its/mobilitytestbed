@@ -1,13 +1,17 @@
 package cz.agents.dbtokmlexporter.kmlitem.builder;
 
 import com.vividsolutions.jts.geom.Geometry;
+
 import cz.agents.alite.googleearth.updates.Kmz;
+import cz.agents.dbtokmlexporter.kmlitem.InterpolatedTimeKmlItem.TimeRecords;
 import cz.agents.dbtokmlexporter.utils.TimeUtils;
 import cz.agents.resultsvisio.kml.KmlItem;
+import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
+import de.micromata.opengis.kml.v_2_2_0.LookAt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +20,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -129,11 +136,13 @@ public abstract class SimpleKmlItemBuilder {
 
 		// add additional resources (icon image files) to KMZ
 		File additionalResFolder = new File(additionalResourcesFolderPath);
-		if (additionalResFolder != null) {
+		if (additionalResFolder.exists()) {
 			for (File f : additionalResFolder.listFiles()) {
 				kmz.loadFile(f);
 			}
-		} 
+		} else {
+			Logger.getLogger(SimpleKmlItemBuilder.class).error("Folder with additional resources ("+additionalResFolder.toString()+") not found! Icons might not work in the visualization.");
+		}
 		
 		kmz.writeToStream(new FileOutputStream(path));
 	}
@@ -141,9 +150,7 @@ public abstract class SimpleKmlItemBuilder {
 	public static void saveToKml(KmlItem output, String path) throws FileNotFoundException {
 		Kml kml = new Kml();
 		kml.createAndSetDocument().addToFeature(output.initFeatureForKml(null));
-
 		kml.marshal(new File(path));
-
 	}
 
 	protected static String formatMillisToIntervalString(long millis) {

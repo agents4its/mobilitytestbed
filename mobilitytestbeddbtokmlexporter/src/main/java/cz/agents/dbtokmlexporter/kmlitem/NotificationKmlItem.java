@@ -2,15 +2,19 @@ package cz.agents.dbtokmlexporter.kmlitem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import cz.agents.alite.googleearth.updates.Kmz;
 import cz.agents.dbtokmlexporter.factory.geometry.GeometryFactory;
 import cz.agents.dbtokmlexporter.factory.style.StyleFactory;
+import cz.agents.dbtokmlexporter.kmlitem.InterpolatedTimeKmlItem.TimeRecords;
 import cz.agents.resultsvisio.kml.KmlItem;
 import cz.agents.resultsvisio.kml.util.TimeKmlFormater;
+import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Geometry;
+import de.micromata.opengis.kml.v_2_2_0.LookAt;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.Style;
 import de.micromata.opengis.kml.v_2_2_0.TimeSpan;
@@ -67,6 +71,20 @@ public class NotificationKmlItem implements KmlItem {
 		Folder folder = new Folder();
 		Style style = styleFactory.createStyle();
 		folder.addToStyleSelector(style);
+		
+		// add LookAt KML tag to folder
+		Record firstRecord = records.iterator().next(); 
+		if (firstRecord != null) {
+			LookAt lookat = new LookAt();
+			lookat.setLatitude(firstRecord.coords[0].getLatitude());
+			lookat.setLongitude(firstRecord.coords[0].getLongitude());
+			lookat.setAltitude(3000);
+			lookat.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+			lookat.setRange(500);
+			lookat.setTilt(15);
+			lookat.setHeading(0);
+			folder.setAbstractView(lookat);
+		}
 
 		for (Record record : records) {
 			Placemark p = new Placemark();
