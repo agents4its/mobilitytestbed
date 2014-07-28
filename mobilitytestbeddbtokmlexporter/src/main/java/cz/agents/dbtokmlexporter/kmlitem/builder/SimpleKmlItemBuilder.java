@@ -1,13 +1,17 @@
 package cz.agents.dbtokmlexporter.kmlitem.builder;
 
 import com.vividsolutions.jts.geom.Geometry;
+
 import cz.agents.alite.googleearth.updates.Kmz;
+import cz.agents.dbtokmlexporter.kmlitem.InterpolatedTimeKmlItem.TimeRecords;
 import cz.agents.dbtokmlexporter.utils.TimeUtils;
 import cz.agents.resultsvisio.kml.KmlItem;
+import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.Coordinate;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
+import de.micromata.opengis.kml.v_2_2_0.LookAt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +20,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 /**
  * 
@@ -92,7 +99,7 @@ public abstract class SimpleKmlItemBuilder {
 	 * @throws java.sql.SQLException
 	 * @throws java.io.IOException
 	 */
-	public static void saveBuiltKmlItemsToSeparateFiles(List<? extends SimpleKmlItemBuilder> builders, String folderName)
+	public static void saveBuiltKmlItemsToSeparateFiles(List<? extends SimpleKmlItemBuilder> builders, String folderName, String additionalResourcesFolderPath)
 			throws SQLException, IOException {
 		File folder = new File(folderName);
 		folder.mkdir();
@@ -106,7 +113,7 @@ public abstract class SimpleKmlItemBuilder {
 
 			String fileName = folderName + "/" + builder.fileName;
 			if (builder.hasToBeSavedToKmz) {
-				saveToKmz(builder.buildKmlItem(), fileName);
+				saveToKmz(builder.buildKmlItem(), fileName, additionalResourcesFolderPath);
 			} else {
 				saveToKml(builder.buildKmlItem(), fileName);
 			}
@@ -114,27 +121,36 @@ public abstract class SimpleKmlItemBuilder {
 		}
 	}
 
-	public static void saveToKmz(KmlItem output, String path) throws FileNotFoundException, IOException {
+	public static void saveToKmz(KmlItem output, String path, String additionalResourcesFolderPath) throws FileNotFoundException, IOException {
 
 		Kml kml = new Kml();
 		Kmz kmz = new Kmz(kml);
 
 		Folder folder = output.initFeatureForKml(kmz);
+		
 		if (folder == null) {
 			return;
 		}
 
 		kml.createAndSetDocument().addToFeature(folder);
 
+		// add additional resources (icon image files) to KMZ
+		File additionalResFolder = new File(additionalResourcesFolderPath);
+		if (additionalResFolder.exists()) {
+			for (File f : additionalResFolder.listFiles()) {
+				kmz.loadFile(f);
+			}
+		} else {
+			Logger.getLogger(SimpleKmlItemBuilder.class).error("Folder with additional resources ("+additionalResFolder.toString()+") not found! Icons might not work in the visualization.");
+		}
+		
 		kmz.writeToStream(new FileOutputStream(path));
 	}
 
 	public static void saveToKml(KmlItem output, String path) throws FileNotFoundException {
 		Kml kml = new Kml();
 		kml.createAndSetDocument().addToFeature(output.initFeatureForKml(null));
-
 		kml.marshal(new File(path));
-
 	}
 
 	protected static String formatMillisToIntervalString(long millis) {

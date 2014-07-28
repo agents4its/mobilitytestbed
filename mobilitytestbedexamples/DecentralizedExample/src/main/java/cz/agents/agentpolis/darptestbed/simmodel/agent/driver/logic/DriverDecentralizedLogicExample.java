@@ -41,7 +41,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
     public void processNewRequest(Request request) {
 
         // debug output
-        LOGGER.debug("	Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture()) + "] "
+        LOGGER.info("Request: [" + utils.toHoursAndMinutes(request.getTimeWindow().getEarliestDeparture()) + "] "
                 + request.getPassengerId() + "->" + this.getAgentId() + ", latest departure: "
                 + utils.toHoursAndMinutes(request.getTimeWindow().getLatestDeparture()));
 
@@ -135,7 +135,7 @@ public class DriverDecentralizedLogicExample extends DriverDecentralizedLogic {
         // set the trip plan for the driver
         TripPlan tripPlan = new TripPlan(drivePath, pickUpAndDropOffMap);
         this.setTripPlan(tripPlan);
-        LOGGER.debug("Setting trip plan for " + this.getAgentId() + " (" + this.getCurrentPassengersOnBoard() + "/" + this.getVehicle().getCapacity() + ") to:\n" + tripPlan);
+        LOGGER.info("Setting trip plan for " + this.getAgentId() + " (" + this.getCurrentPassengersOnBoard() + "/" + this.getVehicle().getCapacity() + ") to:\n\n" + tripPlan);
 
         // start driving
         driveNextPartOfTripPlan();

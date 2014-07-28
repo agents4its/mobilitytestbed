@@ -4,9 +4,11 @@ import cz.agents.agentpolis.tools.geovisio.projection.ProjectionTransformer;
 import cz.agents.alite.googleearth.updates.Kmz;
 import cz.agents.dbtokmlexporter.factory.geometry.GeometryFactory;
 import cz.agents.dbtokmlexporter.factory.style.StyleFactory;
+import cz.agents.dbtokmlexporter.kmlitem.InterpolatedTimeKmlItem.TimeRecords;
 import cz.agents.resultsvisio.kml.TimeKmlItem;
 import cz.agents.resultsvisio.kml.util.TimeKmlFormater;
 import de.micromata.opengis.kml.v_2_2_0.*;
+
 import org.apache.log4j.Logger;
 
 import java.util.*;
@@ -106,6 +108,21 @@ public class NonInterpolatedTimeKmlItem implements TimeKmlItem {
 				folder.addToFeature(p);
 			}
 		}
+		
+		// add LookAt KML tag to folder
+		Map.Entry<String, TimeRecords> firstRecord = recordMap.entrySet().iterator().next(); 
+		if (firstRecord != null) {
+			LookAt lookat = new LookAt();
+			lookat.setLatitude(firstRecord.getValue().getFinalRecords().iterator().next().coords[0].getLatitude());
+			lookat.setLongitude(firstRecord.getValue().getFinalRecords().iterator().next().coords[0].getLongitude());
+			lookat.setAltitude(3000);
+			lookat.setAltitudeMode(AltitudeMode.RELATIVE_TO_GROUND);
+			lookat.setRange(500);
+			lookat.setTilt(15);
+			lookat.setHeading(0);
+			folder.setAbstractView(lookat);
+		}
+		
 		return folder;
 	}
 

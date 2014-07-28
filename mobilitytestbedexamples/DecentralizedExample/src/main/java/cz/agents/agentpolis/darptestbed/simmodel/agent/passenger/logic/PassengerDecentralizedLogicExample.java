@@ -49,7 +49,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
 
         // if too many drivers rejected us, don't even try
         if (driversThatRejectedMe.size() >= 3) {
-            LOGGER.debug(request.getPassengerId() + " giving up after 3 rejections.");
+            LOGGER.info(request.getPassengerId() + " giving up after 3 rejections.");
             logger.logRequestRejected(getAgentId());
             return;
         }
@@ -58,9 +58,9 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
         // us in the past)
         String closestDriver = null;
         Double closestDist = 0.0;
-        LOGGER.debug("Count: " + taxiModel.getTaxiDriversFree());
+        LOGGER.debug("Free drivers: " + taxiModel.getTaxiDriversFree());
         for (String driverId : taxiModel.getTaxiDriversFree()) {
-            LOGGER.debug("Free: " + driverId);
+            LOGGER.debug("Computing distance of driver " + driverId);
             double thisDist = utils.computeDistance(this.getCurrentPositionNode(),
                     positionQuery.getCurrentPositionByNodeId(driverId));
             if ((!driversThatRejectedMe.contains(driverId)) && (closestDriver == null || thisDist < closestDist)) {
@@ -74,7 +74,7 @@ public class PassengerDecentralizedLogicExample extends PassengerDecentralizedLo
             super.sendRequest(request);
             sender.sendMessage(closestDriver, request);
         } else {
-            LOGGER.debug(request.getPassengerId() + " giving up failing to find possible driver.");
+            LOGGER.info(request.getPassengerId() + " giving up failing to find possible driver.");
             logger.logRequestRejected(getAgentId());
         }
 

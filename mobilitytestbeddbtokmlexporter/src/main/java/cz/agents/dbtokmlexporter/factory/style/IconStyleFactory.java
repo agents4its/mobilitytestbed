@@ -12,25 +12,23 @@ import de.micromata.opengis.kml.v_2_2_0.Style;
  */
 public class IconStyleFactory implements StyleFactory {
 
-	private final String iconName;
-	private final Color color;
+	private final String iconUrl;
 	private final double scale;
 
 	private static int counter = 0;
 
-	public IconStyleFactory(String iconName, Color color, double scale) {
+	public IconStyleFactory(String iconUrl, double scale) {
 		super();
-		this.iconName = iconName;
-		this.color = color;
-		this.scale = scale;
+		this.iconUrl = iconUrl;
+		this.scale = scale; 
 	}
 
 	@Override
 	public Style createStyle() {
 		Style style = new Style();
 		style.withId("iconstyle" + counter++).createAndSetIconStyle().withScale(scale)
-				.withColor(KmlUtils.colorToKmlColor(color)).createAndSetIcon()
-				.withHref("http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png");
+				.createAndSetIcon()
+				.withHref(this.iconUrl);
 		return style;
 	}
 

@@ -37,15 +37,17 @@ public class DarpTestbedKmlVisualisator {
 	private final String schemaName;
 	private final String outputFolder;
     private final boolean interpolate;
+    private final String additionalResourcesFolderPath;
 
     public DarpTestbedKmlVisualisator(DatabaseConnectionSettings settings, int interval, String schemaName,
-			String outputFolder, boolean interpolate) {
+			String outputFolder, boolean interpolate, String additionalResourcesFolderPath) {
 		super();
 		this.settings = settings;
 		this.interval = interval;
 		this.schemaName = schemaName;
 		this.outputFolder = outputFolder;
         this.interpolate = interpolate;
+        this.additionalResourcesFolderPath = additionalResourcesFolderPath;
 	}
 
 	public void visualize() {
@@ -69,7 +71,7 @@ public class DarpTestbedKmlVisualisator {
 					interval));
 			itemBuilders.add(RequestHeatMapKmlItemBuilder.createFailRequestHeatMapKmlItemBuilder(conn, schemaName,
 					interval));
-			KmlItemBuilder.saveBuiltKmlItemsToSeparateFiles(itemBuilders, outputFolder);
+			KmlItemBuilder.saveBuiltKmlItemsToSeparateFiles(itemBuilders, outputFolder, additionalResourcesFolderPath);
 			
 			conn.close();
 		} catch (ClassNotFoundException | SQLException | IOException e) {

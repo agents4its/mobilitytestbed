@@ -20,17 +20,15 @@ public class TaxiDriverKmlItemBuilder extends InterpolableTimeKmlItemBuilder {
 
 	private static final String TABLE_NAME = "taxi_drivers";
 
-	private static final String ICON_NAME = "cabs";
-
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, String fileName,
 			Color driverColor, boolean interpolate) {
-		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory(ICON_NAME, driverColor,
-				0.75), new PointGeometryFactory(), interpolate);
+		super(connection, schemaName, interval, fileName, TABLE_NAME, " ", new IconStyleFactory("data/car.png", 
+				0.75), new PointGeometryFactory(), interpolate, true);
 	}
 
 	public TaxiDriverKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval, Color driverColor,
                                     boolean interpolate) {
-		this(connection, schemaName, interval, "taxi_driver.kml", driverColor, interpolate);
+		this(connection, schemaName, interval, "taxi_driver.kmz", driverColor, interpolate);
 	}
 
 	@Override

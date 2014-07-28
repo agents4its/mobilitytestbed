@@ -39,8 +39,8 @@ public abstract class InterpolableTimeKmlItemBuilder extends KmlItemBuilder {
 
 	public InterpolableTimeKmlItemBuilder(DatabaseConnection connection, String schemaName, long interval,
                                           String fileName, String tableName, String whereClause, StyleFactory styleFactory,
-                                          GeometryFactory geometryFactory, boolean interpolated) {
-		super(connection, schemaName, interval, fileName);
+                                          GeometryFactory geometryFactory, boolean interpolated, boolean hasToBeSavedToKmz) {
+		super(connection, schemaName, interval, fileName, hasToBeSavedToKmz);
 		this.tableName = tableName;
 		this.whereClause = whereClause;
 		this.styleFactory = styleFactory;

@@ -19,10 +19,12 @@ import cz.agents.alite.googleearth.updates.KmlUtils;
 import cz.agents.alite.googleearth.updates.Kmz;
 import cz.agents.resultsvisio.kml.KmlItem;
 import cz.agents.resultsvisio.kml.util.TimeKmlFormater;
+import de.micromata.opengis.kml.v_2_2_0.AbstractView;
 import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
+import de.micromata.opengis.kml.v_2_2_0.LookAt;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.gx.Coord;
 import de.micromata.opengis.kml.v_2_2_0.gx.Track;
@@ -127,7 +129,6 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 			}
 
 			p.setGeometry(track);
-
 			folder.addToFeature(p);
 
 		}
