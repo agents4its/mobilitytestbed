@@ -3,7 +3,7 @@ Flexible Mobility Services Testbed
 
 [<img src="https://raw.github.com/agents4its/mobilitytestbed/screenshots/video.png" width="320" align="right" />](https://drive.google.com/file/d/0B7eVloLJJjtbTHI1VlpaM2xZYVE/edit?usp=sharing)
 
-**MobilityTestbed** is an interaction-rich simulation model designed to test and **evaluate** various **DARP algorithms** (Dial-A-Ride Problem) or other, central or decentralized, coordination or resource-allocation mechanisms within on-demand transportation systems. The testbed is built on top of the [AgentPolis](http://agentpolis.com/) platform.
+**MobilityTestbed** is an interaction-rich simulation tool for testing and **evaluating** control mechanisms for traditional demand-responsive transport services (Dynamic Dial-A-Ride Problem) as well as next-generation flexible mobility services (exmplified e.g. by Uber or Lyft). The testbed is built on top of the [AgentPolis](http://agentpolis.com/) platform.
 
 
 It allows users to:
