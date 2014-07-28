@@ -23,4 +23,11 @@ Links to follow:
 * [AgentPolis Platform](http://agentpolis.org/) on top of which the testbed is built
 * [Publications](http://github.com/agents4its/mobilitytestbed/wiki/Publications) related to the testbed
 
+
+Contact us!
+=================
+Interested in using the testbed? Get in touch with us at certicky@agents.fel.cvut.cz -- we are ready to help!
+ 
+
+
 [![Analytics](https://ga-beacon.appspot.com/UA-1173979-12/mobilitytestbed/readme?pixel)](https://github.com/igrigorik/ga-beacon)
