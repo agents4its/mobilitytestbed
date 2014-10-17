@@ -24,12 +24,13 @@ public class PassengerGeneratorWithContinousRequestCallTimeDistribution implemen
     private final static long HOUR23 = Duration.standardHours(23).getMillis();
     private final static long HOUR23_30MIN = Duration.standardMinutes(23 * 60 + 30).getMillis();
     private final static long HOUR24 = Duration.standardDays(1).getMillis();
-    private final static long TIME_WINDOW_RANGE = Duration.standardMinutes(30).getMillis();
-    private final static long CALL_TIME_BEFORE_REQUEST_FROM_TIME = Duration.standardMinutes(30).getMillis();
     private final static long REQUEST_DURATION_TIME = Duration.standardMinutes(30).getMillis();
     private final static long MIN_TIME_WINDOW_RANGE = Duration.standardMinutes(15).getMillis();
     private final static long MIN_CALL_TIME_BEFORE_REQUEST_FROM_TIME = Duration.standardMinutes(15).getMillis();
     private final static long MIN_REQUEST_DURATION_TIME = Duration.standardMinutes(15).getMillis();
+
+    private static long TIME_WINDOW_RANGE = Duration.standardMinutes(30).getMillis();
+    private static long CALL_TIME_BEFORE_REQUEST_FROM_TIME = Duration.standardMinutes(30).getMillis();
 
     private final AbstractRealDistribution dayDistribution;
     private final Random random;
@@ -71,7 +72,7 @@ public class PassengerGeneratorWithContinousRequestCallTimeDistribution implemen
         return dayDistributionMock;
 
     }
-
+    
     public PassengerGeneratorWithContinousRequestCallTimeDistribution(AbstractRealDistribution dayDistribution, Random random, Utils utils) {
         super();
         this.dayDistribution = dayDistribution;
@@ -79,6 +80,15 @@ public class PassengerGeneratorWithContinousRequestCallTimeDistribution implemen
         this.utils = utils;
     }
 
+    public PassengerGeneratorWithContinousRequestCallTimeDistribution(AbstractRealDistribution dayDistribution, 
+    		Random random, Utils utils, int timeWindowRangeInMinutes, int callTimeBeforeRequestFromTimeInMinutes) {
+    	this(dayDistribution, random, utils);
+    	
+    	// in addition to calling the constructor, adjust the time-related vars
+    	TIME_WINDOW_RANGE = Duration.standardMinutes(timeWindowRangeInMinutes).getMillis();
+    	CALL_TIME_BEFORE_REQUEST_FROM_TIME = Duration.standardMinutes(callTimeBeforeRequestFromTimeInMinutes).getMillis();
+    }
+    
     @Override
     public Set<String> generateAdditionalRequirements() {
         return Sets.newHashSet(AdditionalRequirementsVehicleEquipment.WHEELCHAIR_SUPPORT.additionalRequirements);
