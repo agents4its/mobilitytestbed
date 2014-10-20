@@ -183,8 +183,7 @@ public class PassengerGeneratorWithContinousRequestCallTimeDistribution implemen
         long drivingTimeTest = utils.computeDrivingTime(fromNode, toNode, 30);
         long slack = interval - drivingTimeTest;
         if (slack < 0) {
-            LOGGER.debug(slack + " - " + drivingTimeTest + " - impossible request");
-
+            LOGGER.debug(slack + " - " + drivingTimeTest + " - impossible request (slack="+slack+"; toTimeMax="+toTimeMax+")");
             return generateRequestTimeInfo(fromNode, toNode);
         }
 
