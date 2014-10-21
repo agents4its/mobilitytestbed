@@ -1,4 +1,4 @@
-//package cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support;
+package cz.agents.agentpolis.darptestbed.siminfrastructure.request.generator.support;
 //
 //import static org.junit.Assert.assertTrue;
 //import static org.mockito.Mockito.mock;
@@ -9,7 +9,7 @@
 //import org.joda.time.Duration;
 //import org.junit.Test;
 //
-//public class RandomRequestCallTimeGeneratorTest {
+public class RandomRequestCallTimeGeneratorTest {
 //
 //	@Test
 //	public void test() {
@@ -63,4 +63,4 @@
 //
 //	}
 //
-// }
+}
