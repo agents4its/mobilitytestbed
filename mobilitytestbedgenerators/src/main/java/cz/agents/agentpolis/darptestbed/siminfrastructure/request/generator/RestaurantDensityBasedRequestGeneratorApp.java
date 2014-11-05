@@ -78,17 +78,21 @@ public class RestaurantDensityBasedRequestGeneratorApp {
                     Integer.toString(CALL_TIME_BEFORE_REQUESTS_IN_MINUTES),
                     Integer.toString(EPSG)
             };
+            
             System.out.printf("Using default command-line parameters: %s %s %s %s %s %s %s %s \n", args);
         } else if (args.length != 8) {
         	System.out.println("Provided args: "+args.length);
         // specify values by arguments
         	System.out.println("Usage 1: <path-to-source-data-folder> <osm-file-name-within-source> <passenger-requests-count> " +
-                    "<driver-requests-counter> <vehicle-capacity-including-driver> <time-windows-in-mins> <call-time-before-req-in-mins> <EPSG code>");
+                    "<vehicles-count> <vehicle-capacity-including-driver> <time-windows-in-mins> <call-time-before-req-in-mins> <EPSG code>");
         	System.out.println("Usage 2: DEFAULT");
 
             return;
         } 
         
+        // remove unwanted characters from the arguments (trailing slashes)
+        args[0] = args[0].replaceFirst("\\+$", "").replaceFirst("/+$", "");	// trailing slashes from <path-to-source-data-folder> 
+
         // create a directory for the new benchmark
         String newBenchmarkLocation = "experiments" + File.separator + args[1].replace(".osm", "") + 
         		"_d" + args[3] + 
