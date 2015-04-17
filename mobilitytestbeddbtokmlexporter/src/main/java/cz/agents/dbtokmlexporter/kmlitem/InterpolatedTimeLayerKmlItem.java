@@ -1,8 +1,6 @@
 package cz.agents.dbtokmlexporter.kmlitem;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,17 +12,16 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Point;
+
 import cz.agents.agentpolis.tools.geovisio.projection.ProjectionTransformer;
 import cz.agents.alite.googleearth.updates.KmlUtils;
 import cz.agents.alite.googleearth.updates.Kmz;
 import cz.agents.resultsvisio.kml.KmlItem;
 import cz.agents.resultsvisio.kml.util.TimeKmlFormater;
-import de.micromata.opengis.kml.v_2_2_0.AbstractView;
-import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
-import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
-import de.micromata.opengis.kml.v_2_2_0.LookAt;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
 import de.micromata.opengis.kml.v_2_2_0.gx.Coord;
 import de.micromata.opengis.kml.v_2_2_0.gx.Track;
@@ -37,7 +34,6 @@ import de.micromata.opengis.kml.v_2_2_0.gx.custom.TrackPoint;
  */
 public class InterpolatedTimeLayerKmlItem implements KmlItem {
 
-
 	private static final Logger logger = Logger.getLogger(InterpolatedTimeLayerKmlItem.class);
 
 	private ProjectionTransformer transformer;
@@ -45,44 +41,49 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 	private Color color;
 
 	private Map<String, Record> recordMap = new HashMap<String, Record>();
+	private Map<String, String> descriptions = new HashMap<>();
 
-	public InterpolatedTimeLayerKmlItem(ProjectionTransformer transformer, long duration, String iconName, Color color) {
+	public InterpolatedTimeLayerKmlItem(ProjectionTransformer transformer, String iconName, Color color) {
 		super();
 		this.transformer = transformer;
 		this.iconName = iconName;
 		this.color = color;
 	}
 
-	public void saveToKml(final String path) throws IOException{
+	public void addDescription(String id, String description) {
+		descriptions.put(id, description);
+	}
+
+	public void saveToKml(final String path) throws IOException {
 		Kml kml = new Kml();
 		kml.createAndSetDocument().addToFeature(initFeatureForKml(null));
 
-
 		OutputStream os = new OutputStream() {
-			int i=0;
+			int i = 0;
 
 			FileOutputStream fos = new FileOutputStream(path);
-//			ArrayList<>
+
+			// ArrayList<>
 
 			@Override
 			public void write(int b) throws IOException {
-				System.out.println(i++ +": \t"+(char)b);
+				System.out.println(i++ + ": \t" + (char) b);
 				System.out.println("Write(int b)");
 			}
 
 			public void write(byte b[], int off, int len) throws IOException {
 				i++;
-				String s = new String(b,off,len);
-				s=s.replaceAll("<gx:angles></gx:angles>\n", "");
+				String s = new String(b, off, len);
+				s = s.replaceAll("<gx:angles></gx:angles>\n", "");
 				fos.write(s.getBytes());
-//				System.out.println("write(byte b[], int off, int len) "+ i++ +" = "+ b.length);
-//				System.out.println(new String(b,off,len));
-//		        writeBytes(b, off, len);
-		    }
+				// System.out.println("write(byte b[], int off, int len) "+ i++ +" = "+ b.length);
+				// System.out.println(new String(b,off,len));
+				// writeBytes(b, off, len);
+			}
 
 			@Override
 			public void write(byte[] b) throws IOException {
-				this.write(b,0,b.length);
+				this.write(b, 0, b.length);
 			}
 
 			@Override
@@ -95,10 +96,9 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 				fos.close();
 			}
 
-
 		};
 
-//		kml.
+		// kml.
 		kml.marshal(os);
 		os.close();
 
@@ -110,19 +110,22 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 		String styleId = "style_" + iconName;
 
 		folder.createAndAddStyle().withId(styleId).createAndSetIconStyle().withScale(0.75).withHeading((double) 0)
-		 .withColor(KmlUtils.colorToKmlColor(color))
-				.createAndSetIcon().withHref("http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png");
+		        .withColor(KmlUtils.colorToKmlColor(color)).createAndSetIcon()
+		        .withHref("http://maps.google.com/mapfiles/kml/shapes/" + iconName + ".png");
 
 		for (Record record : recordMap.values()) {
 			// System.out.println(record);
 			Placemark p = new Placemark();
-			 p.setId(record.id);
-//			 p.setName(record.id);
-			 p.setDescription(record.id);
+			p.setId(record.id);
+			// p.setName(record.id);
+			String description = descriptions.get(record.id);
+			if (description == null) description = record.id;
+			p.setDescription(description);
 			p.withStyleUrl("#" + styleId);
 
 			Track track = new Track();
 			for (int i = 0; i < record.coordinates.size(); i++) {
+				
 				TrackPoint trackPoint = new TrackPoint(TimeKmlFormater.getTimeForKML(record.times.get(i)));
 				trackPoint.setCoord(record.coordinates.get(i));
 				track.withTrackPoint(trackPoint);
@@ -133,16 +136,19 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 
 		}
 
-		logger.info("Skipped: " + skipCounter+"/" +totalCounter);
-		skipCounter =0;
+		logger.info("Skipped: " + skipCounter + "/" + totalCounter);
+		skipCounter = 0;
 		totalCounter = 0;
 		return folder;
 	}
 
-	public void addTimePoint(String id, com.vividsolutions.jts.geom.Point point, long time) throws TransformException {
-		com.vividsolutions.jts.geom.Coordinate coordinate = transformer.transform(point.getCoordinate());
-		Coord kmlCoordinate = new Coord(coordinate.x, coordinate.y);
+	public void transformAndAddTimePoint(String id, Point point, long time) throws TransformException {
+		Coordinate coordinate = transformer.transform(point.getCoordinate());
+		addTimeCoordinate(id, time, coordinate);
+	}
 
+	public void addTimeCoordinate(String id, long time, Coordinate coordinate) {
+		Coord kmlCoordinate = new Coord(coordinate.x, coordinate.y);
 		addToRecordMap(id, kmlCoordinate, time);
 	}
 
@@ -154,6 +160,7 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 		}
 		record.add(kmlCoordinate, time);
 	}
+
 	static int skipCounter = 0;
 	static int totalCounter = 0;
 
@@ -161,33 +168,49 @@ public class InterpolatedTimeLayerKmlItem implements KmlItem {
 		String id;
 		List<Coord> coordinates = new ArrayList<Coord>();
 		List<Long> times = new ArrayList<Long>();
-		boolean lastTwoEquals= false;
+		boolean lastTwoEquals = false;
 
 		public Record(String id) {
 			this.id = id;
 		}
 
-
 		public void add(Coord coord, long time) {
-			int lastIndex = coordinates.size()-1;
-			if(lastIndex>=0 && coordinates.get(lastIndex).equals(coord)){
-				if(lastTwoEquals){
+			int lastIndex = coordinates.size() - 1;
+			if (lastIndex >= 0 && coordinates.get(lastIndex).equals(coord)) {
+				if (lastTwoEquals) {
 					coordinates.set(lastIndex, coord);
 					times.set(lastIndex, time);
-//					System.out.println(skipCounter +"/"+totalCounter + " skipped: "+time +" = " + coords);
+					// System.out.println(skipCounter +"/"+totalCounter + " skipped: "+time +" = " + coords);
 					skipCounter++;
-				}else{
-					lastTwoEquals=true;
+				} else {
+					lastTwoEquals = true;
 					coordinates.add(coord);
 					times.add(time);
 				}
-			}else{
+			} else {
 				lastTwoEquals = false;
 				coordinates.add(coord);
 				times.add(time);
 			}
 			totalCounter++;
 		}
+
+		@Override
+        public String toString() {
+	        return "Record [id="
+	                + id
+	                + ", times="
+	                + times
+	                + ", coordinates="
+	                + coordinates
+	                + ", lastTwoEquals="
+	                + lastTwoEquals
+	                + "]";
+        }
+		
+		
 	}
+	
+	
 
 }

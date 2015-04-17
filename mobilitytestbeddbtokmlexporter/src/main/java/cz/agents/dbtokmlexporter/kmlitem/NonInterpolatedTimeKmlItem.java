@@ -110,8 +110,9 @@ public class NonInterpolatedTimeKmlItem implements TimeKmlItem {
 		}
 		
 		// add LookAt KML tag to folder
-		Map.Entry<String, TimeRecords> firstRecord = recordMap.entrySet().iterator().next(); 
-		if (firstRecord != null) {
+
+		if (recordMap.entrySet().iterator().hasNext()) {
+			Map.Entry<String, TimeRecords> firstRecord = recordMap.entrySet().iterator().next();
 			LookAt lookat = new LookAt();
 			lookat.setLatitude(firstRecord.getValue().getFinalRecords().iterator().next().coords[0].getLatitude());
 			lookat.setLongitude(firstRecord.getValue().getFinalRecords().iterator().next().coords[0].getLongitude());

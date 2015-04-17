@@ -71,10 +71,10 @@ public class NotificationKmlItem implements KmlItem {
 		Folder folder = new Folder();
 		Style style = styleFactory.createStyle();
 		folder.addToStyleSelector(style);
-		
+
 		// add LookAt KML tag to folder
-		Record firstRecord = records.iterator().next(); 
-		if (firstRecord != null) {
+		if (records.iterator().hasNext()) {
+			Record firstRecord = records.iterator().next();
 			LookAt lookat = new LookAt();
 			lookat.setLatitude(firstRecord.coords[0].getLatitude());
 			lookat.setLongitude(firstRecord.coords[0].getLongitude());

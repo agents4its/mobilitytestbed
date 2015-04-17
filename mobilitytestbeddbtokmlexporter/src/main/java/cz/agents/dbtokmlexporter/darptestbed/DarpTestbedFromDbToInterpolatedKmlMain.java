@@ -61,8 +61,7 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, driverType, color);
 		int counter = 0;
 		while (result.next()) {
 			if (counter++ % 100000 == 0) {
@@ -72,7 +71,7 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 			PostgisGeometry geom = (PostgisGeometry) result.getObject("geom");
 			Point point = (Point) geom.getGeometry();
 			Timestamp timestamp = result.getTimestamp("from_time");
-			kmlItem.addTimePoint(id, point, timestamp.getTime());
+			kmlItem.transformAndAddTimePoint(id, point, timestamp.getTime());
 
 		}
 
@@ -92,8 +91,7 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, driverType, color);
 		int counter = 0;
 		while (result.next()) {
 			if (counter++ % 100000 == 0) {
@@ -103,7 +101,7 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 			PostgisGeometry geom = (PostgisGeometry) result.getObject("geom");
 			Point point = (Point) geom.getGeometry();
 			Timestamp timestamp = result.getTimestamp("from_time");
-			kmlItem.addTimePoint(id, point, timestamp.getTime());
+			kmlItem.transformAndAddTimePoint(id, point, timestamp.getTime());
 
 		}
 
@@ -123,14 +121,13 @@ public class DarpTestbedFromDbToInterpolatedKmlMain {
 		ProjectionTransformer transformer = new ProjectionTransformer(900913, 4326, true);
 
 		long duration = 1 * 60 * 1000 - 1;
-		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, duration, driverType,
-				color);
+		InterpolatedTimeLayerKmlItem kmlItem = new InterpolatedTimeLayerKmlItem(transformer, driverType, color);
 		while (result.next()) {
 			String id = result.getString("agentid");
 			PostgisGeometry geom = (PostgisGeometry) result.getObject("geom");
 			Point point = (Point) geom.getGeometry();
 			Timestamp timestamp = result.getTimestamp("from_time");
-			kmlItem.addTimePoint(id, point, timestamp.getTime());
+			kmlItem.transformAndAddTimePoint(id, point, timestamp.getTime());
 
 		}
 
