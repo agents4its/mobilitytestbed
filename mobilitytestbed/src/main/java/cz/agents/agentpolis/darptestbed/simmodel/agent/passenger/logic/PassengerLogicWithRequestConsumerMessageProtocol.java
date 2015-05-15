@@ -11,6 +11,15 @@ import cz.agents.agentpolis.darptestbed.simmodel.environment.model.TestbedModel;
 import cz.agents.agentpolis.simmodel.agent.activity.TimeSpendingActivity;
 import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 
+/**
+ * Check {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerLogic}
+ * to see description of methods.
+ * <p/>
+ * For particular implementation see:
+ * {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerCentralizedLogic}
+ * and
+ * {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.logic.PassengerDecentralizedLogic}
+ */
 public abstract class PassengerLogicWithRequestConsumerMessageProtocol extends
         PassengerLogic<RequestConsumerMessageProtocol> {
 
@@ -26,5 +35,13 @@ public abstract class PassengerLogicWithRequestConsumerMessageProtocol extends
                 passengerProfile, passengerActivity, timeSpendingActivity, logger);
     }
 
+    /**
+     * It is used to determine agent's implementation, whether to use {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerCentralizedAgent}
+     * or {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerDecentralizedAgent}.
+     * <p/>
+     * For more details see {@link cz.agents.agentpolis.darptestbed.simmodel.agent.passenger.PassengerAgentFactory}.
+     *
+     * @return whether the logic is decentralized or centralized
+     */
     public abstract boolean isDecentralized();
 }

@@ -159,6 +159,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<? ex
      *
      * @param newTripPlan TripPlan object that the driver should take
      */
+    @Deprecated //seems to be invalid - recursive trap?
     protected void extendTripPlan(TripPlan newTripPlan) {
         if (this.tripPlan != null) {
             this.extendTripPlan(newTripPlan);
@@ -311,7 +312,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<? ex
 
         if (this.numOfPassenToGetOff > 0) {
 
-            for (String passengerId : passengersToGetOut) {
+            for (String passengerId : new HashSet<>(passengersToGetOut)) {
                 if (!passengersOnBoard.contains(passengerId)) {
                     informedDisembarkingPassengersAtCurrentNode.add(passengerId);
                     --numOfPassenToGetOff;
@@ -339,7 +340,7 @@ public abstract class DriverLogic<TMessageProtocol extends AMessageProtocol<? ex
         Set<String> passengersToGetIn = passengersToGetInAndOut.getIn();
         this.numOfPassenToGetIn = passengersToGetIn.size();
         LOGGER.debug("Processing in - driver: " + getVehicle().getId() + " " + this.numOfPassenToGetIn);
-        for (String passengerId : passengersToGetIn) {
+        for (String passengerId : new HashSet<>(passengersToGetIn)) {
             LOGGER.debug("Driver: PICKUP of " + passengerId + ", used " + getVehicle().getId() +
                     ", driven by " + getAgentId() + " at " + currentPos + " - " +
                 passengersToGetIn.toString());

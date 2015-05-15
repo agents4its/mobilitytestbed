@@ -10,7 +10,7 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 import java.util.*;
 
 /**
- * A storage that contains current information about taxis and their drivers,
+ * A storage that contains current information about taxis and their drivers, passengers,
  * e.g. free taxis list etc. This storage also enables to change this
  * information, e.q. when a taxi is taken.
  *

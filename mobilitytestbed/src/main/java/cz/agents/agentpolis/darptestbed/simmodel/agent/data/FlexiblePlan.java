@@ -18,13 +18,13 @@ import java.util.List;
 public class FlexiblePlan implements Cloneable {
 
     /**
-     * A set of useful methods for searching paths, distances etc.
-     */
-    protected final Utils utils;
-    /**
      * The vehicle that will drive according to this plan
      */
     public final TestbedVehicle vehicle;
+    /**
+     * A set of useful methods for searching paths, distances etc.
+     */
+    protected final Utils utils;
     /**
      * The time at the beginning of the plan
      */

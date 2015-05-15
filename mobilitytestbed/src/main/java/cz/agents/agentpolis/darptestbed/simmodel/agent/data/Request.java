@@ -23,10 +23,25 @@ public final class Request implements MessageVisitor<RequestConsumerReceiverVisi
 
     // this class can be extended by adding max price, max group size etc.
 
+    /**
+     * The simplest constructor.
+     *
+     * @param passengerId            id of passenger to be transported
+     * @param fromNode               node where to transport from
+     * @param toNode                 node where to transport to
+     * @param additionalRequirements requirements of the passenger
+     */
     public Request(String passengerId, long fromNode, long toNode, Set<String> additionalRequirements) {
         this(passengerId, -1, fromNode, toNode, null, additionalRequirements);
     }
 
+    /**
+     * @param passengerId            id of passenger to be transported
+     * @param fromNode               node where to transport from
+     * @param toNode                 node where to transport to
+     * @param timeWindow             time window defining when the transportation should happen
+     * @param additionalRequirements requirements of the passenger
+     */
     public Request(String passengerId, long fromNode, long toNode, TimeWindow timeWindow,
                    Set<String> additionalRequirements) {
         super();
@@ -38,7 +53,14 @@ public final class Request implements MessageVisitor<RequestConsumerReceiverVisi
         this.additionalRequirements = additionalRequirements;
     }
 
-    // including time window
+    /**
+     * @param passengerId            id of passenger to be transported
+     * @param callTimeInDayRange
+     * @param fromNode               node where to transport from
+     * @param toNode                 node where to transport to
+     * @param timeWindow             time window defining when the transportation should happen
+     * @param additionalRequirements requirements of the passenger
+     */
     public Request(String passengerId, long callTimeInDayRange, long fromNode, long toNode, TimeWindow timeWindow,
                    Set<String> additionalRequirements) {
         super();
@@ -74,6 +96,11 @@ public final class Request implements MessageVisitor<RequestConsumerReceiverVisi
         return additionalRequirements;
     }
 
+    /**
+     * Method allows a receiverVisitor to access this request element.
+     * This is related to the visitor design pattern.
+     * @param receiverVisitor
+     */
     @Override
     public void accept(RequestConsumerReceiverVisitor receiverVisitor) {
         receiverVisitor.visit(this);

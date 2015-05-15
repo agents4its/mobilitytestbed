@@ -2,9 +2,11 @@ package cz.agents.agentpolis.darptestbed.simmodel.agent.data;
 
 /**
  * This class supports at least the three most common types of time windows:
- * -two intervals (departure, arrival)
- * -one interval (earliest departure, latest arrival)
- * -latest arrival
+ * <ul>
+ * <li>two intervals (departure, arrival),</li>
+ * <li>one interval (earliest departure, latest arrival)</li>
+ * <li>latest arrival</li>
+ * </ul>
  * 
  * @author Lukas Canda
  */

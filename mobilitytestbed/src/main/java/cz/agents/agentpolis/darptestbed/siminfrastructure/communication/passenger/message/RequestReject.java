@@ -4,6 +4,9 @@ import cz.agents.agentpolis.darptestbed.siminfrastructure.communication.passenge
 import cz.agents.agentpolis.darptestbed.simmodel.agent.data.Request;
 import cz.agents.agentpolis.ondemandtransport.siminfrastructure.communication.protocol.MessageVisitor;
 
+/**
+ * Request rejection - holding original request and identifier of the agent who rejected it
+ */
 public class RequestReject implements MessageVisitor<PassengerReceiverVisitor> {
 
 	public Request request;

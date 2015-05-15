@@ -18,11 +18,15 @@ import cz.agents.agentpolis.simmodel.environment.model.query.AgentPositionQuery;
 import org.apache.log4j.Logger;
 
 /**
+ * <p>
  * The basic features of a DriverAgent, especially his communication protocol
  * that enables him to contact other agents.
  * <p/>
+ * <p>
  * The centralized communication means that the taxi driver communicates only
- * with the dispatching (control center).
+ * with the dispatching (control center). In fact, this logic provides methods to allow the dispatcher to
+ * assign trips to the driver, there is no reasoning of the driver about proposal.
+ * </p>
  *
  * @author Lukas Canda
  */
@@ -79,7 +83,7 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
             candidateTripPlan = tripPlan;
             oldPlan = this.getTripPlan();
             dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
-                new DriverNewPlanAcceptMessage(new TripInfo(getAgentId(), getVehicle().getId())));
+                    new DriverNewPlanAcceptMessage(new TripInfo(getAgentId(), getVehicle().getId())));
             driverState = DriverState.WAITING_FOR_PLAN_CONFIRMATION;
         } else {
             LOGGER.debug("Rejected plan - " + getAgentId() + ": " + tripPlan);
@@ -107,8 +111,8 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
                         getTripPlan().getNodeWithBoardingAndDisembarkingPassengers(driverPosition);
                 boolean hasList = nodeWithBoardingAndDisembarkingPassengers == null;
                 boolean oldIsEverybodyOnBoard = hasList ||
-                nodeWithBoardingAndDisembarkingPassengers.getIn() == null ||
-                    nodeWithBoardingAndDisembarkingPassengers.getIn().isEmpty();
+                        nodeWithBoardingAndDisembarkingPassengers.getIn() == null ||
+                        nodeWithBoardingAndDisembarkingPassengers.getIn().isEmpty();
                 boolean oldIsEverybodyOffBoard = hasList ||
                         nodeWithBoardingAndDisembarkingPassengers.getOff() == null ||
                         nodeWithBoardingAndDisembarkingPassengers.getOff().isEmpty();
@@ -151,7 +155,7 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
                 new DriverArrivedMessage(getAgentId(), new TripInfo(getAgentId(), this.getVehicle().getId())));
         dispatchingMessageProtocol.driverDispatchingProtocol.sendMessage(taxiModel.getDispatching().getId(),
                 new DriverReportsPassengerIsInMessage(passengerId,
-                new TripInfo(this.getAgentId(), this.getVehicle().getId())));
+                        new TripInfo(this.getAgentId(), this.getVehicle().getId())));
     }
 
     @Override
@@ -170,7 +174,7 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
 
     public void planConfirmed() {
         if (driverState == DriverState.WAITING_FOR_PLAN_CONFIRMATION) {
-            driverState =  DriverState.ACCEPTING_NEW_PLANS;
+            driverState = DriverState.ACCEPTING_NEW_PLANS;
             super.setTripPlan(candidateTripPlan);
             candidateTripPlan = null;
             oldPlan = null;
@@ -181,7 +185,7 @@ public class DriverCentralizedLogic extends DriverLogicWithPassengerMessageProto
 
     public void planFailed() {
         if (driverState == DriverState.WAITING_FOR_PLAN_CONFIRMATION) {
-            driverState =  DriverState.ACCEPTING_NEW_PLANS;
+            driverState = DriverState.ACCEPTING_NEW_PLANS;
             super.setTripPlan(oldPlan);
             candidateTripPlan = null;
             oldPlan = null;

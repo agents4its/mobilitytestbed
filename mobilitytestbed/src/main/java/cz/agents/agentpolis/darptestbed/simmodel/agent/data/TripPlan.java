@@ -294,4 +294,18 @@ public class TripPlan {
 
         setTrips(constructed);
     }
+
+    /**
+     *
+     * @return set of passengers to board or disembark during the tripPlan
+     */
+    public Set<String> getPassengers() {
+        Set<String> allPassengersRegistry = new HashSet<>();
+        for (PassengersInAndOutPair onOffPair : getMapOfBoardingAndDisembarkingPassengers().values()) {
+            allPassengersRegistry = Sets.union(allPassengersRegistry, onOffPair.getIn());
+            allPassengersRegistry = Sets.union(allPassengersRegistry, onOffPair.getOff());
+        }
+
+        return allPassengersRegistry;
+    }
 }

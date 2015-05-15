@@ -366,7 +366,7 @@ public class Utils {
 
         // make the map of boarding passengers
         for (int i = 0; i < flexiblePlan.getSize(); i++) {
-            tmpSet = mapOfBoardingAndLeavingPassengers.get(i);
+            tmpSet = mapOfBoardingAndLeavingPassengers.get(flexiblePlan.getNode(i));
 
             tmpPassen = flexiblePlan.getBoardingPassenger(i);
             if (tmpPassen != null) {
@@ -374,7 +374,6 @@ public class Utils {
                     tmpSet = new PassengersInAndOutPair();
 
                 tmpSet.getIn().add(tmpPassen);
-                mapOfBoardingAndLeavingPassengers.put(flexiblePlan.getNode(i), tmpSet);
             }
 
             tmpPassen = flexiblePlan.getLeavingPassenger(i);
@@ -382,9 +381,12 @@ public class Utils {
                 if (tmpSet == null)
                     tmpSet = new PassengersInAndOutPair();
 
-                mapOfBoardingAndLeavingPassengers.put(flexiblePlan.getNode(i), tmpSet);
                 tmpSet.getOff().add(tmpPassen);
+
             }
+
+            mapOfBoardingAndLeavingPassengers.put(flexiblePlan.getNode(i), tmpSet);
+
         }
 
         return new TripPlan(trips, mapOfBoardingAndLeavingPassengers, flexiblePlan);

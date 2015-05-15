@@ -5,6 +5,10 @@ import com.google.common.collect.Sets;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Specifies the set of passengers that need to be picked up and another set of passengers that need to be dropped off on one specific node.
+ * @see cz.agents.agentpolis.darptestbed.simmodel.agent.data.TripPlan
+ */
 public class PassengersInAndOutPair {
 
     private final Set<String> in;
